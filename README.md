@@ -5,13 +5,13 @@ Yet Another [Random.Org](https://random.org) Client
  
 ## Installation
 
-Installation must be done through [Composer](https://getcomposer.org/):
+Installation with [Composer](https://getcomposer.org/):
 
 ```
   composer require drupol/yaroc
 ```
 
-or by editing your composer.json file and add in the right section:
+or by editing your ```composer.json``` file and add in the right section:
 
 ```json
 {
