@@ -7,10 +7,9 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Normalize a request or a response into a string or an array.
+ * Class Formatter
  *
- * @author Joel Wurtz <joel.wurtz@gmail.com>
- * @author Márk Sági-Kazár <mark.sagikazar@gmail.com>
+ * @package drupol\Yaroc\Http\Message\Formatter
  */
 class Formatter extends SimpleFormatter implements \Http\Message\Formatter {
   /**
