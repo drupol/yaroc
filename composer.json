@@ -1,0 +1,44 @@
+{
+  "name": "drupol/yaroc",
+  "homepage": "https://github.com/drupol/yaroc",
+  "description": "YAROC: Yet Another Random.Org Client.",
+  "keywords": ["random", "client"],
+  "type": "library",
+  "license": "GPL-2.0+",
+  "support": {
+    "issues": "https://github.com/drupol/yaroc/issues",
+    "source": "https://github.com/drupol/yaroc"
+  },
+  "authors": [
+    {
+      "name": "Pol Dellaiera",
+      "email": "pol.dellaiera@protonmail.com",
+      "role": "Author"
+    }
+  ],
+  "require": {
+    "php-http/client-common": "^1.0",
+    "php-http/client-implementation": "^1.0",
+    "php-http/discovery": "^1.0",
+    "php-http/guzzle6-adapter": "^1.0",
+    "php-http/message": "^1.0",
+    "psr/log": "^1.0"
+  },
+  "require-dev": {
+    "monolog/monolog": "^1.0",
+    "phpunit/phpunit": "^5.6",
+    "mockery/mockery": "^0.9",
+    "bovigo/assert": "^1.7",
+    "squizlabs/php_codesniffer": "^2.0"
+  },
+  "scripts": {
+    "phpcs": "./vendor/bin/phpcs --ignore=vendor .",
+    "phpcbf": "./vendor/bin/phpcbf --ignore=vendor .",
+    "phpunit": "./vendor/bin/phpunit"
+  },
+  "autoload": {
+    "psr-4": {
+      "drupol\\Yaroc\\": "src/"
+    }
+  }
+}
