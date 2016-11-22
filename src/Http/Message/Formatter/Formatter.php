@@ -17,11 +17,14 @@ class Formatter extends SimpleFormatter implements \Http\Message\Formatter {
    */
   public function formatRequest(RequestInterface $request)
   {
+    $body = $request->getBody()->getContents();
+    $request->getBody()->rewind();
     return sprintf(
-      '%s %s %s',
+      '%s %s %s %s',
       $request->getMethod(),
       $request->getUri()->__toString(),
-      $request->getProtocolVersion()
+      $request->getProtocolVersion(),
+      $body
     );
   }
 
@@ -30,11 +33,14 @@ class Formatter extends SimpleFormatter implements \Http\Message\Formatter {
    */
   public function formatResponse(ResponseInterface $response)
   {
+    $body = $response->getBody()->getContents();
+    $response->getBody()->rewind();
     return sprintf(
-      '%s %s %s',
+      '%s %s %s %s',
       $response->getStatusCode(),
       $response->getReasonPhrase(),
-      $response->getProtocolVersion()
+      $response->getProtocolVersion(),
+      $body
     );
   }
 }
