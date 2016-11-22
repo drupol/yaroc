@@ -2,6 +2,8 @@
 
 namespace drupol\Yaroc\Http;
 
+use drupol\Yaroc\Http\Client\Common\Plugin\LoggerPlugin;
+use drupol\Yaroc\Http\Message\Formatter\Formatter;
 use Http\Client\Common\HttpMethodsClient;
 use Http\Client\Common\Plugin\HeaderDefaultsPlugin;
 use Http\Client\Common\PluginClient;
@@ -45,11 +47,11 @@ class Client extends HttpMethodsClient {
 
     $plugins = [
       new HeaderDefaultsPlugin(['Content-Type' => 'application/json']),
+      new LoggerPlugin($logger ?: new \drupol\Yaroc\Log\Logger(), new Formatter()),
     ];
     $httpClient = new HttpMethodsClient(new PluginClient($httpClient, $plugins), MessageFactoryDiscovery::find());
 
     $this->setUriFactory($UriFactory ?: UriFactoryDiscovery::find());
-    $this->setLogger($logger ?: new \drupol\Yaroc\Log\Logger());
     parent::__construct($httpClient, MessageFactoryDiscovery::find());
   }
 
@@ -77,14 +79,10 @@ class Client extends HttpMethodsClient {
    * @return array|bool
    */
   public function request($body) {
-    $this->log()->debug(sprintf("[%s] [%s]", 'POST', $this->getEndpoint()), $body);
     $result = $this->post($this->getEndpoint(), [], json_encode($body));
 
     if (200 == $result->getStatusCode()) {
-      $this->log()->debug('Request has succeeded.');
       return json_decode($result->getBody()->getContents(), TRUE);
-    } else {
-      $this->log()->debug('Request has failed.');
     }
 
     return FALSE;

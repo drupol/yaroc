@@ -2,7 +2,7 @@
   "name": "drupol/yaroc",
   "homepage": "https://github.com/drupol/yaroc",
   "description": "YAROC: Yet Another Random.Org Client.",
-  "keywords": ["random", "client"],
+  "keywords": ["random", "client", "random.org"],
   "type": "library",
   "license": "GPL-2.0+",
   "support": {
@@ -22,10 +22,10 @@
     "php-http/discovery": "^1.0",
     "php-http/guzzle6-adapter": "^1.0",
     "php-http/message": "^1.0",
-    "psr/log": "^1.0"
+    "php-http/logger-plugin": "^1.0",
+    "monolog/monolog": "^1.0"
   },
   "require-dev": {
-    "monolog/monolog": "^1.0",
     "phpunit/phpunit": "^5.6",
     "mockery/mockery": "^0.9",
     "bovigo/assert": "^1.7",
