@@ -25,7 +25,16 @@ class ClientTest extends TestCase {
   public function setUp() {
     parent::setUp();
     $this->randomClient = new RandomOrgAPI();
-    $this->randomClient->setApiKey(file_get_contents(__DIR__ . '/../apikey'));
+
+    $temporary_key = '00000000-0000-0000-0000-000000000000';
+
+    if (file_exists(__DIR__ . '/../apikey') && $file_key = file_get_contents(__DIR__ . '/../apikey')) {
+      $key = $file_key;
+    } else {
+      $key = $temporary_key;
+    }
+
+    $this->randomClient->setApiKey($key);
   }
 
   /**
