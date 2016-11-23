@@ -45,8 +45,8 @@ class RandomOrgAPITest extends TestCase {
     $this->randomClient->setApiVersion(1);
     $this->randomClient->setEndpoint($url);
 
-    assert($this->randomClient->getEndpoint(), equals('http://my/url/1'));
-    assert($this->randomClient->getHttpClient()->getEndpoint(), isInstanceOf('Psr\Http\Message\UriInterface'));
+    $this->assertEquals('http://my/url/1', $this->randomClient->getEndpoint());
+    $this->assertInstanceOf('\Psr\Http\Message\UriInterface', $this->randomClient->getHttpClient()->getEndpoint());
   }
 
   /**
@@ -55,7 +55,7 @@ class RandomOrgAPITest extends TestCase {
    */
   public function testApiVersion() {
     $this->randomClient->setApiVersion(3);
-    assert($this->randomClient->getApiVersion(), equals(3));
+    $this->assertEquals(3, $this->randomClient->getApiVersion());
   }
 
   /**
@@ -64,7 +64,7 @@ class RandomOrgAPITest extends TestCase {
   public function testUnknownMethod() {
     $result = $this->randomClient->call('izumi', ['n' => 5, 'min' => 0, 'max' => 100]);
 
-    assert($result, equals(FALSE));
+    $this->assertFalse($result);
   }
 
   /**
@@ -75,7 +75,7 @@ class RandomOrgAPITest extends TestCase {
     $apikey = 'IamBroggyAndIKnowIt';
     $this->randomClient->setApiKey($apikey);
 
-    assert($this->randomClient->getApiKey(), equals($apikey));
+    $this->assertEquals($apikey, $this->randomClient->getApiKey());
   }
 
   /**
@@ -83,7 +83,7 @@ class RandomOrgAPITest extends TestCase {
    * @covers \drupol\Yaroc\RandomOrgAPI::setHttpClient()
    */
   public function testHttpClient() {
-    assert($this->randomClient->getHttpClient(), isInstanceOf('\drupol\Yaroc\Http\Client'));
+    $this->assertInstanceOf('\drupol\Yaroc\Http\Client', $this->randomClient->getHttpClient());
   }
 
   /**
@@ -91,7 +91,7 @@ class RandomOrgAPITest extends TestCase {
    * @covers \drupol\Yaroc\RandomOrgAPI::getMethodPluginManager()
    */
   public function testMethodPluginManager() {
-    assert($this->randomClient->getMethodPluginManager(), isInstanceOf('\drupol\Yaroc\Plugin\MethodPluginManager'));
+    $this->assertInstanceOf('\drupol\Yaroc\Plugin\MethodPluginManager', $this->randomClient->getMethodPluginManager());
   }
 
 }

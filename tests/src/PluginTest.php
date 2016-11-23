@@ -6,7 +6,7 @@ use drupol\Yaroc\Plugin\MethodPluginInterface;
 use drupol\Yaroc\Plugin\MethodPluginManager;
 use drupol\Yaroc\RandomOrgAPI;
 use PHPUnit\Framework\TestCase;
-use function \bovigo\assert\predicate\equals;
+use function \bovigo\assert\predicate\isOfSize;
 
 /**
  * Class PluginTest.
@@ -119,7 +119,7 @@ class PluginTest extends TestCase {
    * @dataProvider getPluginsList
    */
   public function testPlugins($method, MethodPluginInterface $plugin) {
-    if ($method == 'verifySignature') {
+    if ($method == 'verifySignature' || $method == 'getUsage') {
       // We will test this plugin later.
       return;
     }
@@ -132,14 +132,17 @@ class PluginTest extends TestCase {
     $plugin->setApiKey($this->randomClient->getApiKey());
     $this->assertEquals($plugin->getApiKey(), $this->randomClient->getApiKey());
 
-    $this->assertInternalType('array', $plugin->getParameters());
-    $this->assertInternalType('array', $plugin->getTestsParameters());
-
     $plugin->setParameters($plugin->getTestsParameters());
+
+    $parameters = $plugin->getParameters();
+    $this->assertInternalType('array', $parameters);
+    $this->assertInternalType('array', $plugin->getTestsParameters());
 
     // Find a way to test this.
     $result = $this->randomClient->getHttpClient()->request($plugin);
     $this->assertInternalType('array', $result);
+
+    $this->assertEquals($parameters['params']['n'], count($result['result']['random']['data']));
   }
 
   /**
@@ -154,7 +157,7 @@ class PluginTest extends TestCase {
     foreach ($methodPluginManager->getPlugins() as $method => $plugin) {
       $plugins[] = [
         $method,
-        $plugin
+        $plugin,
       ];
     }
 
