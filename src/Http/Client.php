@@ -4,6 +4,7 @@ namespace drupol\Yaroc\Http;
 
 use drupol\Yaroc\Http\Client\Common\Plugin\LoggerPlugin;
 use drupol\Yaroc\Http\Message\Formatter\Formatter;
+use drupol\Yaroc\Plugin\MethodPluginInterface;
 use Http\Client\Common\HttpMethodsClient;
 use Http\Client\Common\Plugin\HeaderDefaultsPlugin;
 use Http\Client\Common\PluginClient;
@@ -26,7 +27,7 @@ class Client extends HttpMethodsClient {
    *
    * @var UriInterface
    */
-  protected $endpoint = 'https://api.random.org/json-rpc/1/invoke';
+  protected $endpoint;
 
   /**
    * The URI Factory.
@@ -42,6 +43,13 @@ class Client extends HttpMethodsClient {
    */
   protected $logger;
 
+  /**
+   * Client constructor.
+   *
+   * @param \Http\Client\HttpClient|NULL $httpClient
+   * @param \Http\Message\UriFactory|NULL $UriFactory
+   * @param \Psr\Log\LoggerInterface|NULL $logger
+   */
   function __construct(\Http\Client\HttpClient $httpClient = NULL, UriFactory $UriFactory = NULL, LoggerInterface $logger = NULL) {
     $httpClient = $httpClient ?: HttpClientDiscovery::find();
 
@@ -74,15 +82,23 @@ class Client extends HttpMethodsClient {
   }
 
   /**
-   * @param $body
+   * Request.
    *
-   * @return array|bool
+   * @param MethodPluginInterface $methodPlugin
+   *
+   * @return \Exception|array|bool
    */
-  public function request($body) {
-    $result = $this->post($this->getEndpoint(), [], json_encode($body));
+  public function request(MethodPluginInterface $methodPlugin) {
+    $result = $this->post($this->getEndpoint(), [], json_encode($methodPlugin->getParameters()));
 
     if (200 == $result->getStatusCode()) {
-      return json_decode($result->getBody()->getContents(), TRUE);
+      $response = json_decode($result->getBody()->getContents(), TRUE);
+      $methodPlugin->validateResponse($response);
+      $methodPlugin->alterResponse($response);
+
+      if (isset($response['result'])) {
+        return $response['result'];
+      }
     }
 
     return FALSE;
@@ -120,13 +136,6 @@ class Client extends HttpMethodsClient {
    */
   public function setUriFactory(UriFactory $uriFactory) {
     $this->uriFactory = $uriFactory;
-  }
-
-  /**
-   * @return \Psr\Log\LoggerInterface
-   */
-  private function log() {
-    return $this->getLogger();
   }
 
 }

@@ -1,13 +1,23 @@
 language: php
 
+git:
+  depth: 1
+
+cache:
+  directories:
+    - $HOME/.cache/composer
+    - $HOME/.drush/cache
+    - $HOME/.composer/cache
+
 php:
   - 5.6
   - 7.0
 
 install:
-  - phpenv config-rm xdebug.ini
   - composer install
 
 script:
-  - composer phpunit tests
+  - composer phpunit
 
+after_success:
+  - composer coveralls

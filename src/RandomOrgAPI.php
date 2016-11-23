@@ -4,7 +4,7 @@ namespace drupol\Yaroc;
 
 use drupol\Yaroc\Http\Client;
 use drupol\Yaroc\Log\Logger;
-use drupol\Yaroc\Utilities\Utilities;
+use drupol\Yaroc\Plugin\MethodPluginManager;
 use Http\Client\HttpClient;
 use Psr\Log\LoggerInterface;
 
@@ -14,6 +14,13 @@ use Psr\Log\LoggerInterface;
  * @package drupol\Yaroc
  */
 class RandomOrgAPI {
+
+  /**
+   * The default Random.org endpoint template.
+   *
+   * @var string;
+   */
+  protected $endpoint = 'https://api.random.org/json-rpc/%s/invoke';
 
   /**
    * The Random.org api key.
@@ -37,6 +44,20 @@ class RandomOrgAPI {
   protected $logger;
 
   /**
+   * The Method plugin manager.
+   *
+   * @var MethodPluginManager
+   */
+  protected $methodPluginManager;
+
+  /**
+   * The Random.org API version.
+   *
+   * @var int
+   */
+  protected $apiVersion = 1;
+
+  /**
    * RandomOrgAPI constructor.
    *
    * @param \Http\Client\HttpClient|NULL $httpClient
@@ -45,6 +66,45 @@ class RandomOrgAPI {
   function __construct(HttpClient $httpClient = NULL, LoggerInterface $logger = NULL) {
     $this->setLogger($logger);
     $this->setHttpClient($httpClient);
+    $this->setMethodPluginManager(new MethodPluginManager());
+    $this->setApiVersion($this->getApiVersion());
+    $this->getHttpClient()->setEndpoint($this->getEndpoint());
+  }
+
+  /**
+   * Set the Random.org endpoint template.
+   *
+   * @param string $uri
+   */
+  public function setEndpoint($uri) {
+    $this->endpoint = $uri;
+  }
+
+  /**
+   * Get the Random.org endpoint.
+   *
+   * @return string
+   */
+  public function getEndpoint() {
+    return sprintf($this->endpoint, $this->getApiVersion());
+  }
+
+  /**
+   * Set the Method plugin manager.
+   *
+   * @param MethodPluginManager $methodPluginManager
+   */
+  public function setMethodPluginManager(MethodPluginManager $methodPluginManager) {
+    $this->methodPluginManager = $methodPluginManager;
+  }
+
+  /**
+   * Return the Method plugin manager.
+   *
+   * @return \drupol\Yaroc\Plugin\MethodPluginManager
+   */
+  public function getMethodPluginManager() {
+    return $this->methodPluginManager;
   }
 
   /**
@@ -78,7 +138,7 @@ class RandomOrgAPI {
   /**
    * Get the Http client.
    *
-   * @return \Http\Client\Common\HttpMethodsClient
+   * @return Client
    */
   public function getHttpClient() {
     return $this->httpClient;
@@ -105,136 +165,21 @@ class RandomOrgAPI {
   }
 
   /**
-   * @param $method
-   * @param $params
+   * Set the API version.
    *
-   * @return array|bool
+   * @return int
    */
-  private function send($method, array $params = array()) {
-    return $this->httpClient->request($this->createBody($method, $params));
+  public function setApiVersion($version) {
+    $this->apiVersion = $version;
   }
 
   /**
-   * Create a new request.
+   * Get the API version.
    *
-   * @param $method
-   * @param $params
-   *
-   * @return array
+   * @return int
    */
-  private function createBody($method, $params) {
-    $body = [
-      'jsonrpc' => '2.0',
-      'id'      => mt_rand(1, 999999),
-      'method'  => $method,
-      'params'  => $params,
-    ];
-
-    return $body;
-  }
-
-  /**
-   * Get the API parameters definitions.
-   *
-   * @param string|null $method
-   *   The method name.
-   *
-   * @return bool|array
-   *   If $method exists returns the appropriate definitions, if it doesn't
-   *   exists, it returns FALSE, if method is NULL, returns the complete array.
-   */
-  protected function getAPI($method = NULL) {
-    $api = [
-      'generateIntegers' => [
-        'apiKey' => $this->getApiKey(),
-        'n' => NULL,
-        'min' => NULL,
-        'max' => NULL,
-        'replacement' => TRUE,
-        'base' => 10,
-      ],
-      'generateDecimalFractions' => [
-        'apiKey' => $this->getApiKey(),
-        'n' => NULL,
-        'decimalPlaces' => NULL,
-        'replacement' => TRUE,
-      ],
-      'generateGaussians' => [
-        'apiKey' => $this->getApiKey(),
-        'n' => NULL,
-        'mean' => NULL,
-        'standardDeviation' => NULL,
-        'significantDigits' => NULL,
-      ],
-      'generateStrings' => [
-        'apiKey' => $this->getApiKey(),
-        'n' => NULL,
-        'length' => NULL,
-        'characters' => Utilities::getDefaultRandomStringCharacters(),
-        'replacement' => TRUE,
-      ],
-      'generateUUIDs' => [
-        'apiKey' => $this->getApiKey(),
-        'n' => NULL,
-      ],
-      'generateBlobs' => [
-        'apiKey' => $this->getApiKey(),
-        'n' => NULL,
-        'size' => NULL,
-        'format' => 'base64',
-      ],
-      'getUsage' => [
-        'apiKey' => $this->getApiKey(),
-      ],
-      'generateSignedIntegers' => [
-        'apiKey' => $this->getApiKey(),
-        'n' => NULL,
-        'min' => NULL,
-        'max' => NULL,
-        'replacement' => TRUE,
-        'base' => 10,
-      ],
-      'generateSignedDecimalFractions' => [
-        'apiKey' => $this->getApiKey(),
-        'n' => NULL,
-        'decimalPlaces' => NULL,
-        'replacement' => TRUE,
-      ],
-      'generateSignedGaussians' => [
-        'apiKey' => $this->getApiKey(),
-        'n' => NULL,
-        'mean' => NULL,
-        'standardDeviation' => NULL,
-        'significantDigits' => NULL,
-      ],
-      'generateSignedStrings' => [
-        'apiKey' => $this->getApiKey(),
-        'n' => NULL,
-        'length' => NULL,
-        'characters' => Utilities::getDefaultRandomStringCharacters(),
-        'replacement' => TRUE,
-      ],
-      'generateSignedUUIDs' => [
-        'apiKey' => $this->getApiKey(),
-        'n' => NULL,
-      ],
-      'generateSignedBlobs' => [
-        'apiKey' => $this->getApiKey(),
-        'n' => NULL,
-        'size' => NULL,
-        'format' => 'base64',
-      ],
-      'verifySignature' => [
-        'random' => NULL,
-        'signature' => NULL,
-      ],
-    ];
-
-    if (is_null($method)) {
-      return $api;
-    }
-
-    return isset($api[$method]) ? $api[$method] : FALSE;
+  public function getApiVersion() {
+    return $this->apiVersion;
   }
 
   /**
@@ -249,17 +194,15 @@ class RandomOrgAPI {
    *   The response, otherwise FALSE.
    */
   public function call($method, array $parameters = array()) {
-    if (!($apiArgs = $this->getAPI($method))) {
-      return FALSE;
+    if ($methodPlugin = $this->getMethodPluginManager()->getPlugin($method)) {
+      $methodPlugin->setApiVersion($this->getApiVersion());
+      $methodPlugin->setApiKey($this->getApiKey());
+      $methodPlugin->setParameters($parameters);
+
+      return $this->httpClient->request($methodPlugin);
     }
 
-    foreach ($parameters as $key => $value) {
-      if (array_key_exists($key, $apiArgs)) {
-        $apiArgs[$key] = $value;
-      }
-    }
-
-    return $this->send($method, $apiArgs);
+    return FALSE;
   }
 
 }
