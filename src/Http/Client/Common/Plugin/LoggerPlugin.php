@@ -13,8 +13,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Logger plugin for YAROC.
  */
-class LoggerPlugin implements Plugin
-{
+class LoggerPlugin implements Plugin {
   /**
    * Logger to log request / response / exception for a http call.
    *
@@ -30,10 +29,12 @@ class LoggerPlugin implements Plugin
   private $formatter;
 
   /**
-   * @param LoggerInterface $logger
+   * LoggerPlugin constructor.
+   *
+   * @param \Psr\Log\LoggerInterface $logger
+   * @param \Http\Message\Formatter|NULL $formatter
    */
-  public function __construct(LoggerInterface $logger, Formatter $formatter = null)
-  {
+  public function __construct(LoggerInterface $logger, Formatter $formatter = NULL) {
     $this->logger = $logger;
     $this->formatter = $formatter ?: new SimpleFormatter();
   }
@@ -41,8 +42,7 @@ class LoggerPlugin implements Plugin
   /**
    * {@inheritdoc}
    */
-  public function handleRequest(RequestInterface $request, callable $next, callable $first)
-  {
+  public function handleRequest(RequestInterface $request, callable $next, callable $first) {
     $this->logger->info(sprintf('Emit request: "%s"', $this->formatter->formatRequest($request)));
 
     return $next($request)->then(function (ResponseInterface $response) use ($request) {
@@ -74,4 +74,5 @@ class LoggerPlugin implements Plugin
       throw $exception;
     });
   }
+
 }

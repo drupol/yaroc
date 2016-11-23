@@ -15,8 +15,7 @@ class Formatter extends SimpleFormatter implements \Http\Message\Formatter {
   /**
    * {@inheritdoc}
    */
-  public function formatRequest(RequestInterface $request)
-  {
+  public function formatRequest(RequestInterface $request) {
     $body = $request->getBody()->getContents();
     $request->getBody()->rewind();
     return sprintf(
@@ -31,8 +30,7 @@ class Formatter extends SimpleFormatter implements \Http\Message\Formatter {
   /**
    * {@inheritdoc}
    */
-  public function formatResponse(ResponseInterface $response)
-  {
+  public function formatResponse(ResponseInterface $response) {
     $body = $response->getBody()->getContents();
     $response->getBody()->rewind();
     return sprintf(

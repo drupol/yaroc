@@ -1,5 +1,5 @@
 ## YAROC
-[![Build Status](https://travis-ci.org/drupol/yaroc.svg?branch=master)](https://travis-ci.org/drupol/yaroc)
+[![Build Status](https://travis-ci.org/drupol/yaroc.svg?branch=master)](https://travis-ci.org/drupol/yaroc) [![Coverage Status](https://coveralls.io/repos/github/drupol/yaroc/badge.svg?branch=master)](https://coveralls.io/github/drupol/yaroc?branch=master)
 
 Yet Another [Random.Org](https://random.org) Client
 
