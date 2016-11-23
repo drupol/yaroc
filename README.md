@@ -48,15 +48,14 @@ Currently supports the methods below.
 - generateSignedBlobs
 - verifySignature
 
-Adding methods is quite easy and doesn't require adding methods to the class.
-You can just add API methods by editing the ```RandomOrgAPI::getAPI()``` method and describe the arguments in there.
+Each methods is a plugin, see directory src/Plugin/Method. Extending is quite easy then.
 
 To call a method, use the ```RandomOrgAPI::call()``` method. Its arguments are:
 
 - The ```method``` name (_see the list of supported method_)
 - The ```parameters``` as an associative array (_see examples_)
 
-The ```RandomOrgAPI::call()``` method will match parameters described in ```RandomOrgAPI::getAPI()``` method with the ```parameters``` argument.
+The ```RandomOrgAPI::call()``` method will check if the ```$method``` can be handled by a plugin.
 If you pass in unsupported or unknown values to the ```parameters``` argument, they will be ignored automatically.
 
 ## Examples
@@ -104,7 +103,7 @@ Copy your API key in a file ```apikey``` at the root of the project. If you do n
 To run the tests, run this command:
 
 ```
-composer phpunit tests
+composer phpunit
 ```
 
 ## TODO
@@ -113,3 +112,4 @@ composer phpunit tests
 - Improve logging
 - Documentation
 - Tests coverage
+- Support Random.org V2 API
