@@ -96,9 +96,7 @@ class Client extends HttpMethodsClient {
       $methodPlugin->validateResponse($response);
       $methodPlugin->alterResponse($response);
 
-      if (isset($response['result'])) {
-        return $response['result'];
-      }
+      return $response;
     }
 
     return FALSE;
