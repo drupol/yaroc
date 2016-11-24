@@ -54,7 +54,7 @@ class ExamplesTest extends RandomOrgBase {
 
     $error = abs($pi->run(1)->get() - pi());
 
-    foreach (['10', '1000', '5000'] as $iteration) {
+    foreach (['10', '100', '1000'] as $iteration) {
       $this->assertLessThanOrEqual($error, abs($pi->run($iteration)->get() - pi()));
     }
 
