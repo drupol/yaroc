@@ -1,5 +1,5 @@
 ## YAROC
-[![Build Status](https://travis-ci.org/drupol/yaroc.svg?branch=master)](https://travis-ci.org/drupol/yaroc) [![Coverage Status](https://coveralls.io/repos/github/drupol/yaroc/badge.svg?branch=master)](https://coveralls.io/github/drupol/yaroc?branch=master)
+[![Build Status](https://travis-ci.org/drupol/yaroc.svg?branch=master)](https://travis-ci.org/drupol/yaroc) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7231dd2876b14e90a02cd1df9055309b)](https://www.codacy.com/app/drupol/yaroc) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/7231dd2876b14e90a02cd1df9055309b)](https://www.codacy.com/app/drupol/yaroc)
 
 Yet Another [Random.Org](https://random.org) Client
 
