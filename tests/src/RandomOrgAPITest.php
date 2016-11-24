@@ -94,7 +94,6 @@ class RandomOrgAPITest extends TestCase {
     $this->assertInstanceOf('\drupol\Yaroc\Plugin\MethodPluginManager', $this->randomClient->getMethodPluginManager());
   }
 
-
   /**
    * @covers \drupol\Yaroc\RandomOrgAPI::call()
    *

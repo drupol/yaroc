@@ -4,6 +4,7 @@ namespace drupol\Yaroc\Tests;
 
 use drupol\Yaroc\Examples\Coin;
 use drupol\Yaroc\Examples\Dice;
+use drupol\Yaroc\Examples\Pi;
 use drupol\Yaroc\RandomOrgAPI;
 use PHPUnit\Framework\TestCase;
 
@@ -54,7 +55,7 @@ class ExamplesTest extends TestCase {
    * @covers \drupol\Yaroc\Examples\Coin
    */
   public function testCoin() {
-   $coin = new Coin();
+    $coin = new Coin();
     $coin->getRandomOrgAPI()->setApiKey($this->randomOrgAPI->getApiKey());
 
     $face = $coin->flip();
@@ -66,6 +67,23 @@ class ExamplesTest extends TestCase {
       $this->assertContains($coin->getFace(), array('tails', 'heads'));
     } while ($face == $coin->flip() && $i <= 50);
     $this->assertLessThanOrEqual(50, $i);
+  }
+
+  /**
+   * @covers \drupol\Yaroc\Examples\Pi
+   */
+  public function testPi() {
+    $pi = new Pi();
+    $pi->getRandomOrgAPI()->setApiKey($this->randomOrgAPI->getApiKey());
+
+    $error = abs($pi->run(1)->get() - pi());
+
+    foreach (['10', '1000', '5000'] as $iteration) {
+      $this->assertLessThanOrEqual($error, abs($pi->run($iteration)->get() - pi()));
+    }
+
+    $this->assertGreaterThanOrEqual(3, $pi->get());
+    $this->assertLessThanOrEqual(3.5, $pi->get());
   }
 
 }
