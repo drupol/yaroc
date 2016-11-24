@@ -42,7 +42,8 @@
   },
   "autoload": {
     "psr-4": {
-      "drupol\\Yaroc\\": "src/"
+      "drupol\\Yaroc\\": "src/",
+      "drupol\\Yaroc\\Tests\\": "tests/src/"
     }
   }
 }

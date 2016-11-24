@@ -5,37 +5,13 @@ namespace drupol\Yaroc\Tests;
 use drupol\Yaroc\Examples\Coin;
 use drupol\Yaroc\Examples\Dice;
 use drupol\Yaroc\Examples\Pi;
-use drupol\Yaroc\RandomOrgAPI;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class ExamplesTest.
  *
  * @package drupol\yaroc\Tests
  */
-class ExamplesTest extends TestCase {
-
-  /**
-   * The client to test.
-   *
-   * @var RandomOrgAPI
-   */
-  protected $randomOrgAPI;
-
-  public function setUp() {
-    parent::setUp();
-
-    $this->randomOrgAPI = new RandomOrgAPI();
-
-    $temporary_key = '00000000-0000-0000-0000-000000000000';
-    if (file_exists(__DIR__ . '/../apikey') && $file_key = file_get_contents(__DIR__ . '/../apikey')) {
-      $key = $file_key;
-    } else {
-      $key = $temporary_key;
-    }
-
-    $this->randomOrgAPI->setApiKey($key);
-  }
+class ExamplesTest extends RandomOrgBase {
 
   /**
    * @covers \drupol\Yaroc\Examples\Dice

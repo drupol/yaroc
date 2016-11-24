@@ -13,29 +13,7 @@ use function \bovigo\assert\predicate\isOfSize;
  *
  * @package drupol\yaroc\Tests
  */
-class PluginTest extends TestCase {
-
-  /**
-   * The client to test.
-   *
-   * @var RandomOrgAPI
-   */
-  protected $randomClient;
-
-  public function setUp() {
-    parent::setUp();
-
-    $this->randomClient = new RandomOrgAPI();
-
-    $temporary_key = '00000000-0000-0000-0000-000000000000';
-    if (file_exists(__DIR__ . '/../apikey') && $file_key = file_get_contents(__DIR__ . '/../apikey')) {
-      $key = $file_key;
-    } else {
-      $key = $temporary_key;
-    }
-
-    $this->randomClient->setApiKey($key);
-  }
+class PluginTest extends RandomOrgBase {
 
   /**
    * @covers \drupol\Yaroc\Plugin\Method\generateIntegers::getApiKey()
@@ -129,8 +107,8 @@ class PluginTest extends TestCase {
 
     $this->assertEquals($plugin->getMethod(), $plugin::METHOD);
 
-    $plugin->setApiKey($this->randomClient->getApiKey());
-    $this->assertEquals($plugin->getApiKey(), $this->randomClient->getApiKey());
+    $plugin->setApiKey($this->randomOrgAPI->getApiKey());
+    $this->assertEquals($plugin->getApiKey(), $this->randomOrgAPI->getApiKey());
 
     $plugin->setParameters($plugin->getTestsParameters());
 
@@ -139,7 +117,7 @@ class PluginTest extends TestCase {
     $this->assertInternalType('array', $plugin->getTestsParameters());
 
     // Find a way to test this.
-    $result = $this->randomClient->call($method, $parameters['params']);
+    $result = $this->randomOrgAPI->call($method, $parameters['params']);
     $this->assertInternalType('array', $result);
 
     $this->assertEquals($parameters['params']['n'], count($result['result']['random']['data']));

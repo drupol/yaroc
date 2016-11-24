@@ -16,25 +16,12 @@ use function bovigo\assert\predicate\isInstanceOf;
  *
  * @package drupol\yaroc\Tests
  */
-class RandomOrgAPITest extends TestCase {
-
-  /**
-   * The client to test.
-   *
-   * @var RandomOrgAPI
-   */
-  protected $randomClient;
+class RandomOrgAPITest extends RandomOrgBase {
 
   /**
    * @var MethodPluginManager
    */
   protected $methodPluginManager;
-
-  public function setUp() {
-    parent::setUp();
-
-    $this->randomClient = new RandomOrgAPI();
-  }
 
   /**
    * @covers \drupol\Yaroc\RandomOrgAPI::setEndpoint()
@@ -42,11 +29,11 @@ class RandomOrgAPITest extends TestCase {
    */
   public function testEndpoint() {
     $url = 'http://my/url/%s';
-    $this->randomClient->setApiVersion(1);
-    $this->randomClient->setEndpoint($url);
+    $this->randomOrgAPI->setApiVersion(1);
+    $this->randomOrgAPI->setEndpoint($url);
 
-    $this->assertEquals('http://my/url/1', $this->randomClient->getEndpoint());
-    $this->assertInstanceOf('\Psr\Http\Message\UriInterface', $this->randomClient->getHttpClient()->getEndpoint());
+    $this->assertEquals('http://my/url/1', $this->randomOrgAPI->getEndpoint());
+    $this->assertInstanceOf('\Psr\Http\Message\UriInterface', $this->randomOrgAPI->getHttpClient()->getEndpoint());
   }
 
   /**
@@ -54,15 +41,15 @@ class RandomOrgAPITest extends TestCase {
    * @covers \drupol\Yaroc\RandomOrgAPI::getApiVersion()
    */
   public function testApiVersion() {
-    $this->randomClient->setApiVersion(3);
-    $this->assertEquals(3, $this->randomClient->getApiVersion());
+    $this->randomOrgAPI->setApiVersion(3);
+    $this->assertEquals(3, $this->randomOrgAPI->getApiVersion());
   }
 
   /**
    * @covers \drupol\Yaroc\RandomOrgAPI::call()
    */
   public function testUnknownMethod() {
-    $result = $this->randomClient->call('izumi', ['n' => 5, 'min' => 0, 'max' => 100]);
+    $result = $this->randomOrgAPI->call('izumi', ['n' => 5, 'min' => 0, 'max' => 100]);
 
     $this->assertFalse($result);
   }
@@ -73,9 +60,9 @@ class RandomOrgAPITest extends TestCase {
    */
   public function testSetApiKey() {
     $apikey = 'IamBroggyAndIKnowIt';
-    $this->randomClient->setApiKey($apikey);
+    $this->randomOrgAPI->setApiKey($apikey);
 
-    $this->assertEquals($apikey, $this->randomClient->getApiKey());
+    $this->assertEquals($apikey, $this->randomOrgAPI->getApiKey());
   }
 
   /**
@@ -83,7 +70,7 @@ class RandomOrgAPITest extends TestCase {
    * @covers \drupol\Yaroc\RandomOrgAPI::setHttpClient()
    */
   public function testHttpClient() {
-    $this->assertInstanceOf('\drupol\Yaroc\Http\Client', $this->randomClient->getHttpClient());
+    $this->assertInstanceOf('\drupol\Yaroc\Http\Client', $this->randomOrgAPI->getHttpClient());
   }
 
   /**
@@ -91,7 +78,7 @@ class RandomOrgAPITest extends TestCase {
    * @covers \drupol\Yaroc\RandomOrgAPI::getMethodPluginManager()
    */
   public function testMethodPluginManager() {
-    $this->assertInstanceOf('\drupol\Yaroc\Plugin\MethodPluginManager', $this->randomClient->getMethodPluginManager());
+    $this->assertInstanceOf('\drupol\Yaroc\Plugin\MethodPluginManager', $this->randomOrgAPI->getMethodPluginManager());
   }
 
   /**
@@ -106,7 +93,7 @@ class RandomOrgAPITest extends TestCase {
       'min' => 0,
       'max' => 5,
     ];
-    $this->randomClient->call($method, $params);
+    $this->randomOrgAPI->call($method, $params);
   }
 
   /**
@@ -120,7 +107,7 @@ class RandomOrgAPITest extends TestCase {
       'min' => 0,
       'max' => 5,
     ];
-    $this->assertFalse($this->randomClient->call($method, $params));
+    $this->assertFalse($this->randomOrgAPI->call($method, $params));
   }
 
 }
