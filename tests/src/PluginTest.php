@@ -139,7 +139,7 @@ class PluginTest extends TestCase {
     $this->assertInternalType('array', $plugin->getTestsParameters());
 
     // Find a way to test this.
-    $result = $this->randomClient->getHttpClient()->request($plugin);
+    $result = $this->randomClient->call($method, $parameters['params']);
     $this->assertInternalType('array', $result);
 
     $this->assertEquals($parameters['params']['n'], count($result['result']['random']['data']));
