@@ -94,4 +94,34 @@ class RandomOrgAPITest extends TestCase {
     $this->assertInstanceOf('\drupol\Yaroc\Plugin\MethodPluginManager', $this->randomClient->getMethodPluginManager());
   }
 
+
+  /**
+   * @covers \drupol\Yaroc\RandomOrgAPI::call()
+   *
+   * @expectedException \RuntimeException
+   */
+  public function testWrongParameters() {
+    $method = 'generateIntegers';
+    $params = [
+      'n' => -5,
+      'min' => 0,
+      'max' => 5,
+    ];
+    $this->randomClient->call($method, $params);
+  }
+
+  /**
+   * @covers \drupol\Yaroc\RandomOrgAPI::call()
+   */
+  public function testInvalidMethod() {
+    // Unknown method.
+    $method = 'izumi';
+    $params = [
+      'n' => 1,
+      'min' => 0,
+      'max' => 5,
+    ];
+    $this->assertFalse($this->randomClient->call($method, $params));
+  }
+
 }

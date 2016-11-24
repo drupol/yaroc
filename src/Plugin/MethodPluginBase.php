@@ -123,15 +123,15 @@ abstract class MethodPluginBase implements MethodPluginInterface {
   public function handleRpcErrors(array $error) {
     switch ($error['code']) {
       case -32600:
-        throw new \InvalidArgumentException('Invalid Request: '. $error['message']);
+        throw new \InvalidArgumentException('Invalid Request: ' . $error['message'], $error['code']);
       case -32601:
-        throw new \BadFunctionCallException('Procedure not found: '. $error['message']);
+        throw new \BadFunctionCallException('Procedure not found: ' . $error['message'], $error['code']);
       case -32602:
-        throw new \InvalidArgumentException('Invalid arguments: '. $error['message']);
+        throw new \InvalidArgumentException('Invalid arguments: ' . $error['message'], $error['code']);
       case -32603:
-        throw new \RuntimeException('Internal Error: '. $error['message']);
+        throw new \RuntimeException('Internal Error: ' . $error['message'], $error['code']);
       default:
-        throw new \RuntimeException('Invalid request/response: '. $error['message'], $error['code']);
+        throw new \RuntimeException('Invalid request/response: ' . $error['message'], $error['code']);
     }
   }
 
