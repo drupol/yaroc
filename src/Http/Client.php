@@ -8,10 +8,12 @@ use drupol\Yaroc\Plugin\MethodPluginInterface;
 use Http\Client\Common\HttpMethodsClient;
 use Http\Client\Common\Plugin\HeaderDefaultsPlugin;
 use Http\Client\Common\PluginClient;
+use Http\Client\HttpClient;
 use Http\Discovery\HttpClientDiscovery;
 use Http\Discovery\MessageFactoryDiscovery;
 use Http\Discovery\UriFactoryDiscovery;
 use Http\Message\UriFactory;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 
@@ -50,7 +52,7 @@ class Client extends HttpMethodsClient {
    * @param \Http\Message\UriFactory|NULL $UriFactory
    * @param \Psr\Log\LoggerInterface|NULL $logger
    */
-  function __construct(\Http\Client\HttpClient $httpClient = NULL, UriFactory $UriFactory = NULL, LoggerInterface $logger = NULL) {
+  function __construct(HttpClient $httpClient = NULL, UriFactory $UriFactory = NULL, LoggerInterface $logger = NULL) {
     $httpClient = $httpClient ?: HttpClientDiscovery::find();
 
     $plugins = [
@@ -86,20 +88,44 @@ class Client extends HttpMethodsClient {
    *
    * @param MethodPluginInterface $methodPlugin
    *
-   * @return \Exception|array|bool
+   * @return \Exception|ResponseInterface
    */
   public function request(MethodPluginInterface $methodPlugin) {
-    $result = $this->post($this->getEndpoint(), [], json_encode($methodPlugin->getParameters()));
+    $response = $this->post($this->getEndpoint(), [], json_encode($methodPlugin->getParameters()));
 
-    if (200 == $result->getStatusCode()) {
-      $response = json_decode($result->getBody()->getContents(), TRUE);
-      $methodPlugin->validateResponse($response);
-      $methodPlugin->alterResponse($response);
+    return $this->validateResponse($response);
+  }
 
-      return $response;
+  /**
+   * Validate the response.
+   *
+   * @param \Psr\Http\Message\ResponseInterface $response
+   *
+   * @return \Exception|ResponseInterface
+   */
+  public function validateResponse(ResponseInterface $response) {
+    if (200 == $response->getStatusCode()) {
+      $body = json_decode((string) $response->getBody()->getContents(), TRUE);
+
+      if (isset($body['error']['code'])) {
+        switch ($body['error']['code']) {
+          case -32600:
+            throw new \InvalidArgumentException('Invalid Request: ' . $body['error']['message'], $body['error']['code']);
+          case -32601:
+            throw new \BadFunctionCallException('Procedure not found: ' . $body['error']['message'], $body['error']['code']);
+          case -32602:
+            throw new \InvalidArgumentException('Invalid arguments: ' . $body['error']['message'], $body['error']['code']);
+          case -32603:
+            throw new \RuntimeException('Internal Error: ' . $body['error']['message'], $body['error']['code']);
+          default:
+            throw new \RuntimeException('Invalid request/response: ' . $body['error']['message'], $body['error']['code']);
+        }
+      }
     }
 
-    return FALSE;
+    $response->getBody()->rewind();
+
+    return $response;
   }
 
   /**

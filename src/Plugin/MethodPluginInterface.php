@@ -64,32 +64,6 @@ interface MethodPluginInterface {
   public function getApiVersion();
 
   /**
-   * Alter the response.
-   *
-   * @param $response
-   */
-  public function alterResponse(&$response);
-
-  /**
-   * Validate the response.
-   *
-   * @param $response
-   *
-   * @return mixed
-   */
-  public function validateResponse($response);
-
-  /**
-   * Process JSON-RPC errors
-   *
-   * @param $error
-   * @throws \BadFunctionCallException
-   * @throws \InvalidArgumentException
-   * @throws \RuntimeException
-   */
-  public function handleRpcErrors(array $error);
-
-  /**
    * Returns parameters for testing.
    *
    * @return array

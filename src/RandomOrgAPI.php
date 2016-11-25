@@ -4,8 +4,11 @@ namespace drupol\Yaroc;
 
 use drupol\Yaroc\Http\Client;
 use drupol\Yaroc\Log\Logger;
+use drupol\Yaroc\Plugin\MethodPluginInterface;
 use drupol\Yaroc\Plugin\MethodPluginManager;
 use Http\Client\HttpClient;
+use Http\Message\Decorator\ResponseDecorator;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -183,6 +186,15 @@ class RandomOrgAPI {
   }
 
   /**
+   * @param \drupol\Yaroc\Plugin\MethodPluginInterface $methodPlugin
+   *
+   * @return ResponseInterface
+   */
+  private function request(MethodPluginInterface $methodPlugin) {
+    return $this->httpClient->request($methodPlugin);
+  }
+
+  /**
    * Call Random.org API.
    *
    * @param string $method
@@ -199,10 +211,12 @@ class RandomOrgAPI {
       $methodPlugin->setApiKey($this->getApiKey());
       $methodPlugin->setParameters($parameters);
 
-      return $this->httpClient->request($methodPlugin);
+      return json_decode($this->request($methodPlugin)->getBody(), TRUE);
     }
 
     return FALSE;
   }
+
+
 
 }

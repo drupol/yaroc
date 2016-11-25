@@ -101,38 +101,4 @@ abstract class MethodPluginBase implements MethodPluginInterface {
     return $this->apiVersion;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function alterResponse(&$response) {
-
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateResponse($response) {
-    if (isset($response['error']['code'])) {
-      $this->handleRpcErrors($response['error']);
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function handleRpcErrors(array $error) {
-    switch ($error['code']) {
-      case -32600:
-        throw new \InvalidArgumentException('Invalid Request: ' . $error['message'], $error['code']);
-      case -32601:
-        throw new \BadFunctionCallException('Procedure not found: ' . $error['message'], $error['code']);
-      case -32602:
-        throw new \InvalidArgumentException('Invalid arguments: ' . $error['message'], $error['code']);
-      case -32603:
-        throw new \RuntimeException('Internal Error: ' . $error['message'], $error['code']);
-      default:
-        throw new \RuntimeException('Invalid request/response: ' . $error['message'], $error['code']);
-    }
-  }
-
 }
