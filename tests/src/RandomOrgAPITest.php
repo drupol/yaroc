@@ -49,7 +49,7 @@ class RandomOrgAPITest extends RandomOrgBase {
    * @covers \drupol\Yaroc\RandomOrgAPI::call()
    */
   public function testUnknownMethod() {
-    $result = $this->randomOrgAPI->call('izumi', ['n' => 5, 'min' => 0, 'max' => 100]);
+    $result = $this->randomOrgAPI->call('izumi', ['n' => 5, 'min' => 0, 'max' => 100])->getResult();
 
     $this->assertFalse($result);
   }
@@ -107,7 +107,7 @@ class RandomOrgAPITest extends RandomOrgBase {
       'min' => 0,
       'max' => 5,
     ];
-    $this->assertFalse($this->randomOrgAPI->call($method, $params));
+    $this->assertFalse($this->randomOrgAPI->call($method, $params)->getResult());
   }
 
 }

@@ -8,6 +8,7 @@ use drupol\Yaroc\Plugin\MethodPluginInterface;
 use drupol\Yaroc\Plugin\MethodPluginManager;
 use Http\Client\HttpClient;
 use Http\Message\Decorator\ResponseDecorator;
+use Mockery\Generator\Method;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
@@ -59,6 +60,18 @@ class RandomOrgAPI {
    * @var int
    */
   protected $apiVersion = 1;
+
+  /**
+   * The response if any.
+   *
+   * @var bool|ResponseInterface
+   */
+  protected $response = FALSE;
+
+  /**
+   * @var MethodPluginInterface
+   */
+  protected $methodPlugin = FALSE;
 
   /**
    * RandomOrgAPI constructor.
@@ -202,21 +215,69 @@ class RandomOrgAPI {
    * @param array $parameters
    *   The associative array of parameters as defined in the Random.org API.
    *
-   * @return array|bool
+   * @return self|bool
    *   The response, otherwise FALSE.
    */
   public function call($method, array $parameters = array()) {
     if ($methodPlugin = $this->getMethodPluginManager()->getPlugin($method)) {
-      $methodPlugin->setApiVersion($this->getApiVersion());
-      $methodPlugin->setApiKey($this->getApiKey());
-      $methodPlugin->setParameters($parameters);
+      $this->setMethodPlugin($methodPlugin);
+      $this->getMethodPlugin()->setApiVersion($this->getApiVersion());
+      $this->getMethodPlugin()->setApiKey($this->getApiKey());
+      $this->getMethodPlugin()->setParameters($parameters);
 
-      return json_decode($this->request($methodPlugin)->getBody(), TRUE);
+      $this->setResponse($this->request($this->getMethodPlugin()));
+
+      return $this;
+    }
+
+    $this->setResponse(NULL);
+    $this->setMethodPlugin(NULL);
+
+    return $this;
+  }
+
+  /**
+   * Set the method plugin.
+   *
+   * @param \drupol\Yaroc\Plugin\MethodPluginInterface|NULL $methodPlugin
+   */
+  public function setMethodPlugin(MethodPluginInterface $methodPlugin = NULL) {
+    $this->methodPlugin = $methodPlugin;
+  }
+
+  /**
+   * Get the method plugin.
+   *
+   * @return \drupol\Yaroc\Plugin\MethodPluginInterface
+   */
+  private function getMethodPlugin() {
+    return $this->methodPlugin;
+  }
+
+  /**
+   * @param \Psr\Http\Message\ResponseInterface|NULL $response
+   */
+  private function setResponse(ResponseInterface $response = NULL) {
+    $this->response = $response;
+  }
+
+  /**
+   * @return bool|\Psr\Http\Message\ResponseInterface
+   */
+  public function getResponse() {
+    return $this->response;
+  }
+
+  /**
+   *
+   */
+  public function getResult() {
+    if ($this->getResponse() && $this->getMethodPlugin()) {
+      return $this->getMethodPlugin()->getResult($this->getResponse());
     }
 
     return FALSE;
   }
-
 
 
 }

@@ -18,13 +18,10 @@ class Coin extends BaseExample {
    * @return array
    */
   function flip() {
-    $result = $this->randomOrgAPI->call('generateIntegers', ['n' => 1, 'min' => 0, 'max' => 1]);
+    $result = $this->randomOrgAPI->call('generateIntegers', ['n' => 1, 'min' => 0, 'max' => 1])
+      ->getResult();
 
-    if (1 == $result['result']['random']['data'][0]) {
-      $this->face = 'tails';
-    } else {
-      $this->face = 'heads';
-    }
+    $this->face = (1 == $result['random']['data'][0]) ? 'tails' : 'heads';
 
     return $this->face;
   }

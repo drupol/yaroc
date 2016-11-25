@@ -2,6 +2,8 @@
 
 namespace drupol\Yaroc\Plugin;
 
+use Psr\Http\Message\ResponseInterface;
+
 abstract class MethodPluginBase implements MethodPluginInterface {
 
   /**
@@ -99,6 +101,15 @@ abstract class MethodPluginBase implements MethodPluginInterface {
    */
   public function getApiVersion() {
     return $this->apiVersion;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getResult(ResponseInterface $response = NULL) {
+    $body = json_decode($response->getBody(), TRUE);
+    $response->getBody()->rewind();
+    return $body['result'];
   }
 
 }

@@ -2,6 +2,8 @@
 
 namespace drupol\Yaroc\Plugin;
 
+use Psr\Http\Message\ResponseInterface;
+
 interface MethodPluginInterface {
 
   /**
@@ -69,4 +71,14 @@ interface MethodPluginInterface {
    * @return array
    */
   public function getTestsParameters();
+
+  /**
+   * Return the result array from the response.
+   *
+   * @param \Psr\Http\Message\ResponseInterface|NULL $response
+   *
+   * @return array|bool
+   */
+  public function getResult(ResponseInterface $response = NULL);
+
 }

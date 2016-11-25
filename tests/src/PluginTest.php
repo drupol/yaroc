@@ -117,10 +117,11 @@ class PluginTest extends RandomOrgBase {
     $this->assertInternalType('array', $plugin->getTestsParameters());
 
     // Find a way to test this.
-    $result = $this->randomOrgAPI->call($method, $parameters['params']);
+    $result = $this->randomOrgAPI->call($method, $parameters['params'])
+      ->getResult();
     $this->assertInternalType('array', $result);
 
-    $this->assertEquals($parameters['params']['n'], count($result['result']['random']['data']));
+    $this->assertEquals($parameters['params']['n'], count($result['random']['data']));
   }
 
   /**

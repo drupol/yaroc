@@ -53,11 +53,12 @@ class ExamplesTest extends RandomOrgBase {
     $pi->getRandomOrgAPI()->setApiKey($this->randomOrgAPI->getApiKey());
 
     $pi->run(1);
-
-    foreach (['10', '100', '1000'] as $iteration) {
+    foreach (['10', '1000'] as $iteration) {
       $error = abs($pi->get() - pi());
       $this->assertLessThanOrEqual($error, abs($pi->run($iteration)->get() - pi()));
     }
+
+
 
     $this->assertGreaterThanOrEqual(3, $pi->get());
     $this->assertLessThanOrEqual(3.5, $pi->get());
