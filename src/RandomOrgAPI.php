@@ -198,6 +198,43 @@ class RandomOrgAPI {
     return $this->apiVersion;
   }
 
+
+  /**
+   * Set the method plugin.
+   *
+   * @param \drupol\Yaroc\Plugin\MethodPluginInterface|NULL $methodPlugin
+   */
+  public function setMethodPlugin(MethodPluginInterface $methodPlugin = NULL) {
+    $this->methodPlugin = $methodPlugin;
+  }
+
+  /**
+   * Get the method plugin.
+   *
+   * @return \drupol\Yaroc\Plugin\MethodPluginInterface
+   */
+  private function getMethodPlugin() {
+    return $this->methodPlugin;
+  }
+
+  /**
+   * Set the response.
+   *
+   * @param \Psr\Http\Message\ResponseInterface|NULL $response
+   */
+  private function setResponse(ResponseInterface $response = NULL) {
+    $this->response = $response;
+  }
+
+  /**
+   * Get the response.
+   *
+   * @return bool|\Psr\Http\Message\ResponseInterface
+   */
+  public function getResponse() {
+    return $this->response;
+  }
+
   /**
    * @param \drupol\Yaroc\Plugin\MethodPluginInterface $methodPlugin
    *
@@ -237,39 +274,10 @@ class RandomOrgAPI {
   }
 
   /**
-   * Set the method plugin.
+   * Get the result array from the response.
    *
-   * @param \drupol\Yaroc\Plugin\MethodPluginInterface|NULL $methodPlugin
-   */
-  public function setMethodPlugin(MethodPluginInterface $methodPlugin = NULL) {
-    $this->methodPlugin = $methodPlugin;
-  }
-
-  /**
-   * Get the method plugin.
-   *
-   * @return \drupol\Yaroc\Plugin\MethodPluginInterface
-   */
-  private function getMethodPlugin() {
-    return $this->methodPlugin;
-  }
-
-  /**
-   * @param \Psr\Http\Message\ResponseInterface|NULL $response
-   */
-  private function setResponse(ResponseInterface $response = NULL) {
-    $this->response = $response;
-  }
-
-  /**
-   * @return bool|\Psr\Http\Message\ResponseInterface
-   */
-  public function getResponse() {
-    return $this->response;
-  }
-
-  /**
-   *
+   * @return array|bool
+   *   The result array, FALSE otherwise.
    */
   public function getResult() {
     if ($this->getResponse() && $this->getMethodPlugin()) {

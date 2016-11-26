@@ -58,8 +58,6 @@ class ExamplesTest extends RandomOrgBase {
       $this->assertLessThanOrEqual($error, abs($pi->run($iteration)->get() - pi()));
     }
 
-
-
     $this->assertGreaterThanOrEqual(3, $pi->get());
     $this->assertLessThanOrEqual(3.5, $pi->get());
   }

@@ -3,13 +3,7 @@
 namespace drupol\Yaroc\Tests;
 
 use drupol\Yaroc\Plugin\MethodPluginManager;
-use drupol\Yaroc\RandomOrgAPI;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
-use PHPUnit\Framework\TestCase;
-use function bovigo\assert\assert;
-use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isInstanceOf;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class RandomOrgAPITest.
@@ -108,6 +102,36 @@ class RandomOrgAPITest extends RandomOrgBase {
       'max' => 5,
     ];
     $this->assertFalse($this->randomOrgAPI->call($method, $params)->getResult());
+  }
+
+  /**
+   * @covers \drupol\Yaroc\RandomOrgAPI::__construct()
+   */
+  public function testConstructor() {
+    $this->assertInstanceOf('\drupol\Yaroc\Http\Client', $this->randomOrgAPI->getHttpClient());
+    $this->assertInstanceOf('\drupol\Yaroc\Plugin\MethodPluginManager', $this->randomOrgAPI->getMethodPluginManager());
+    $this->assertEquals($this->randomOrgAPI->getEndpoint(), $this->randomOrgAPI->getHttpClient()->getEndpoint());
+    $this->assertFalse($this->randomOrgAPI->getResponse());
+    $this->assertFalse($this->randomOrgAPI->getResult());
+  }
+
+  /**
+   * @covers \drupol\Yaroc\RandomOrgAPI::getResponse()
+   * @covers \drupol\Yaroc\RandomOrgAPI::setResponse()
+   * @covers \drupol\Yaroc\RandomOrgAPI::setMethodPlugin()
+   * @covers \drupol\Yaroc\RandomOrgAPI::getResult()
+   * @covers \drupol\Yaroc\Plugin\MethodPluginBase::getResult()
+   */
+  public function testResponse() {
+    $method = 'generateIntegers';
+    $params = [
+      'n' => 5,
+      'min' => 0,
+      'max' => 5,
+    ];
+    $this->assertInstanceOf('\drupol\Yaroc\RandomOrgAPI', $this->randomOrgAPI->call($method, $params));
+    $this->assertInstanceOf('\Psr\Http\Message\ResponseInterface', $this->randomOrgAPI->getResponse());
+    $this->assertInternalType('array', $this->randomOrgAPI->getResult());
   }
 
 }
