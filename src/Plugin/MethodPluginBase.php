@@ -60,10 +60,11 @@ abstract class MethodPluginBase implements MethodPluginInterface {
     $defaultParameters = $this->getDefaultParameters();
 
     $params = [];
-    foreach($this->getDefaultParameters() as $key => $parameter) {
+    foreach ($this->getDefaultParameters() as $key => $parameter) {
       if (in_array($this->getApiVersion(), (array) $defaultParameters[$key]['api'])) {
-        if (!is_null($parameter['value']))
+        if (!is_null($parameter['value'])) {
           $params[$key] = $parameter['value'];
+        }
       }
     }
 
@@ -114,7 +115,7 @@ abstract class MethodPluginBase implements MethodPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function getResult(ResponseInterface $response = NULL) {
+  public function getResult(ResponseInterface $response) {
     $body = json_decode($response->getBody(), TRUE);
     $response->getBody()->rewind();
     return $body['result'];

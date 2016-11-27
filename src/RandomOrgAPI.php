@@ -76,10 +76,10 @@ class RandomOrgAPI {
   /**
    * RandomOrgAPI constructor.
    *
-   * @param \Http\Client\HttpClient|NULL $httpClient
-   * @param \Psr\Log\LoggerInterface|NULL $logger
+   * @param null|\Http\Client\HttpClient $httpClient
+   * @param null|\Psr\Log\LoggerInterface $logger
    */
-  function __construct(HttpClient $httpClient = NULL, LoggerInterface $logger = NULL) {
+  public function __construct(HttpClient $httpClient = NULL, LoggerInterface $logger = NULL) {
     $this->setLogger($logger);
     $this->setHttpClient($httpClient);
     $this->setMethodPluginManager(new MethodPluginManager());
@@ -135,7 +135,7 @@ class RandomOrgAPI {
   /**
    * Set the logger.
    *
-   * @param \Psr\Log\LoggerInterface $logger
+   * @param null|\Psr\Log\LoggerInterface $logger
    */
   public function setLogger(LoggerInterface $logger = NULL) {
     $this->logger = $logger ?: new Logger();
@@ -144,7 +144,7 @@ class RandomOrgAPI {
   /**
    * Set the client request.
    *
-   * @param HttpClient $httpClient
+   * @param null|HttpClient $httpClient
    *   The client request.
    */
   public function setHttpClient(HttpClient $httpClient = NULL) {
@@ -183,7 +183,8 @@ class RandomOrgAPI {
   /**
    * Set the API version.
    *
-   * @return int
+   * @param int
+   *   The API version.
    */
   public function setApiVersion($version) {
     $this->apiVersion = $version;
@@ -239,7 +240,7 @@ class RandomOrgAPI {
   /**
    * @param \drupol\Yaroc\Plugin\MethodPluginInterface $methodPlugin
    *
-   * @return ResponseInterface
+   * @return ResponseInterface|\Exception
    */
   private function request(MethodPluginInterface $methodPlugin) {
     return $this->httpClient->request($methodPlugin);

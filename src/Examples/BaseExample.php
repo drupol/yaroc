@@ -16,7 +16,7 @@ abstract class BaseExample {
   /**
    * BaseExample constructor.
    */
-  function __construct() {
+  public function __construct() {
     $this->randomOrgAPI = new RandomOrgAPI();
   }
 
@@ -25,7 +25,7 @@ abstract class BaseExample {
    *
    * @return \drupol\Yaroc\RandomOrgAPI
    */
-  function getRandomOrgAPI() {
+  public function getRandomOrgAPI() {
     return $this->randomOrgAPI;
   }
 

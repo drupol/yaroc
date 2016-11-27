@@ -34,7 +34,7 @@ class ExamplesTest extends RandomOrgBase {
     $coin = new Coin();
     $coin->getRandomOrgAPI()->setApiKey($this->randomOrgAPI->getApiKey());
 
-    $face = $coin->flip();
+    $face = $coin->flip()->getFace();
     $this->assertContains($coin->getFace(), array('tails', 'heads'));
 
     $i = 0;

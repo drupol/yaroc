@@ -15,21 +15,25 @@ class Coin extends BaseExample {
   protected $face;
 
   /**
-   * @return array
+   * Flip the coin.
+   *
+   * @return self
    */
-  function flip() {
+  public function flip() {
     $result = $this->randomOrgAPI->call('generateIntegers', ['n' => 1, 'min' => 0, 'max' => 1])
       ->getResult();
 
     $this->face = (1 == $result['random']['data'][0]) ? 'tails' : 'heads';
 
-    return $this->face;
+    return $this;
   }
 
   /**
+   * Get the coin face.
+   *
    * @return string
    */
-  function getFace() {
+  public function getFace() {
     return $this->face;
   }
 

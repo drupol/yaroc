@@ -17,7 +17,7 @@ class Pi extends BaseExample {
   /**
    * @return self
    */
-  function run($n = 1000) {
+  public function run($n = 1000) {
     $numbers = $this->randomOrgAPI->call('generateDecimalFractions', ['n' => $n * 2, 'decimalPlaces' => 6])
       ->getResult();
 

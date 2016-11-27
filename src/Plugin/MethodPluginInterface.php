@@ -18,6 +18,8 @@ interface MethodPluginInterface {
    *
    * @param array $parameters
    *   The method parameters.
+   *
+   * @return void
    */
   public function setParameters(array $parameters = array());
 
@@ -41,6 +43,8 @@ interface MethodPluginInterface {
    * Set the API Key.
    *
    * @param string $apiKey
+   *
+   * @return void
    */
   public function setApiKey($apiKey);
 
@@ -55,6 +59,8 @@ interface MethodPluginInterface {
    * Set the API Version.
    *
    * @param int $apiVersion
+   *
+   * @return void
    */
   public function setApiVersion($apiVersion);
 
@@ -75,10 +81,10 @@ interface MethodPluginInterface {
   /**
    * Return the result array from the response.
    *
-   * @param \Psr\Http\Message\ResponseInterface|NULL $response
+   * @param \Psr\Http\Message\ResponseInterface $response
    *
    * @return array|bool
    */
-  public function getResult(ResponseInterface $response = NULL);
+  public function getResult(ResponseInterface $response);
 
 }

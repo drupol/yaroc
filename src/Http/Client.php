@@ -49,10 +49,10 @@ class Client extends HttpMethodsClient {
    * Client constructor.
    *
    * @param \Http\Client\HttpClient|NULL $httpClient
-   * @param \Http\Message\UriFactory|NULL $UriFactory
+   * @param \Http\Message\UriFactory|NULL $uriFactory
    * @param \Psr\Log\LoggerInterface|NULL $logger
    */
-  function __construct(HttpClient $httpClient = NULL, UriFactory $UriFactory = NULL, LoggerInterface $logger = NULL) {
+  public function __construct(HttpClient $httpClient = NULL, UriFactory $uriFactory = NULL, LoggerInterface $logger = NULL) {
     $httpClient = $httpClient ?: HttpClientDiscovery::find();
 
     $plugins = [
@@ -61,7 +61,7 @@ class Client extends HttpMethodsClient {
     ];
     $httpClient = new HttpMethodsClient(new PluginClient($httpClient, $plugins), MessageFactoryDiscovery::find());
 
-    $this->setUriFactory($UriFactory ?: UriFactoryDiscovery::find());
+    $this->setUriFactory($uriFactory ?: UriFactoryDiscovery::find());
     parent::__construct($httpClient, MessageFactoryDiscovery::find());
   }
 

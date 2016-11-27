@@ -12,7 +12,12 @@ use Psr\Log\LoggerInterface;
  */
 class Logger extends \Monolog\Logger implements LoggerInterface {
 
-  function __construct(LoggerInterface $logger = NULL) {
+  /**
+   * Logger constructor.
+   *
+   * @param \Psr\Log\LoggerInterface|NULL $logger
+   */
+  public function __construct(LoggerInterface $logger = NULL) {
     parent::__construct('yaroc');
     $this->setHandlers([
       new StreamHandler('php://memory', \Monolog\Logger::DEBUG),
