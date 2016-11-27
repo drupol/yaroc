@@ -96,11 +96,47 @@ class PluginTest extends RandomOrgBase {
    *
    * @dataProvider getPluginsList
    */
-  public function testPlugins($method, MethodPluginInterface $plugin) {
-    if ($method == 'verifySignature' || $method == 'getUsage') {
+  public function testPluginsV1($method, MethodPluginInterface $plugin) {
+    if (in_array($method, ['verifySignature', 'getUsage', 'getResult'])) {
       // We will test this plugin later.
       return;
     }
+
+    $plugin->setApiVersion($this->randomOrgAPI->getApiVersion());
+
+    $defaultParameters = $plugin->getDefaultParameters();
+    $this->assertArrayHasKey('apiKey', $defaultParameters);
+
+    $this->assertEquals($plugin->getMethod(), $plugin::METHOD);
+
+    $plugin->setApiKey($this->randomOrgAPI->getApiKey());
+    $this->assertEquals($plugin->getApiKey(), $this->randomOrgAPI->getApiKey());
+
+    $plugin->setParameters($plugin->getTestsParameters());
+
+    $parameters = $plugin->getParameters();
+    $this->assertInternalType('array', $parameters);
+    $this->assertInternalType('array', $plugin->getTestsParameters());
+
+    // Find a way to test this.
+    $result = $this->randomOrgAPI->call($method, $parameters['params'])
+      ->getResult();
+    $this->assertInternalType('array', $result);
+
+    $this->assertEquals($parameters['params']['n'], count($result['random']['data']));
+  }
+
+  /**
+   * @dataProvider getPluginsList
+   */
+  public function testPluginsV2($method, MethodPluginInterface $plugin) {
+    if (in_array($method, ['verifySignature', 'getUsage', 'getResult'])) {
+      // We will test this plugin later.
+      return;
+    }
+    $this->randomOrgAPI->setApiVersion(2);
+
+    $plugin->setApiVersion($this->randomOrgAPI->getApiVersion());
 
     $defaultParameters = $plugin->getDefaultParameters();
     $this->assertArrayHasKey('apiKey', $defaultParameters);

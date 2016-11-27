@@ -22,8 +22,20 @@ class verifySignature extends MethodPluginBase implements MethodPluginInterface 
    */
   public function getDefaultParameters() {
     return [
-      'random' => NULL,
-      'signature' => NULL,
+      'random' => [
+        'value' => NULL,
+        'api' => [
+          1,
+          2,
+        ],
+      ],
+      'signature' => [
+        'value' => NULL,
+        'api' => [
+          1,
+          2,
+        ],
+      ],
     ];
   }
 

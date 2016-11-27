@@ -22,10 +22,36 @@ class generateDecimalFractions extends MethodPluginBase implements MethodPluginI
    */
   public function getDefaultParameters() {
     return [
-      'n' => NULL,
-      'decimalPlaces' => NULL,
-      'replacement' => TRUE,
-    ] + parent::getDefaultParameters();
+        'apiKey' => [
+          'value' => $this->getApiKey(),
+          'api' => [
+            1,
+            2,
+          ],
+        ],
+        'n' => [
+          'value' => NULL,
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+        'decimalPlaces' => [
+          'value' => NULL,
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+        'replacement' => [
+          'value' => NULL,
+          'optional' => TRUE,
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+      ] + parent::getDefaultParameters();
   }
 
   /**

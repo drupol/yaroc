@@ -20,6 +20,21 @@ class getUsage extends MethodPluginBase implements MethodPluginInterface {
   /**
    * {@inheritdoc}
    */
+  public function getDefaultParameters() {
+    return [
+        'apiKey' => [
+          'value' => $this->getApiKey(),
+          'api' => [
+            1,
+            2,
+          ],
+        ],
+      ] + parent::getDefaultParameters();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getTestsParameters() {
     return [];
   }

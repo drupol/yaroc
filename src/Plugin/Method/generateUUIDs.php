@@ -22,8 +22,21 @@ class generateUUIDs extends MethodPluginBase implements MethodPluginInterface {
    */
   public function getDefaultParameters() {
     return [
-      'n' => NULL,
-    ] + parent::getDefaultParameters();
+        'apiKey' => [
+          'value' => $this->getApiKey(),
+          'api' => [
+            1,
+            2,
+          ],
+        ],
+        'n' => [
+          'value' => NULL,
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+      ] + parent::getDefaultParameters();
   }
 
   /**

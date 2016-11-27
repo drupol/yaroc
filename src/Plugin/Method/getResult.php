@@ -6,16 +6,16 @@ use drupol\Yaroc\Plugin\MethodPluginBase;
 use drupol\Yaroc\Plugin\MethodPluginInterface;
 
 /**
- * Class generateBlobs.
+ * Class getResult.
  *
  * @package drupol\Yaroc\Plugin\Method
  */
-class generateBlobs extends MethodPluginBase implements MethodPluginInterface {
+class getResult extends MethodPluginBase implements MethodPluginInterface {
 
   /**
    * {@inheritdoc}
    */
-  const METHOD = 'generateBlobs';
+  const METHOD = 'getResult';
 
   /**
    * {@inheritdoc}
@@ -29,25 +29,9 @@ class generateBlobs extends MethodPluginBase implements MethodPluginInterface {
             2,
           ],
         ],
-        'n' => [
+        'serialNumber' => [
           'value' => NULL,
           'api' => [
-            1,
-            2,
-          ]
-        ],
-        'size' => [
-          'value' => NULL,
-          'api' => [
-            1,
-            2,
-          ]
-        ],
-        'format' => [
-          'value' => NULL,
-          'optional' => TRUE,
-          'api' => [
-            1,
             2,
           ]
         ],
@@ -58,10 +42,7 @@ class generateBlobs extends MethodPluginBase implements MethodPluginInterface {
    * {@inheritdoc}
    */
   public function getTestsParameters() {
-    return [
-      'n' => 5,
-      'size' => 64,
-    ];
+    return [];
   }
 
 }

@@ -16,4 +16,19 @@ class generateSignedUUIDs extends generateUUIDs implements MethodPluginInterface
    */
   const METHOD = 'generateSignedUUIDs';
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getDefaultParameters() {
+    return [
+        'userData' => [
+          'value' => NULL,
+          'optional' => TRUE,
+          'api' => [
+            2,
+          ],
+        ],
+      ] + parent::getDefaultParameters();
+  }
+
 }

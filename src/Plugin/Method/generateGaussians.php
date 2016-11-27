@@ -22,11 +22,42 @@ class generateGaussians extends MethodPluginBase implements MethodPluginInterfac
    */
   public function getDefaultParameters() {
     return [
-      'n' => NULL,
-      'mean' => NULL,
-      'standardDeviation' => NULL,
-      'significantDigits' => NULL,
-    ] + parent::getDefaultParameters();
+        'apiKey' => [
+          'value' => $this->getApiKey(),
+          'api' => [
+            1,
+            2,
+          ],
+        ],
+        'n' => [
+          'value' => NULL,
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+        'mean' => [
+          'value' => NULL,
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+        'standardDeviation' => [
+          'value' => NULL,
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+        'significantDigits' => [
+          'value' => NULL,
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+      ] + parent::getDefaultParameters();
   }
 
   /**

@@ -187,6 +187,7 @@ class RandomOrgAPI {
    */
   public function setApiVersion($version) {
     $this->apiVersion = $version;
+    $this->getHttpClient()->setEndpoint($this->getEndpoint());
   }
 
   /**
@@ -252,8 +253,8 @@ class RandomOrgAPI {
    * @param array $parameters
    *   The associative array of parameters as defined in the Random.org API.
    *
-   * @return self|bool
-   *   The response, otherwise FALSE.
+   * @return self
+   *   Returns itself.
    */
   public function call($method, array $parameters = array()) {
     if ($methodPlugin = $this->getMethodPluginManager()->getPlugin($method)) {

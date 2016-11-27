@@ -1,7 +1,9 @@
 ## YAROC
 [![Build Status](https://travis-ci.org/drupol/yaroc.svg?branch=master)](https://travis-ci.org/drupol/yaroc) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7231dd2876b14e90a02cd1df9055309b)](https://www.codacy.com/app/drupol/yaroc) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/7231dd2876b14e90a02cd1df9055309b)](https://www.codacy.com/app/drupol/yaroc)
 
-Yet Another [Random.Org](https://random.org) Client
+Yet Another [Random.Org](https://random.org) Client.
+
+YAROC fully supports [V1](https://api.random.org/json-rpc/1/) and [V2](https://api.random.org/json-rpc/2) API.
 
 ## Installation
 
@@ -55,6 +57,9 @@ $result = $randomOrgAPI->call('getUsage')
   ->getResult();
 print_r($result);
 
+// Let's switch to API V2
+$randomOrgAPI->setApiVersion(2);
+
 $result = $randomOrgAPI->call('generateIntegers', ['n' => 5, 'min' => 0, 'max' => 100])
   ->getResult();
 print_r($result);
@@ -66,6 +71,9 @@ print_r($result);
 $result = $randomOrgAPI->call('generateStrings', ['n' => 5, 'length' => 20])
   ->getResult();
 print_r($result);
+
+// Let's switch back to API V1
+$randomOrgAPI->setApiVersion(1);
 
 $result = $randomOrgAPI->call('generateGaussians', ['n' => 5, 'mean' => 5, 'standardDeviation' => 3, 'significantDigits' => 3])
   ->getResult();
@@ -109,4 +117,3 @@ Feel free to contact me at: pol.dellaiera@protonmail.com
 - Improve logging
 - Documentation
 - Tests coverage
-- Support Random.org V2 API

@@ -22,12 +22,51 @@ class generateIntegers extends MethodPluginBase implements MethodPluginInterface
    */
   public function getDefaultParameters() {
     return [
-      'n' => NULL,
-      'min' => NULL,
-      'max' => NULL,
-      'replacement' => TRUE,
-      'base' => 10,
-    ] + parent::getDefaultParameters();
+        'apiKey' => [
+          'value' => $this->getApiKey(),
+          'api' => [
+            1,
+            2,
+          ],
+        ],
+        'n' => [
+          'value' => NULL,
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+        'min' => [
+          'value' => NULL,
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+        'max' => [
+          'value' => NULL,
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+        'replacement' => [
+          'value' => NULL,
+          'optional' => TRUE,
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+        'base' => [
+          'value' => NULL,
+          'optional' => TRUE,
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+      ] + parent::getDefaultParameters();
   }
 
   /**

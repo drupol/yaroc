@@ -50,29 +50,37 @@ abstract class MethodPluginBase implements MethodPluginInterface {
    * {@inheritdoc}
    */
   public function getDefaultParameters() {
-    return [
-      'apiKey' => $this->getApiKey()
-    ];
+    return [];
   }
 
   /**
    * {@inheritdoc}
    */
   public function getParameters() {
-    $apiArgs = $this->getDefaultParameters();
+    $defaultParameters = $this->getDefaultParameters();
 
-    foreach ((array) $this->parameters as $key => $value) {
-      if (array_key_exists($key, $apiArgs)) {
-        $apiArgs[$key] = $value;
+    $params = [];
+    foreach($this->getDefaultParameters() as $key => $parameter) {
+      if (in_array($this->getApiVersion(), (array) $defaultParameters[$key]['api'])) {
+        if (!is_null($parameter['value']))
+          $params[$key] = $parameter['value'];
       }
     }
 
-    return [
+    foreach ((array) $this->parameters as $key => $value) {
+      if (array_key_exists($key, $defaultParameters)) {
+        if (in_array($this->getApiVersion(), (array) $defaultParameters[$key]['api'])) {
+          $params[$key] = $value;
+        }
+      }
+    }
+
+    return array_filter([
       'jsonrpc' => '2.0',
       'id'      => mt_rand(1, 999999),
-      'method'  => $this::METHOD,
-      'params'  => $apiArgs,
-    ];
+      'method'  => $this->getMethod(),
+      'params'  => $params,
+    ]);
   }
 
   /**

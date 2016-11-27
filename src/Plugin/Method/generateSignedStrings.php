@@ -16,4 +16,19 @@ class generateSignedStrings extends generateStrings implements MethodPluginInter
    */
   const METHOD = 'generateSignedStrings';
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getDefaultParameters() {
+    return [
+        'userData' => [
+          'value' => NULL,
+          'optional' => TRUE,
+          'api' => [
+            2,
+          ],
+        ],
+      ] + parent::getDefaultParameters();
+  }
+
 }

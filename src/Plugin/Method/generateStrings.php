@@ -23,13 +23,44 @@ class generateStrings extends MethodPluginBase implements MethodPluginInterface 
    */
   public function getDefaultParameters() {
     return [
-      'n' => NULL,
-      'length' => NULL,
-      'characters' => Utilities::getDefaultRandomStringCharacters(),
-      'replacement' => TRUE,
-    ] + parent::getDefaultParameters();
+        'apiKey' => [
+          'value' => $this->getApiKey(),
+          'api' => [
+            1,
+            2,
+          ],
+        ],
+        'n' => [
+          'value' => NULL,
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+        'length' => [
+          'value' => NULL,
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+        'characters' => [
+          'value' => Utilities::getDefaultRandomStringCharacters(),
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+        'replacement' => [
+          'value' => NULL,
+          'optional' => TRUE,
+          'api' => [
+            1,
+            2,
+          ]
+        ],
+      ] + parent::getDefaultParameters();
   }
-
 
   /**
    * {@inheritdoc}

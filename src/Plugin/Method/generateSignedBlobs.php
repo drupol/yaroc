@@ -16,4 +16,19 @@ class generateSignedBlobs extends generateBlobs implements MethodPluginInterface
    */
   const METHOD = 'generateSignedBlobs';
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getDefaultParameters() {
+    return [
+        'userData' => [
+          'value' => NULL,
+          'optional' => TRUE,
+          'api' => [
+            2,
+          ],
+        ],
+      ] + parent::getDefaultParameters();
+  }
+
 }
