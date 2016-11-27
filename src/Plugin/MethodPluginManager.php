@@ -27,9 +27,8 @@ class MethodPluginManager {
     $classes = [];
     foreach ($candidates as $candidate) {
       $candidate = new \ReflectionClass($candidate);
-      $candidate = $candidate->newInstance();
 
-      $classes[$candidate::METHOD] = $candidate;
+      $classes[$candidate->getConstant('METHOD')] = $candidate;
     }
 
     return $classes;
@@ -46,7 +45,7 @@ class MethodPluginManager {
     $plugins = $this->getPlugins();
 
     if (isset($plugins[$methodName])) {
-      return $plugins[$methodName];
+      return $plugins[$methodName]->newInstance();
     }
 
     return FALSE;
