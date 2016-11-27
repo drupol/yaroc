@@ -93,6 +93,26 @@ print_r($result);
 
 ```
 
+## RandomLib integration
+
+YAROC provides a Source for [RandomLib](https://github.com/ircmaxell/RandomLib).
+
+Here's an example on how to use it:
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$factory = new RandomLib\Factory;
+$generator = $factory->getGenerator(new SecurityLib\Strength(SecurityLib\Strength::HIGH))
+  ->addSource(new \drupol\Yaroc\Plugin\RandomLib\Source\RandomOrg());
+$random_string = $generator->generateString(10);
+
+echo $random_string;
+
+```
+
 ## Tests coverage
 
 Copy your API key in a file ```apikey``` at the root of the project. If you do not have it, the tests will use the temporary API key.
