@@ -16,19 +16,6 @@ use function \bovigo\assert\predicate\isOfSize;
 class PluginTest extends RandomOrgBase {
 
   /**
-   * @covers \drupol\Yaroc\Plugin\Method\generateIntegers::getApiKey()
-   * @covers \drupol\Yaroc\Plugin\Method\generateSignedIntegers::getApiKey()
-   * @covers \drupol\Yaroc\Plugin\Method\generateBlobs::getApiKey()
-   * @covers \drupol\Yaroc\Plugin\Method\generateSignedBlobs::getApiKey()
-   * @covers \drupol\Yaroc\Plugin\Method\generateDecimalFractions::getApiKey()
-   * @covers \drupol\Yaroc\Plugin\Method\generateSignedDecimalFractions::getApiKey()
-   * @covers \drupol\Yaroc\Plugin\Method\generateStrings::getApiKey()
-   * @covers \drupol\Yaroc\Plugin\Method\generateSignedStrings::getApiKey()
-   * @covers \drupol\Yaroc\Plugin\Method\generateGaussians::getApiKey()
-   * @covers \drupol\Yaroc\Plugin\Method\generateSignedGaussians::getApiKey()
-   * @covers \drupol\Yaroc\Plugin\Method\generateUUIDs::getApiKey()
-   * @covers \drupol\Yaroc\Plugin\Method\generateSignedUUIDs::getApiKey()
-   *
    * @covers \drupol\Yaroc\Plugin\Method\generateIntegers::getTestsParameters()
    * @covers \drupol\Yaroc\Plugin\Method\generateSignedIntegers::getTestsParameters()
    * @covers \drupol\Yaroc\Plugin\Method\generateBlobs::getTestsParameters()
@@ -96,23 +83,19 @@ class PluginTest extends RandomOrgBase {
    *
    * @dataProvider getPluginsList
    */
-  public function testPluginsV1($method, MethodPluginInterface $plugin) {
+  public function testPluginsV1($method, \ReflectionClass $plugin) {
     if (in_array($method, ['verifySignature', 'getUsage', 'getResult'])) {
       // We will test this plugin later.
       return;
     }
 
+    $plugin = $plugin->newInstance();
     $plugin->setApiVersion($this->randomOrgAPI->getApiVersion());
-
-    $defaultParameters = $plugin->getDefaultParameters();
-    $this->assertArrayHasKey('apiKey', $defaultParameters);
 
     $this->assertEquals($plugin->getMethod(), $plugin::METHOD);
 
-    $plugin->setApiKey($this->randomOrgAPI->getApiKey());
-    $this->assertEquals($plugin->getApiKey(), $this->randomOrgAPI->getApiKey());
-
-    $plugin->setParameters($plugin->getTestsParameters());
+    $params = $plugin->getTestsParameters() + ['apiKey' => $this->randomOrgAPI->getApiKey()];
+    $plugin->setParameters($params);
 
     $parameters = $plugin->getParameters();
     $this->assertInternalType('array', $parameters);
@@ -129,24 +112,19 @@ class PluginTest extends RandomOrgBase {
   /**
    * @dataProvider getPluginsList
    */
-  public function testPluginsV2($method, MethodPluginInterface $plugin) {
+  public function testPluginsV2($method, \ReflectionClass $plugin) {
     if (in_array($method, ['verifySignature', 'getUsage', 'getResult'])) {
       // We will test this plugin later.
       return;
     }
+    $plugin = $plugin->newInstance();
     $this->randomOrgAPI->setApiVersion(2);
-
     $plugin->setApiVersion($this->randomOrgAPI->getApiVersion());
-
-    $defaultParameters = $plugin->getDefaultParameters();
-    $this->assertArrayHasKey('apiKey', $defaultParameters);
 
     $this->assertEquals($plugin->getMethod(), $plugin::METHOD);
 
-    $plugin->setApiKey($this->randomOrgAPI->getApiKey());
-    $this->assertEquals($plugin->getApiKey(), $this->randomOrgAPI->getApiKey());
-
-    $plugin->setParameters($plugin->getTestsParameters());
+    $params = $plugin->getTestsParameters() + ['apiKey' => $this->randomOrgAPI->getApiKey()];
+    $plugin->setParameters($params);
 
     $parameters = $plugin->getParameters();
     $this->assertInternalType('array', $parameters);
