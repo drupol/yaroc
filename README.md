@@ -137,3 +137,4 @@ Feel free to contact me at: pol.dellaiera@protonmail.com
 - Improve logging
 - Documentation
 - Tests coverage
+
