@@ -18,6 +18,10 @@ php:
   - 7.0
   - hhvm
 
+matrix:
+    allow_failures:
+        - php: hhvm
+
 before_install:
   - openssl aes-256-cbc -K $encrypted_a13fb9434454_key -iv $encrypted_a13fb9434454_iv -in apikey.enc -out apikey -d
 
@@ -25,6 +29,7 @@ install:
   - composer install
 
 script:
+  - sleep $[ ( $RANDOM % 30 ) + 30 ]s
   - composer phpunit
 
 after_success:
