@@ -7,8 +7,6 @@ use drupol\Yaroc\Log\Logger;
 use drupol\Yaroc\Plugin\MethodPluginInterface;
 use drupol\Yaroc\Plugin\MethodPluginManager;
 use Http\Client\HttpClient;
-use Http\Message\Decorator\ResponseDecorator;
-use Mockery\Generator\Method;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
