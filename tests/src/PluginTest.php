@@ -83,13 +83,12 @@ class PluginTest extends RandomOrgBase {
    *
    * @dataProvider getPluginsList
    */
-  public function testPluginsV1($method, \ReflectionClass $plugin) {
+  public function testPluginsV1($method, MethodPluginInterface $plugin) {
     if (in_array($method, ['verifySignature', 'getUsage', 'getResult'])) {
       // We will test this plugin later.
       return;
     }
 
-    $plugin = $plugin->newInstance();
     $plugin->setApiVersion($this->randomOrgAPI->getApiVersion());
 
     $this->assertEquals($plugin->getMethod(), $plugin::METHOD);
@@ -112,12 +111,11 @@ class PluginTest extends RandomOrgBase {
   /**
    * @dataProvider getPluginsList
    */
-  public function testPluginsV2($method, \ReflectionClass $plugin) {
+  public function testPluginsV2($method, MethodPluginInterface $plugin) {
     if (in_array($method, ['verifySignature', 'getUsage', 'getResult'])) {
       // We will test this plugin later.
       return;
     }
-    $plugin = $plugin->newInstance();
     $this->randomOrgAPI->setApiVersion(2);
     $plugin->setApiVersion($this->randomOrgAPI->getApiVersion());
 
@@ -150,7 +148,7 @@ class PluginTest extends RandomOrgBase {
     foreach ($methodPluginManager->getPlugins() as $method => $plugin) {
       $plugins[] = [
         $method,
-        $plugin,
+        $plugin->newInstance(),
       ];
     }
 
