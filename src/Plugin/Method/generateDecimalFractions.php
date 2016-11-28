@@ -23,7 +23,7 @@ class generateDecimalFractions extends MethodPluginBase implements MethodPluginI
   public function getDefaultParameters() {
     return [
         'apiKey' => [
-          'value' => $this->getApiKey(),
+          'value' => NULL,
           'api' => [
             1,
             2,

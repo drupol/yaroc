@@ -23,7 +23,7 @@ class generateGaussians extends MethodPluginBase implements MethodPluginInterfac
   public function getDefaultParameters() {
     return [
         'apiKey' => [
-          'value' => $this->getApiKey(),
+          'value' => NULL,
           'api' => [
             1,
             2,

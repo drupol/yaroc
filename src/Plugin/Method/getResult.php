@@ -23,7 +23,7 @@ class getResult extends MethodPluginBase implements MethodPluginInterface {
   public function getDefaultParameters() {
     return [
         'apiKey' => [
-          'value' => $this->getApiKey(),
+          'value' => NULL,
           'api' => [
             1,
             2,

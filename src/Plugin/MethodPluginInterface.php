@@ -40,20 +40,11 @@ interface MethodPluginInterface {
   public function getParameters();
 
   /**
-   * Set the API Key.
+   * Get a random ID.
    *
-   * @param string $apiKey
-   *
-   * @return void
+   * @return int
    */
-  public function setApiKey($apiKey);
-
-  /**
-   * Get the API Key.
-   *
-   * @return string
-   */
-  public function getApiKey();
+  public function getRandomId();
 
   /**
    * Set the API Version.

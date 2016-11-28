@@ -261,7 +261,7 @@ class RandomOrgAPI {
     if ($methodPlugin = $this->getMethodPluginManager()->getPlugin($method)) {
       $this->setMethodPlugin($methodPlugin);
       $this->getMethodPlugin()->setApiVersion($this->getApiVersion());
-      $this->getMethodPlugin()->setApiKey($this->getApiKey());
+      $parameters += ['apiKey' => $this->getApiKey()];
       $this->getMethodPlugin()->setParameters($parameters);
 
       $this->setResponse($this->request($this->getMethodPlugin()));

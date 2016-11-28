@@ -76,26 +76,23 @@ abstract class MethodPluginBase implements MethodPluginInterface {
       }
     }
 
+    $this->setParameters($params);
+
     return array_filter([
       'jsonrpc' => '2.0',
-      'id'      => mt_rand(1, 999999),
+      'id'      => $this->getRandomId(),
       'method'  => $this->getMethod(),
       'params'  => $params,
     ]);
   }
 
   /**
-   * {@inheritdoc}
+   * Get a random ID.
+   *
+   * @return int
    */
-  public function setApiKey($apiKey) {
-    $this->apiKey = $apiKey;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getApiKey() {
-    return $this->apiKey;
+  public function getRandomId() {
+    return mt_rand(1, 10^6);
   }
 
   /**

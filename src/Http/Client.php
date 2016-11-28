@@ -8,6 +8,7 @@ use drupol\Yaroc\Plugin\MethodPluginInterface;
 use Http\Client\Common\HttpMethodsClient;
 use Http\Client\Common\Plugin\HeaderDefaultsPlugin;
 use Http\Client\Common\PluginClient;
+use Http\Client\Exception\NetworkException;
 use Http\Client\HttpClient;
 use Http\Discovery\HttpClientDiscovery;
 use Http\Discovery\MessageFactoryDiscovery;
@@ -88,10 +89,14 @@ class Client extends HttpMethodsClient {
    *
    * @param MethodPluginInterface $methodPlugin
    *
-   * @return \Exception|ResponseInterface
+   * @return null|ResponseInterface
    */
   public function request(MethodPluginInterface $methodPlugin) {
-    $response = $this->post($this->getEndpoint(), [], json_encode($methodPlugin->getParameters()));
+    try {
+      $response = $this->post($this->getEndpoint(), [], json_encode($methodPlugin->getParameters()));
+    } catch (NetworkException $e) {
+      return NULL;
+    }
 
     return $this->validateResponse($response);
   }
