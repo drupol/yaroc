@@ -92,6 +92,7 @@ class RandomOrgAPI {
    */
   public function setEndpoint($uri) {
     $this->endpoint = $uri;
+    $this->getHttpClient()->setEndpoint($this->getEndpoint());
   }
 
   /**

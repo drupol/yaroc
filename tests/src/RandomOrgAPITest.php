@@ -134,4 +134,24 @@ class RandomOrgAPITest extends RandomOrgBase {
     $this->assertInternalType('array', $this->randomOrgAPI->getResult());
   }
 
+  /**
+   * @covers \drupol\Yaroc\RandomOrgAPI::call()
+   * @covers \drupol\Yaroc\RandomOrgAPI::request()
+   * @covers \drupol\Yaroc\RandomOrgAPI::getResponse()
+   * @covers \drupol\Yaroc\RandomOrgAPI::getResult()
+   * @covers \drupol\Yaroc\RandomOrgAPI::setEndpoint()
+   * @covers \drupol\Yaroc\RandomOrgAPI::getEndpoint()
+   */
+  public function testRequestCall() {
+    $this->randomOrgAPI->setEndpoint('http://yaroc/%s');
+    $method = 'generateIntegers';
+    $params = [
+      'n' => 5,
+      'min' => 0,
+      'max' => 5,
+    ];
+    $this->assertNull($this->randomOrgAPI->call($method, $params)->getResponse());
+    $this->assertFalse($this->randomOrgAPI->getResult());
+  }
+
 }
