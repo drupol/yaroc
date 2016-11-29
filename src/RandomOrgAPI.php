@@ -199,7 +199,6 @@ class RandomOrgAPI {
     return $this->apiVersion;
   }
 
-
   /**
    * Set the method plugin.
    *
@@ -287,6 +286,5 @@ class RandomOrgAPI {
 
     return FALSE;
   }
-
 
 }
