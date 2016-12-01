@@ -19,11 +19,9 @@ abstract class BaseExample {
   public function __construct() {
     $this->randomOrgAPI = new RandomOrgAPI();
 
-    $temporary_key = '00000000-0000-0000-0000-000000000000';
-    if (file_exists('./apikey') && $file_key = file_get_contents('./apikey')) {
-      $key = $file_key;
-    } else {
-      $key = $temporary_key;
+    $key = '00000000-0000-0000-0000-000000000000';
+    if (file_exists('./apikey') && $fileKey = file_get_contents('./apikey')) {
+      $key = $fileKey;
     }
 
     $this->randomOrgAPI->setApiKey($key);
