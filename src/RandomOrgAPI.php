@@ -3,12 +3,10 @@
 namespace drupol\Yaroc;
 
 use drupol\Yaroc\Http\Client;
-use drupol\Yaroc\Log\Logger;
 use drupol\Yaroc\Plugin\MethodPluginInterface;
 use drupol\Yaroc\Plugin\MethodPluginManager;
 use Http\Client\HttpClient;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class RandomOrgAPIClient
@@ -37,13 +35,6 @@ class RandomOrgAPI {
    * @var Client
    */
   protected $httpClient;
-
-  /**
-   * The logger.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected $logger;
 
   /**
    * The Method plugin manager.
@@ -75,10 +66,9 @@ class RandomOrgAPI {
    * RandomOrgAPI constructor.
    *
    * @param null|\Http\Client\HttpClient $httpClient
-   * @param null|\Psr\Log\LoggerInterface $logger
+   *   The HTTP client.
    */
-  public function __construct(HttpClient $httpClient = NULL, LoggerInterface $logger = NULL) {
-    $this->setLogger($logger);
+  public function __construct(HttpClient $httpClient = NULL) {
     $this->setHttpClient($httpClient);
     $this->setMethodPluginManager(new MethodPluginManager());
     $this->setApiVersion($this->getApiVersion());
@@ -133,29 +123,6 @@ class RandomOrgAPI {
   }
 
   /**
-   * Get the logger.
-   *
-   * @return \Psr\Log\LoggerInterface
-   */
-  public function getLogger() {
-    return $this->logger;
-  }
-
-  /**
-   * Set the logger.
-   *
-   * @param null|\Psr\Log\LoggerInterface $logger
-   *   The logger.
-   *
-   * @return self
-   */
-  public function setLogger(LoggerInterface $logger = NULL) {
-    $this->logger = $logger ?: new Logger();
-
-    return $this;
-  }
-
-  /**
    * Set the client request.
    *
    * @param null|HttpClient $httpClient
@@ -164,7 +131,7 @@ class RandomOrgAPI {
    * @return self
    */
   public function setHttpClient(HttpClient $httpClient = NULL) {
-    $this->httpClient = new Client($httpClient, NULL, $this->getLogger());
+    $this->httpClient = new Client($httpClient, NULL, NULL);
 
     return $this;
   }

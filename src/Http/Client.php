@@ -2,10 +2,9 @@
 
 namespace drupol\Yaroc\Http;
 
-use drupol\Yaroc\Http\Client\Common\Plugin\LoggerPlugin;
-use drupol\Yaroc\Http\Message\Formatter\Formatter;
 use drupol\Yaroc\Plugin\MethodPluginInterface;
 use Http\Client\Common\HttpMethodsClient;
+use Http\Client\Common\Plugin;
 use Http\Client\Common\Plugin\HeaderDefaultsPlugin;
 use Http\Client\Common\PluginClient;
 use Http\Client\Exception\NetworkException;
@@ -40,30 +39,51 @@ class Client extends HttpMethodsClient {
   protected $uriFactory;
 
   /**
-   * The logger.
+   * The HTTP plugins array.
    *
-   * @var \Psr\Log\LoggerInterface
+   * @var Plugin[]
    */
-  protected $logger;
+  protected $plugins;
 
   /**
    * Client constructor.
    *
    * @param \Http\Client\HttpClient|NULL $httpClient
    * @param \Http\Message\UriFactory|NULL $uriFactory
-   * @param \Psr\Log\LoggerInterface|NULL $logger
    */
-  public function __construct(HttpClient $httpClient = NULL, UriFactory $uriFactory = NULL, LoggerInterface $logger = NULL) {
+  public function __construct(HttpClient $httpClient = NULL, UriFactory $uriFactory = NULL) {
     $httpClient = $httpClient ?: HttpClientDiscovery::find();
-
-    $plugins = [
-      new HeaderDefaultsPlugin(['Content-Type' => 'application/json']),
-      new LoggerPlugin($logger ?: new \drupol\Yaroc\Log\Logger(), new Formatter()),
-    ];
-    $httpClient = new HttpMethodsClient(new PluginClient($httpClient, $plugins), MessageFactoryDiscovery::find());
-
+    $httpClient = new HttpMethodsClient(new PluginClient($httpClient, $this->setPlugins()->getPlugins()), MessageFactoryDiscovery::find());
     $this->setUriFactory($uriFactory ?: UriFactoryDiscovery::find());
+
     parent::__construct($httpClient, MessageFactoryDiscovery::find());
+  }
+
+  /**
+   * Get the HTTP plugins array.
+   *
+   * @return Plugin[]
+   */
+  public function getPlugins() {
+    return $this->plugins;
+  }
+
+  /**
+   * Set the HTTP plugins.
+   *
+   * @param Plugin[] $plugins
+   *   An array of HTTP plugin.
+   *
+   * @return $this
+   */
+  public function setPlugins(array $plugins = array()) {
+    $defaultPlugins = [
+      new HeaderDefaultsPlugin(['Content-Type' => 'application/json'])
+    ];
+
+    $this->plugins = array_merge($defaultPlugins, $plugins);
+
+    return $this;
   }
 
   /**
