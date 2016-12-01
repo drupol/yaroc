@@ -38,14 +38,18 @@ class MethodPluginManager {
    * Get a specific Method plugin.
    *
    * @param string $methodName
+   *   The method name to call.
+   * @param array $params
+   *   The params of the plugin.
    *
    * @return MethodPluginInterface|bool
    */
-  public function getPlugin($methodName) {
+  public function getPlugin($methodName, array $params = array()) {
     $plugins = $this->getPlugins();
 
     if (isset($plugins[$methodName])) {
-      return $plugins[$methodName]->newInstance();
+      /** @var \drupol\Yaroc\Plugin\MethodPluginInterface $plugin */
+      return $plugins[$methodName]->newInstance()->setParameters($params);
     }
 
     return FALSE;

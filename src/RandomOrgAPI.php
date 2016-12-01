@@ -89,10 +89,15 @@ class RandomOrgAPI {
    * Set the Random.org endpoint template.
    *
    * @param string $uri
+   *   The URI.
+   *
+   * @return self
    */
   public function setEndpoint($uri) {
     $this->endpoint = $uri;
     $this->getHttpClient()->setEndpoint($this->getEndpoint());
+
+    return $this;
   }
 
   /**
@@ -108,9 +113,14 @@ class RandomOrgAPI {
    * Set the Method plugin manager.
    *
    * @param MethodPluginManager $methodPluginManager
+   *   The method plugin manager.
+   *
+   * @return self
    */
   public function setMethodPluginManager(MethodPluginManager $methodPluginManager) {
     $this->methodPluginManager = $methodPluginManager;
+
+    return $this;
   }
 
   /**
@@ -135,9 +145,14 @@ class RandomOrgAPI {
    * Set the logger.
    *
    * @param null|\Psr\Log\LoggerInterface $logger
+   *   The logger.
+   *
+   * @return self
    */
   public function setLogger(LoggerInterface $logger = NULL) {
     $this->logger = $logger ?: new Logger();
+
+    return $this;
   }
 
   /**
@@ -145,9 +160,13 @@ class RandomOrgAPI {
    *
    * @param null|HttpClient $httpClient
    *   The client request.
+   *
+   * @return self
    */
   public function setHttpClient(HttpClient $httpClient = NULL) {
     $this->httpClient = new Client($httpClient, NULL, $this->getLogger());
+
+    return $this;
   }
 
   /**
@@ -164,9 +183,13 @@ class RandomOrgAPI {
    *
    * @param string $key
    *   The API Key.
+   *
+   * @return self
    */
   public function setApiKey($key) {
     $this->apiKey = $key;
+
+    return $this;
   }
 
   /**
@@ -184,10 +207,14 @@ class RandomOrgAPI {
    *
    * @param int
    *   The API version.
+   *
+   * @return self
    */
   public function setApiVersion($version) {
     $this->apiVersion = $version;
     $this->getHttpClient()->setEndpoint($this->getEndpoint());
+
+    return $this;
   }
 
   /**
@@ -203,9 +230,14 @@ class RandomOrgAPI {
    * Set the method plugin.
    *
    * @param \drupol\Yaroc\Plugin\MethodPluginInterface|NULL $methodPlugin
+   *
+   * @return False|self
+   *   Return itself, or FALSE otherwise.
    */
   public function setMethodPlugin(MethodPluginInterface $methodPlugin = NULL) {
     $this->methodPlugin = $methodPlugin;
+
+    return $methodPlugin ? $this : FALSE;
   }
 
   /**
@@ -221,9 +253,13 @@ class RandomOrgAPI {
    * Set the response.
    *
    * @param \Psr\Http\Message\ResponseInterface|NULL $response
+   *
+   * @return self
    */
   private function setResponse(ResponseInterface $response = NULL) {
     $this->response = $response;
+
+    return $this;
   }
 
   /**
@@ -249,26 +285,26 @@ class RandomOrgAPI {
    *
    * @param string $method
    *   The method to call.
-   * @param array $parameters
-   *   The associative array of parameters as defined in the Random.org API.
+   * @param array $params
+   *   The associative array of params as defined in the Random.org API.
    *
    * @return self
    *   Returns itself.
    */
-  public function call($method, array $parameters = array()) {
-    if ($methodPlugin = $this->getMethodPluginManager()->getPlugin($method)) {
-      $this->setMethodPlugin($methodPlugin);
-      $this->getMethodPlugin()->setApiVersion($this->getApiVersion());
-      $parameters += ['apiKey' => $this->getApiKey()];
-      $this->getMethodPlugin()->setParameters($parameters);
-
-      $this->setResponse($this->request($this->getMethodPlugin()));
-
-      return $this;
-    }
-
+  public function call($method, array $params = array()) {
     $this->setResponse(NULL);
     $this->setMethodPlugin(NULL);
+
+    $params += ['apiKey' => $this->getApiKey()];
+
+    if ($plugin = $this->getMethodPluginManager()->getPlugin($method, $params)) {
+      $this->setMethodPlugin($plugin)->setResponse(
+        $this->request(
+          $this->getMethodPlugin()->setApiVersion($this->getApiVersion()
+          )
+        )
+      );
+    }
 
     return $this;
   }

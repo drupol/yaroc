@@ -44,6 +44,8 @@ abstract class MethodPluginBase implements MethodPluginInterface {
    */
   public function setParameters(array $parameters = array()) {
     $this->parameters = $parameters;
+
+    return $this;
   }
 
   /**
@@ -100,6 +102,8 @@ abstract class MethodPluginBase implements MethodPluginInterface {
    */
   public function setApiVersion($apiVersion) {
     $this->apiVersion = $apiVersion;
+
+    return $this;
   }
 
   /**

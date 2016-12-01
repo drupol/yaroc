@@ -19,7 +19,7 @@ interface MethodPluginInterface {
    * @param array $parameters
    *   The method parameters.
    *
-   * @return void
+   * @return self
    */
   public function setParameters(array $parameters = array());
 
@@ -51,7 +51,7 @@ interface MethodPluginInterface {
    *
    * @param int $apiVersion
    *
-   * @return void
+   * @return self
    */
   public function setApiVersion($apiVersion);
 
