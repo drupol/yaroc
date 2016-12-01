@@ -5,7 +5,6 @@ namespace drupol\Yaroc\Http;
 use drupol\Yaroc\Plugin\MethodPluginInterface;
 use Http\Client\Common\HttpMethodsClient;
 use Http\Client\Common\Plugin;
-use Http\Client\Common\Plugin\HeaderDefaultsPlugin;
 use Http\Client\Common\PluginClient;
 use Http\Client\Exception\NetworkException;
 use Http\Client\HttpClient;
@@ -15,7 +14,6 @@ use Http\Discovery\UriFactoryDiscovery;
 use Http\Message\UriFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class Client
@@ -50,40 +48,14 @@ class Client extends HttpMethodsClient {
    *
    * @param \Http\Client\HttpClient|NULL $httpClient
    * @param \Http\Message\UriFactory|NULL $uriFactory
+   * @param Plugin[] $plugins
    */
-  public function __construct(HttpClient $httpClient = NULL, UriFactory $uriFactory = NULL) {
+  public function __construct(HttpClient $httpClient = NULL, UriFactory $uriFactory = NULL, array $plugins = array()) {
     $httpClient = $httpClient ?: HttpClientDiscovery::find();
-    $httpClient = new HttpMethodsClient(new PluginClient($httpClient, $this->setPlugins()->getPlugins()), MessageFactoryDiscovery::find());
+    $httpClient = new HttpMethodsClient(new PluginClient($httpClient, $plugins), MessageFactoryDiscovery::find());
     $this->setUriFactory($uriFactory ?: UriFactoryDiscovery::find());
 
     parent::__construct($httpClient, MessageFactoryDiscovery::find());
-  }
-
-  /**
-   * Get the HTTP plugins array.
-   *
-   * @return Plugin[]
-   */
-  public function getPlugins() {
-    return $this->plugins;
-  }
-
-  /**
-   * Set the HTTP plugins.
-   *
-   * @param Plugin[] $plugins
-   *   An array of HTTP plugin.
-   *
-   * @return $this
-   */
-  public function setPlugins(array $plugins = array()) {
-    $defaultPlugins = [
-      new HeaderDefaultsPlugin(['Content-Type' => 'application/json'])
-    ];
-
-    $this->plugins = array_merge($defaultPlugins, $plugins);
-
-    return $this;
   }
 
   /**
@@ -151,24 +123,6 @@ class Client extends HttpMethodsClient {
     $response->getBody()->rewind();
 
     return $response;
-  }
-
-  /**
-   * Get the logger.
-   *
-   * @return \Psr\Log\LoggerInterface
-   */
-  public function getLogger() {
-    return $this->logger;
-  }
-
-  /**
-   * Set the logger.
-   *
-   * @param \Psr\Log\LoggerInterface $logger
-   */
-  public function setLogger(LoggerInterface $logger) {
-    $this->logger = $logger;
   }
 
   /**

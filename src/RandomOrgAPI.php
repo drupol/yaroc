@@ -5,7 +5,9 @@ namespace drupol\Yaroc;
 use drupol\Yaroc\Http\Client;
 use drupol\Yaroc\Plugin\MethodPluginInterface;
 use drupol\Yaroc\Plugin\MethodPluginManager;
+use Http\Client\Common\Plugin;
 use Http\Client\HttpClient;
+use Http\Message\UriFactory;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -72,7 +74,6 @@ class RandomOrgAPI {
     $this->setHttpClient($httpClient);
     $this->setMethodPluginManager(new MethodPluginManager());
     $this->setApiVersion($this->getApiVersion());
-    $this->getHttpClient()->setEndpoint($this->getEndpoint());
   }
 
   /**
@@ -127,11 +128,21 @@ class RandomOrgAPI {
    *
    * @param null|HttpClient $httpClient
    *   The client request.
+   * @param null|UriFactory $uriFactory
+   *   The URI Factory.
+   * @param Plugin[] $plugins
+   *   The HTTP plugins.
    *
    * @return self
    */
-  public function setHttpClient(HttpClient $httpClient = NULL) {
-    $this->httpClient = new Client($httpClient, NULL, NULL);
+  public function setHttpClient(HttpClient $httpClient = NULL, UriFactory $uriFactory = NULL, array $plugins = array()) {
+    $defaultPlugins = [
+      new Plugin\HeaderDefaultsPlugin(['Content-Type' => 'application/json'])
+    ];
+
+    $plugins = array_merge(array_values($defaultPlugins), array_values($plugins));
+    $this->httpClient = new Client($httpClient, $uriFactory, $plugins);
+    $this->httpClient->setEndpoint($this->getEndpoint());
 
     return $this;
   }

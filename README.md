@@ -91,6 +91,19 @@ $result = $randomOrgAPI->call('generateSignedIntegers', ['n' => 5, 'min' => 0, '
   ->getResult();
 print_r($result);
 
+// Enable logging
+$randomOrgAPI->setHttpClient(NULL, NULL, [
+  new \Http\Client\Common\Plugin\LoggerPlugin(
+    new \Monolog\Logger(
+      'yaroc',
+      [new \Monolog\Handler\StreamHandler(
+        'php://stdout', \Monolog\Logger::DEBUG
+      )]
+    ),
+    new Http\Message\Formatter\SimpleFormatter()
+  )
+]);
+
 ```
 
 ## RandomLib integration
