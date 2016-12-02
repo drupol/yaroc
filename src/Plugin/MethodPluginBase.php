@@ -91,10 +91,10 @@ abstract class MethodPluginBase implements MethodPluginInterface {
   /**
    * Get a random ID.
    *
-   * @return int
+   * @return string
    */
   public function getRandomId() {
-    return mt_rand(1, 10^6);
+    return $this->getMethod() . '_' . mt_rand(1, mt_getrandmax()) . '_' . str_replace('.', '', microtime(TRUE));
   }
 
   /**
