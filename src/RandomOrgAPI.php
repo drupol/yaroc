@@ -162,7 +162,10 @@ class RandomOrgAPI {
    */
   public function setHttpClient(HttpClient $httpClient = NULL, UriFactory $uriFactory = NULL, array $plugins = array()) {
     $defaultPlugins = [
-      new Plugin\HeaderDefaultsPlugin(['Content-Type' => 'application/json'])
+      new Plugin\HeaderDefaultsPlugin([
+        'Content-Type' => 'application/json',
+        'User-Agent' => 'YAROC (http://github.com/drupol/yaroc)',
+      ])
     ];
 
     $plugins = array_merge(array_values($defaultPlugins), array_values($plugins));
@@ -290,12 +293,55 @@ class RandomOrgAPI {
   /**
    * Get the result array from the response.
    *
+   * @param string $key
+   *   The key you want to get.
+   *
    * @return array|bool
    *   The result array, FALSE otherwise.
    */
-  public function getResult() {
+  public function get($key = NULL) {
     if ($this->getResponse() && $this->getMethodPlugin()) {
-      return $this->getMethodPlugin()->getResult($this->getResponse());
+      if ($result = $this->getMethodPlugin()->get($this->getResponse(), $key)) {
+        return $result;
+      }
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Get the result array from the response.
+   *
+   * @param string $key
+   *   The key you want to get.
+   *
+   * @return array|bool
+   *   The result array, FALSE otherwise.
+   */
+  public function getFromResult($key = NULL) {
+    if ($result = $this->get('result')) {
+      if ($key && isset($result[$key])) {
+        return $result[$key];
+      }
+      if (is_null($key)) {
+        return $result;
+      }
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Get the data from the result array.
+   *
+   * @return array|bool
+   *   The data array, FALSE otherwise.
+   */
+  public function getData() {
+    if ($result = $this->get('result')) {
+      if (isset($result['random']) && isset($result['random']['data'])) {
+        return $result['random']['data'];
+      }
     }
 
     return FALSE;

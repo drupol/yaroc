@@ -43,7 +43,7 @@ class RandomOrgAPITest extends RandomOrgBase {
    * @covers \drupol\Yaroc\RandomOrgAPI::call()
    */
   public function testUnknownMethod() {
-    $result = $this->randomOrgAPI->call('izumi', ['n' => 5, 'min' => 0, 'max' => 100])->getResult();
+    $result = $this->randomOrgAPI->call('izumi', ['n' => 5, 'min' => 0, 'max' => 100])->getFromResult();
 
     $this->assertFalse($result);
   }
@@ -101,7 +101,7 @@ class RandomOrgAPITest extends RandomOrgBase {
       'min' => 0,
       'max' => 5,
     ];
-    $this->assertFalse($this->randomOrgAPI->call($method, $params)->getResult());
+    $this->assertFalse($this->randomOrgAPI->call($method, $params)->getFromResult());
   }
 
   /**
@@ -112,15 +112,16 @@ class RandomOrgAPITest extends RandomOrgBase {
     $this->assertInstanceOf('\drupol\Yaroc\Plugin\MethodPluginManager', $this->randomOrgAPI->getMethodPluginManager());
     $this->assertEquals($this->randomOrgAPI->getEndpoint(), $this->randomOrgAPI->getHttpClient()->getEndpoint());
     $this->assertFalse($this->randomOrgAPI->getResponse());
-    $this->assertFalse($this->randomOrgAPI->getResult());
+    $this->assertFalse($this->randomOrgAPI->getFromResult());
   }
 
   /**
    * @covers \drupol\Yaroc\RandomOrgAPI::getResponse()
    * @covers \drupol\Yaroc\RandomOrgAPI::setResponse()
    * @covers \drupol\Yaroc\RandomOrgAPI::setMethodPlugin()
-   * @covers \drupol\Yaroc\RandomOrgAPI::getResult()
-   * @covers \drupol\Yaroc\Plugin\MethodPluginBase::getResult()
+   * @covers \drupol\Yaroc\RandomOrgAPI::getFromResult()
+   * @covers \drupol\Yaroc\Plugin\MethodPluginBase::get()
+   * @covers \drupol\Yaroc\Plugin\MethodPluginBase::getFromResult()
    */
   public function testResponse() {
     $method = 'generateIntegers';
@@ -131,16 +132,16 @@ class RandomOrgAPITest extends RandomOrgBase {
     ];
     $this->assertInstanceOf('\drupol\Yaroc\RandomOrgAPI', $this->randomOrgAPI->call($method, $params));
     $this->assertInstanceOf('\Psr\Http\Message\ResponseInterface', $this->randomOrgAPI->getResponse());
-    $this->assertInternalType('array', $this->randomOrgAPI->getResult());
+    $this->assertInternalType('array', $this->randomOrgAPI->getFromResult());
   }
 
   /**
    * @covers \drupol\Yaroc\RandomOrgAPI::call()
    * @covers \drupol\Yaroc\RandomOrgAPI::request()
    * @covers \drupol\Yaroc\RandomOrgAPI::getResponse()
-   * @covers \drupol\Yaroc\RandomOrgAPI::getResult()
    * @covers \drupol\Yaroc\RandomOrgAPI::setEndpoint()
    * @covers \drupol\Yaroc\RandomOrgAPI::getEndpoint()
+   * @covers \drupol\Yaroc\RandomOrgAPI::getFromResult()
    */
   public function testRequestCall() {
     $this->randomOrgAPI->setEndpoint('http://yaroc/%s');
@@ -151,7 +152,7 @@ class RandomOrgAPITest extends RandomOrgBase {
       'max' => 5,
     ];
     $this->assertNull($this->randomOrgAPI->call($method, $params)->getResponse());
-    $this->assertFalse($this->randomOrgAPI->getResult());
+    $this->assertFalse($this->randomOrgAPI->getFromResult());
   }
 
 }

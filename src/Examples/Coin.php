@@ -21,9 +21,9 @@ class Coin extends BaseExample {
    */
   public function flip() {
     $result = $this->randomOrgAPI->call('generateIntegers', ['n' => 1, 'min' => 0, 'max' => 1])
-      ->getResult();
+      ->getData();
 
-    $this->face = (1 == $result['random']['data'][0]) ? 'tails' : 'heads';
+    $this->face = (1 == $result[0]) ? 'tails' : 'heads';
 
     return $this;
   }

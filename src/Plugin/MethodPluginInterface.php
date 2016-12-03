@@ -73,9 +73,34 @@ interface MethodPluginInterface {
    * Return the result array from the response.
    *
    * @param \Psr\Http\Message\ResponseInterface $response
+   *   The response.
+   * @param string $key
+   *   The array key to get.
    *
    * @return array|bool
    */
-  public function getResult(ResponseInterface $response);
+  public function get(ResponseInterface $response, $key = NULL);
+
+  /**
+   * Get the content.
+   *
+   * @param \Psr\Http\Message\ResponseInterface $response
+   *   The response.
+   *
+   * @return array|bool
+   */
+  public function getContent(ResponseInterface $response);
+
+  /**
+   * Get the value for a single header.
+   *
+   * @param \Psr\Http\Message\ResponseInterface $response
+   *   The response.
+   * @param string $name
+   *   The header name.
+   *
+   * @return string|null
+   */
+  public function getHeader(ResponseInterface $response, $name);
 
 }

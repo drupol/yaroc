@@ -101,11 +101,13 @@ class PluginTest extends RandomOrgBase {
     $this->assertInternalType('array', $plugin->getTestsParameters());
 
     // Find a way to test this.
-    $result = $this->randomOrgAPI->call($method, $parameters['params'])
-      ->getResult();
-    $this->assertInternalType('array', $result);
+    $randomOrgAPI = $this->randomOrgAPI->call($method, $parameters['params']);
+    $this->assertInternalType('array', $randomOrgAPI->getFromResult());
+    $this->assertInternalType('array', $randomOrgAPI->get());
+    $this->assertEquals($parameters['params']['n'], count($randomOrgAPI->getData()));
 
-    $this->assertEquals($parameters['params']['n'], count($result['random']['data']));
+    $this->assertFalse($randomOrgAPI->getFromResult('unknownKey'));
+    $this->assertFalse($randomOrgAPI->get('unknownKey'));
   }
 
   /**
@@ -129,11 +131,13 @@ class PluginTest extends RandomOrgBase {
     $this->assertInternalType('array', $plugin->getTestsParameters());
 
     // Find a way to test this.
-    $result = $this->randomOrgAPI->call($method, $parameters['params'])
-      ->getResult();
-    $this->assertInternalType('array', $result);
+    $randomOrgAPI = $this->randomOrgAPI->call($method, $parameters['params']);
+    $this->assertInternalType('array', $randomOrgAPI->getFromResult());
+    $this->assertInternalType('array', $randomOrgAPI->get());
+    $this->assertEquals($parameters['params']['n'], count($randomOrgAPI->getData()));
 
-    $this->assertEquals($parameters['params']['n'], count($result['random']['data']));
+    $this->assertFalse($randomOrgAPI->getFromResult('unknownKey'));
+    $this->assertFalse($randomOrgAPI->get('unknownKey'));
   }
 
   /**

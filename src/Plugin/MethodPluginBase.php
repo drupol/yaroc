@@ -116,10 +116,42 @@ abstract class MethodPluginBase implements MethodPluginInterface {
   /**
    * {@inheritdoc}
    */
-  public function getResult(ResponseInterface $response) {
-    $body = json_decode($response->getBody(), TRUE);
-    $response->getBody()->rewind();
-    return $body['result'];
+  public function get(ResponseInterface $response, $key = NULL) {
+    if ($content = $this->getContent($response)) {
+      if (is_array($content)) {
+        if ($key && isset($content[$key])) {
+          return $content[$key];
+        }
+        if (is_null($key)) {
+          return $content;
+        }
+      }
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getContent(ResponseInterface $response) {
+    $body = $response->getBody()->__toString();
+    if (strpos($response->getHeaderLine('Content-Type'), 'application/json') === 0) {
+      $content = json_decode($body, true);
+      if (JSON_ERROR_NONE === json_last_error()) {
+        return $content;
+      }
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getHeader(ResponseInterface $response, $name) {
+    $headers = $response->getHeader($name);
+    return array_shift($headers);
   }
 
 }

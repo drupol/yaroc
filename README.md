@@ -59,41 +59,41 @@ $randomOrgAPI = new drupol\Yaroc\RandomOrgAPI();
 $randomOrgAPI->setApiKey('00000000-0000-0000-0000-000000000000');
 
 $result = $randomOrgAPI->call('getUsage')
-  ->getResult();
+  ->getFromResult('status');
 print_r($result);
 
 // Let's switch to API V2
 $randomOrgAPI->setApiVersion(2);
 
-$result = $randomOrgAPI->call('generateIntegers', ['n' => 5, 'min' => 0, 'max' => 100])
-  ->getResult();
-print_r($result);
+$result = $randomOrgAPI->call('generateIntegers', ['n' => 5, 'min' => 0, 'max' => 100]);
+print_r($result->getFromResult('bitsUsed'));
+print_r($result->getData());
 
 $result = $randomOrgAPI->call('generateDecimalFractions', ['n' => 15, 'decimalPlaces' => 6])
-  ->getResult();
+  ->getData();
 print_r($result);
 
 $result = $randomOrgAPI->call('generateStrings', ['n' => 5, 'length' => 20])
-  ->getResult();
+  ->getData();
 print_r($result);
 
 // Let's switch back to API V1
 $randomOrgAPI->setApiVersion(1);
 
 $result = $randomOrgAPI->call('generateGaussians', ['n' => 5, 'mean' => 5, 'standardDeviation' => 3, 'significantDigits' => 3])
-  ->getResult();
+  ->getData();
 print_r($result);
 
 $result = $randomOrgAPI->call('generateUUIDs', ['n' => 6])
-  ->getResult();
+  ->getData();
 print_r($result);
 
 $result = $randomOrgAPI->call('generateBlobs', ['n' => 6, 'size' => 16])
-  ->getResult();
+  ->getFromResult();
 print_r($result);
 
 $result = $randomOrgAPI->call('generateSignedIntegers', ['n' => 5, 'min' => 0, 'max' => 40])
-  ->getResult();
+  ->get();
 print_r($result);
 
 // Enable logging
