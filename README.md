@@ -7,9 +7,9 @@ YAROC fully supports [V1](https://api.random.org/json-rpc/1/) and [V2](https://a
 
 ## Requirements
 
-* PHP >= 5.5,
-* A PSR-7 http client ([Guzzle](https://github.com/guzzle/guzzle) library or any other equivalent),
-* (optional) PHPUnit to run tests.
+* PHP >= 5.6,
+* A [PSR-7](http://www.php-fig.org/psr/psr-7/) http client ([Guzzle](https://github.com/guzzle/guzzle) library or any other equivalent),
+* (optional) [PHPUnit](https://phpunit.de/) to run tests.
 
 ## Installation
 
@@ -58,9 +58,8 @@ require 'vendor/autoload.php';
 $randomOrgAPI = new drupol\Yaroc\RandomOrgAPI();
 $randomOrgAPI->setApiKey('00000000-0000-0000-0000-000000000000');
 
-$result = $randomOrgAPI->call('getUsage')
-  ->getFromResult('status');
-print_r($result);
+$result = $randomOrgAPI->call('getUsage');
+print_r($result->getFromResult('status'));
 
 // Let's switch to API V2
 $randomOrgAPI->setApiVersion(2);
@@ -69,32 +68,23 @@ $result = $randomOrgAPI->call('generateIntegers', ['n' => 5, 'min' => 0, 'max' =
 print_r($result->getFromResult('bitsUsed'));
 print_r($result->getData());
 
-$result = $randomOrgAPI->call('generateDecimalFractions', ['n' => 15, 'decimalPlaces' => 6])
-  ->getData();
-print_r($result);
+$result = $randomOrgAPI->call('generateDecimalFractions', ['n' => 15, 'decimalPlaces' => 6]);
+print_r($result->getData());
 
-$result = $randomOrgAPI->call('generateStrings', ['n' => 5, 'length' => 20])
-  ->getData();
-print_r($result);
+$result = $randomOrgAPI->call('generateStrings', ['n' => 5, 'length' => 20]);
+print_r($result->getData());
 
 // Let's switch back to API V1
 $randomOrgAPI->setApiVersion(1);
 
-$result = $randomOrgAPI->call('generateGaussians', ['n' => 5, 'mean' => 5, 'standardDeviation' => 3, 'significantDigits' => 3])
-  ->getData();
-print_r($result);
+$result = $randomOrgAPI->call('generateGaussians', ['n' => 5, 'mean' => 5, 'standardDeviation' => 3, 'significantDigits' => 3]);
+print_r($result->getData());
 
-$result = $randomOrgAPI->call('generateUUIDs', ['n' => 6])
-  ->getData();
-print_r($result);
+$result = $randomOrgAPI->call('generateUUIDs', ['n' => 6]);
+print_r($result->getData());
 
-$result = $randomOrgAPI->call('generateBlobs', ['n' => 6, 'size' => 16])
-  ->getFromResult();
-print_r($result);
-
-$result = $randomOrgAPI->call('generateSignedIntegers', ['n' => 5, 'min' => 0, 'max' => 40])
-  ->get();
-print_r($result);
+$result = $randomOrgAPI->call('generateBlobs', ['n' => 6, 'size' => 16]);
+print_r($result->getFromResult());
 
 // Enable logging
 $randomOrgAPI->setHttpClient(NULL, NULL, [
@@ -109,11 +99,14 @@ $randomOrgAPI->setHttpClient(NULL, NULL, [
   )
 ]);
 
+$result = $randomOrgAPI->call('generateSignedIntegers', ['n' => 5, 'min' => 0, 'max' => 40]);
+print_r($result->get());
+
 ```
 
-## Third party integration
+## Third party libraries integration
 
-### ircmaxell/RandomLib Integration
+### ircmaxell/RandomLib integration
 
 YAROC provides a Source for [ircmaxell/RandomLib](https://github.com/ircmaxell/RandomLib).
 
@@ -130,7 +123,7 @@ $randomString = $generator->generateString(10);
 echo $randomString;
 
 ```
-### rchouinard/rych-random Integration
+### rchouinard/rych-random integration
 
 YAROC provides a Generator for [rchouinard/rych-random](https://github.com/rchouinard/rych-random).
 
@@ -166,8 +159,6 @@ Feel free to contact me at: pol.dellaiera@protonmail.com
 
 ## TODO
 
-- Response formatting
-- Improve logging
 - Documentation
 - Tests coverage
 
