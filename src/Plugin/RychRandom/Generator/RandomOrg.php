@@ -46,9 +46,9 @@ class RandomOrg implements GeneratorInterface {
    */
   public function generate($size) {
     $result = $this->randomOrgAPI->call('generateStrings', ['n' => 1, 'length' => $size])
-      ->getResult();
+      ->getData();
 
-    return $result['random']['data'][0];
+    return $result[0];
   }
 
 }

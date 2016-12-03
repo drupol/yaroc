@@ -293,7 +293,7 @@ class RandomOrgAPI {
   /**
    * Get the result array from the response.
    *
-   * @param string $key
+   * @param null|string $key
    *   The key you want to get.
    *
    * @return array|bool
@@ -312,7 +312,7 @@ class RandomOrgAPI {
   /**
    * Get the result array from the response.
    *
-   * @param string $key
+   * @param null|string $key
    *   The key you want to get.
    *
    * @return array|bool

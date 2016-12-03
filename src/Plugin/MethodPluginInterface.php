@@ -74,7 +74,7 @@ interface MethodPluginInterface {
    *
    * @param \Psr\Http\Message\ResponseInterface $response
    *   The response.
-   * @param string $key
+   * @param null|string $key
    *   The array key to get.
    *
    * @return array|bool
