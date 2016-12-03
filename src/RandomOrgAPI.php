@@ -77,86 +77,6 @@ class RandomOrgAPI {
   }
 
   /**
-   * Set the Random.org endpoint template.
-   *
-   * @param string $uri
-   *   The URI.
-   *
-   * @return self
-   */
-  public function setEndpoint($uri) {
-    $this->endpoint = $uri;
-    $this->getHttpClient()->setEndpoint($this->getEndpoint());
-
-    return $this;
-  }
-
-  /**
-   * Get the Random.org endpoint.
-   *
-   * @return string
-   */
-  public function getEndpoint() {
-    return sprintf($this->endpoint, $this->getApiVersion());
-  }
-
-  /**
-   * Set the Method plugin manager.
-   *
-   * @param MethodPluginManager $methodPluginManager
-   *   The method plugin manager.
-   *
-   * @return self
-   */
-  public function setMethodPluginManager(MethodPluginManager $methodPluginManager) {
-    $this->methodPluginManager = $methodPluginManager;
-
-    return $this;
-  }
-
-  /**
-   * Return the Method plugin manager.
-   *
-   * @return \drupol\Yaroc\Plugin\MethodPluginManager
-   */
-  public function getMethodPluginManager() {
-    return $this->methodPluginManager;
-  }
-
-  /**
-   * Set the client request.
-   *
-   * @param null|HttpClient $httpClient
-   *   The client request.
-   * @param null|UriFactory $uriFactory
-   *   The URI Factory.
-   * @param Plugin[] $plugins
-   *   The HTTP plugins.
-   *
-   * @return self
-   */
-  public function setHttpClient(HttpClient $httpClient = NULL, UriFactory $uriFactory = NULL, array $plugins = array()) {
-    $defaultPlugins = [
-      new Plugin\HeaderDefaultsPlugin(['Content-Type' => 'application/json'])
-    ];
-
-    $plugins = array_merge(array_values($defaultPlugins), array_values($plugins));
-    $this->httpClient = new Client($httpClient, $uriFactory, $plugins);
-    $this->httpClient->setEndpoint($this->getEndpoint());
-
-    return $this;
-  }
-
-  /**
-   * Get the Http client.
-   *
-   * @return Client
-   */
-  public function getHttpClient() {
-    return $this->httpClient;
-  }
-
-  /**
    * Set the Random.org API Key.
    *
    * @param string $key
@@ -205,6 +125,63 @@ class RandomOrgAPI {
   }
 
   /**
+   * Set the Random.org endpoint template.
+   *
+   * @param string $uri
+   *   The URI.
+   *
+   * @return self
+   */
+  public function setEndpoint($uri) {
+    $this->endpoint = $uri;
+    $this->getHttpClient()->setEndpoint($this->getEndpoint());
+
+    return $this;
+  }
+
+  /**
+   * Get the Random.org endpoint.
+   *
+   * @return string
+   */
+  public function getEndpoint() {
+    return sprintf($this->endpoint, $this->getApiVersion());
+  }
+
+  /**
+   * Set the client request.
+   *
+   * @param null|HttpClient $httpClient
+   *   The client request.
+   * @param null|UriFactory $uriFactory
+   *   The URI Factory.
+   * @param Plugin[] $plugins
+   *   The HTTP plugins.
+   *
+   * @return self
+   */
+  public function setHttpClient(HttpClient $httpClient = NULL, UriFactory $uriFactory = NULL, array $plugins = array()) {
+    $defaultPlugins = [
+      new Plugin\HeaderDefaultsPlugin(['Content-Type' => 'application/json'])
+    ];
+
+    $plugins = array_merge(array_values($defaultPlugins), array_values($plugins));
+    $this->httpClient = new Client($httpClient, $uriFactory, $plugins);
+    $this->httpClient->setEndpoint($this->getEndpoint());
+
+    return $this;
+  }
+
+  /**
+   * Get the Http client.
+   *
+   * @return Client
+   */
+  public function getHttpClient() {
+    return $this->httpClient;
+  }
+
+  /**
    * Set the method plugin.
    *
    * @param \drupol\Yaroc\Plugin\MethodPluginInterface|NULL $methodPlugin
@@ -225,6 +202,29 @@ class RandomOrgAPI {
    */
   private function getMethodPlugin() {
     return $this->methodPlugin;
+  }
+
+  /**
+   * Set the Method plugin manager.
+   *
+   * @param MethodPluginManager $methodPluginManager
+   *   The method plugin manager.
+   *
+   * @return self
+   */
+  public function setMethodPluginManager(MethodPluginManager $methodPluginManager) {
+    $this->methodPluginManager = $methodPluginManager;
+
+    return $this;
+  }
+
+  /**
+   * Return the Method plugin manager.
+   *
+   * @return \drupol\Yaroc\Plugin\MethodPluginManager
+   */
+  public function getMethodPluginManager() {
+    return $this->methodPluginManager;
   }
 
   /**

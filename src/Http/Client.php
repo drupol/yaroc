@@ -62,9 +62,13 @@ class Client extends HttpMethodsClient {
    * Set the Random.org endpoint.
    *
    * @param string $uri
+   *
+   * @return self
    */
   public function setEndpoint($uri) {
     $this->endpoint = $this->getUriFactory()->createUri($uri);
+
+    return $this;
   }
 
   /**
@@ -77,20 +81,23 @@ class Client extends HttpMethodsClient {
   }
 
   /**
-   * Request.
+   * @param \Http\Message\UriFactory $uriFactory
    *
-   * @param MethodPluginInterface $methodPlugin
-   *
-   * @return null|ResponseInterface
+   * @return self
    */
-  public function request(MethodPluginInterface $methodPlugin) {
-    try {
-      $response = $this->post($this->getEndpoint(), [], json_encode($methodPlugin->getParameters()));
-    } catch (NetworkException $e) {
-      return NULL;
-    }
+  public function setUriFactory(UriFactory $uriFactory) {
+    $this->uriFactory = $uriFactory;
 
-    return $this->validateResponse($response);
+    return $this;
+  }
+
+  /**
+   * Returns the UriFactory.
+   *
+   * @return \Http\Message\UriFactory
+   */
+  public function getUriFactory() {
+    return $this->uriFactory;
   }
 
   /**
@@ -126,19 +133,20 @@ class Client extends HttpMethodsClient {
   }
 
   /**
-   * Returns the UriFactory.
+   * Request.
    *
-   * @return \Http\Message\UriFactory
+   * @param MethodPluginInterface $methodPlugin
+   *
+   * @return null|ResponseInterface
    */
-  public function getUriFactory() {
-    return $this->uriFactory;
-  }
+  public function request(MethodPluginInterface $methodPlugin) {
+    try {
+      $response = $this->post($this->getEndpoint(), [], json_encode($methodPlugin->getParameters()));
+    } catch (NetworkException $e) {
+      return NULL;
+    }
 
-  /**
-   * @param \Http\Message\UriFactory $uriFactory
-   */
-  public function setUriFactory(UriFactory $uriFactory) {
-    $this->uriFactory = $uriFactory;
+    return $this->validateResponse($response);
   }
 
 }
