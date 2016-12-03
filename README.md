@@ -5,34 +5,39 @@ Yet Another [Random.Org](https://random.org) Client.
 
 YAROC fully supports [V1](https://api.random.org/json-rpc/1/) and [V2](https://api.random.org/json-rpc/2) API.
 
+## Requirements
+
+* PHP >= 5.5,
+* A PSR-7 http client ([Guzzle](https://github.com/guzzle/guzzle) library or any other equivalent),
+* (optional) PHPUnit to run tests.
+
 ## Installation
 
-Installation with [Composer](https://getcomposer.org/):
+The first step to use `yaroc` is to download [Composer](https://getcomposer.org/):
 
-```
-  composer require drupol/yaroc
+```bash
+$ curl -s http://getcomposer.org/installer | php
 ```
 
-or by editing your ```composer.json``` file and add in the right section:
+Then run the following command to install the dependencies:
 
-```json
-{
-  "require": {
-    "drupol/yaroc": "dev-master"
-  }
-}
+```bash
+$ php composer.phar require drupol/yaroc php-http/guzzle6-adapter
 ```
+
+Why do we need `php-http/guzzle6-adapter` ?
+
+We are decoupled form any HTTP messaging client with help by [HTTPlug](http://httplug.io/).
+You may use any other HTTP client library that support [PSR-7](http://www.php-fig.org/psr/psr-7/).
 
 ## Usage
 First [request an API Key](https://api.random.org/api-keys) or use the temporary key.
 
 __The temporary Api Key used in the examples will be disabled when the beta ends.__
 
-You can call [any API methods described in the documentation](https://api.random.org/json-rpc/1/basic) from random.org.
+You can call [any API methods described in the documentation](https://api.random.org/json-rpc/1/basic) from [Random.org](https://random.org).
 
-Currently support all the RANDOM.ORG API methods in the Basic and Signed APIs.
-
-Each methods is a plugin, see directory src/Plugin/Method. Extending is quite easy then.
+Currently support all the [Random.org](https://random.org) API methods in the Basic and Signed APIs.
 
 To call a method, use the ```RandomOrgAPI::call()``` method. Its arguments are:
 
@@ -106,23 +111,38 @@ $randomOrgAPI->setHttpClient(NULL, NULL, [
 
 ```
 
-## RandomLib integration
+## Third party integration
 
-YAROC provides a Source for [RandomLib](https://github.com/ircmaxell/RandomLib).
+### ircmaxell/RandomLib Integration
 
-Here's an example on how to use it:
+YAROC provides a Source for [ircmaxell/RandomLib](https://github.com/ircmaxell/RandomLib).
 
 ```php
 <?php
 
 require 'vendor/autoload.php';
 
-$factory = new RandomLib\Factory;
-$generator = $factory->getGenerator(new SecurityLib\Strength(SecurityLib\Strength::HIGH))
+$randomLib = new RandomLib\Factory();
+$generator = $randomLib->getGenerator(new SecurityLib\Strength(SecurityLib\Strength::HIGH))
   ->addSource(new \drupol\Yaroc\Plugin\RandomLib\Source\RandomOrg());
-$random_string = $generator->generateString(10);
+$randomString = $generator->generateString(10);
 
-echo $random_string;
+echo $randomString;
+
+```
+### rchouinard/rych-random Integration
+
+YAROC provides a Generator for [rchouinard/rych-random](https://github.com/rchouinard/rych-random).
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+$rychRandom = new Rych\Random\Random(new \drupol\Yaroc\Plugin\RychRandom\Generator\RandomOrg());
+$randomString = $rychRandom->getRandomString(8);
+
+echo $randomString;
 
 ```
 
