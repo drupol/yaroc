@@ -119,7 +119,7 @@ abstract class MethodPluginBase implements MethodPluginInterface {
   public function get(ResponseInterface $response, $key = NULL) {
     if ($content = $this->getContent($response)) {
       if (is_array($content)) {
-        if ($key && isset($content[$key])) {
+        if (!is_null($key) && isset($content[$key])) {
           return $content[$key];
         }
         if (is_null($key)) {

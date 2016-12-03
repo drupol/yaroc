@@ -320,7 +320,7 @@ class RandomOrgAPI {
    */
   public function getFromResult($key = NULL) {
     if ($result = $this->get('result')) {
-      if ($key && isset($result[$key])) {
+      if (!is_null($key) && isset($result[$key])) {
         return $result[$key];
       }
       if (is_null($key)) {
