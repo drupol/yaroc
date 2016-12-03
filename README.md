@@ -1,5 +1,5 @@
 ## YAROC
-[![Build Status](https://travis-ci.org/drupol/yaroc.svg?branch=master)](https://travis-ci.org/drupol/yaroc) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7231dd2876b14e90a02cd1df9055309b)](https://www.codacy.com/app/drupol/yaroc) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/7231dd2876b14e90a02cd1df9055309b)](https://www.codacy.com/app/drupol/yaroc) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/drupol/yaroc/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/drupol/yaroc/?branch=master)
+[![Build Status](https://travis-ci.org/drupol/yaroc.svg?branch=master)](https://travis-ci.org/drupol/yaroc) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7231dd2876b14e90a02cd1df9055309b)](https://www.codacy.com/app/drupol/yaroc) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/7231dd2876b14e90a02cd1df9055309b)](https://www.codacy.com/app/drupol/yaroc) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/drupol/yaroc/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/drupol/yaroc/?branch=master) [![Versioneye Status](https://www.versioneye.com/user/projects/58434f1d1f3a6d01f62cbee1/badge.svg)](https://www.versioneye.com/user/projects/58434f1d1f3a6d01f62cbee1)
 
 Yet Another [Random.Org](https://random.org) Client.
 
