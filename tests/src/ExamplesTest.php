@@ -4,7 +4,9 @@ namespace drupol\Yaroc\Tests;
 
 use drupol\Yaroc\Examples\Coin;
 use drupol\Yaroc\Examples\Dice;
+use drupol\Yaroc\Examples\Location;
 use drupol\Yaroc\Examples\Pi;
+use drupol\Yaroc\Examples\Time;
 
 /**
  * Class ExamplesTest.
@@ -58,6 +60,43 @@ class ExamplesTest extends RandomOrgBase {
 
     $this->assertGreaterThanOrEqual(3, $pi->get());
     $this->assertLessThanOrEqual(3.5, $pi->get());
+  }
+
+  /**
+   * @covers \drupol\Yaroc\Examples\Location
+   */
+  public function testLocation() {
+    $location = new Location();
+    $location->getRandomOrgAPI()->setApiKey($this->randomOrgAPI->getApiKey());
+
+    $coordinates = $location->find()->getCoordinates();
+
+    $this->assertGreaterThanOrEqual(-180, $coordinates['x']);
+    $this->assertLessThanOrEqual(180, $coordinates['x']);
+
+    $this->assertGreaterThanOrEqual(-90, $coordinates['y']);
+    $this->assertLessThanOrEqual(90, $coordinates['y']);
+
+    $this->assertGreaterThanOrEqual(0, $coordinates['z']);
+  }
+
+  /**
+   * @covers \drupol\Yaroc\Examples\Time
+   */
+  public function testTime() {
+    $time = new Time();
+    $time->getRandomOrgAPI()->setApiKey($this->randomOrgAPI->getApiKey());
+
+    $time = $time->find()->get();
+
+    $this->assertGreaterThanOrEqual(0, $time['h']);
+    $this->assertLessThanOrEqual(23, $time['h']);
+
+    $this->assertGreaterThanOrEqual(0, $time['m']);
+    $this->assertLessThanOrEqual(59, $time['m']);
+
+    $this->assertGreaterThanOrEqual(0, $time['s']);
+    $this->assertLessThanOrEqual(59, $time['s']);
   }
 
 }
