@@ -121,7 +121,6 @@ class RandomOrgAPITest extends RandomOrgBase {
    * @covers \drupol\Yaroc\RandomOrgAPI::setMethodPlugin()
    * @covers \drupol\Yaroc\RandomOrgAPI::getFromResult()
    * @covers \drupol\Yaroc\Plugin\MethodPluginBase::get()
-   * @covers \drupol\Yaroc\Plugin\MethodPluginBase::getFromResult()
    */
   public function testResponse() {
     $method = 'generateIntegers';

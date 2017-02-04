@@ -165,7 +165,10 @@ class RandomOrgAPI {
       new Plugin\HeaderDefaultsPlugin([
         'Content-Type' => 'application/json',
         'User-Agent' => 'YAROC (http://github.com/drupol/yaroc)',
-      ])
+      ]),
+      new Plugin\RetryPlugin([
+        'retries' => 5,
+      ]),
     ];
 
     $plugins = array_merge(array_values($defaultPlugins), array_values($plugins));
