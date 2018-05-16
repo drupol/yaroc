@@ -2,43 +2,56 @@
 
 namespace drupol\Yaroc\Examples;
 
+use drupol\Yaroc\Plugin\Provider;
+
 /**
  * Class Time.
- *
- * @package drupol\Yaroc\Examples
  */
-class Time extends BaseExample {
+class Time extends BaseExample
+{
+    /**
+     * @var integer[]
+     */
+    protected $time;
 
-  /**
-   * @var integer[]
-   */
-  protected $time;
+    /**
+     * @throws \Http\Client\Exception
+     *
+     * @return $this
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function find()
+    {
+        $provider = Provider::withResource('generateIntegers');
 
-  /**
-   * Find random time.
-   *
-   * @return self
-   */
-  public function find() {
-    $hours = $this->randomOrgAPI->call('generateIntegers', ['n' => 1, 'min' => 0, 'max' => 23])->getData();
-    $minutesSeconds = $this->randomOrgAPI->call('generateIntegers', ['n' => 2, 'min' => 0, 'max' => 59])->getData();
+        $hours = $this->getRandomOrgAPI()->getData(
+            $provider->withParameters(
+                ['n' => 1, 'min' => 0, 'max' => 23]
+            )
+        );
+        $minutesSeconds = $this->getRandomOrgAPI()->getData(
+            $provider->withParameters(
+                ['n' => 2, 'min' => 0, 'max' => 59]
+            )
+        );
 
-    $this->time = [
-      'h' => $hours[0],
-      'm' => $minutesSeconds[0],
-      's' => $minutesSeconds[1],
-    ];
+        $this->time = [
+            'h' => $hours[0],
+            'm' => $minutesSeconds[0],
+            's' => $minutesSeconds[1],
+        ];
 
-    return $this;
-  }
+        return $this;
+    }
 
-  /**
-   * Get the time.
-   *
-   * @return integer[]
-   */
-  public function get() {
-    return $this->time;
-  }
-
+    /**
+     * Get the time.
+     *
+     * @return integer[]
+     */
+    public function get()
+    {
+        return $this->time;
+    }
 }

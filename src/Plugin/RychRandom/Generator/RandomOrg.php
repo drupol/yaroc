@@ -2,7 +2,9 @@
 
 namespace drupol\Yaroc\Plugin\RychRandom\Generator;
 
+use drupol\Yaroc\Plugin\Provider;
 use drupol\Yaroc\RandomOrgAPI;
+use drupol\Yaroc\RandomOrgAPIInterface;
 use Rych\Random\Generator\GeneratorInterface;
 
 /**
@@ -10,45 +12,54 @@ use Rych\Random\Generator\GeneratorInterface;
  *
  * @codeCoverageIgnore
  */
-class RandomOrg implements GeneratorInterface {
+class RandomOrg implements GeneratorInterface
+{
+    /**
+     * The Random.Org API.
+     *
+     * @var RandomOrgAPI
+     */
+    protected $randomOrgAPI;
 
-  /**
-   * The Random.Org API.
-   *
-   * @var RandomOrgAPI
-   */
-  protected $randomOrgAPI;
+    /**
+     * RandomOrg constructor.
+     *
+     * @param \drupol\Yaroc\RandomOrgAPIInterface $randomOrgAPI
+     */
+    public function __construct(RandomOrgAPIInterface $randomOrgAPI)
+    {
+        $this->randomOrgAPI = $randomOrgAPI;
+    }
 
-  /**
-   * RandomOrg constructor.
-   */
-  public function __construct() {
-    $this->randomOrgAPI = new RandomOrgAPI();
-    $this->randomOrgAPI->setApiKey(file_get_contents('./apikey'));
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public static function getPriority()
+    {
+        return GeneratorInterface::PRIORITY_HIGH;
+    }
 
-  /**
-   * {@inheritdoc}
-   */
-  public static function getPriority() {
-    return GeneratorInterface::PRIORITY_HIGH;
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public static function isSupported()
+    {
+        return class_exists('RandomOrgAPI');
+    }
 
-  /**
-   * {@inheritdoc}
-   */
-  public static function isSupported() {
-    return class_exists('RandomOrgAPI');
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public function generate($size)
+    {
+        $provider = Provider::withResource('generateStrings')
+            ->withParameters([
+                'n' => 1,
+                'length' => $size,
+                'characters' => implode(array_merge(range('A', 'Z'), range('a', 'z'), range(0, 9))),
+            ]);
+        $result = $this->randomOrgAPI->getData($provider);
 
-  /**
-   * {@inheritdoc}
-   */
-  public function generate($size) {
-    $result = $this->randomOrgAPI->call('generateStrings', ['n' => 1, 'length' => $size])
-      ->getData();
-
-    return $result[0];
-  }
-
+        return $result[0];
+    }
 }

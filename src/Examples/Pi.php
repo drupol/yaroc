@@ -2,42 +2,54 @@
 
 namespace drupol\Yaroc\Examples;
 
+use drupol\Yaroc\Plugin\Provider;
+
 /**
  * Class Pi.
- *
- * @package drupol\Yaroc\Examples
  */
-class Pi extends BaseExample {
+class Pi extends BaseExample
+{
+    /**
+     * @var float
+     */
+    protected $estimation;
 
-  /**
-   * @var float
-   */
-  protected $estimation;
+    /**
+     * @param int $throws
+     *
+     * @throws \Http\Client\Exception
+     *
+     * @return $this
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function run($throws = 1000)
+    {
+        $provider = Provider::withResource('generateDecimalFractions')
+            ->withParameters(['n' => $throws * 2, 'decimalPlaces' => 6]);
 
-  /**
-   * @return self
-   */
-  public function run($n = 1000) {
-    $numbers = $this->randomOrgAPI->call('generateDecimalFractions', ['n' => $n * 2, 'decimalPlaces' => 6])
-      ->getData();
+        $numbers = $this->getRandomOrgAPI()->getData($provider);
 
-    $inside = 0;
-    for ($i = 0; $i < $n; $i++) {
-      $x = $numbers[$i];
-      $y = $numbers[$i+1];
+        $inside = 0;
+        for ($i = 0; $i < $throws; $i++) {
+            $x = $numbers[$i];
+            $y = $numbers[$i+1];
 
-      if (sqrt($x*$x + $y*$y) <= 1) {
-        $inside++;
-      }
+            if (sqrt($x*$x + $y*$y) <= 1) {
+                $inside++;
+            }
+        }
+
+        $this->estimation = 4 * $inside/$throws;
+
+        return $this;
     }
 
-    $this->estimation = 4 * $inside/$n;
-
-    return $this;
-  }
-
-  public function get() {
-    return $this->estimation;
-  }
-
+    /**
+     * @return float
+     */
+    public function get()
+    {
+        return $this->estimation;
+    }
 }

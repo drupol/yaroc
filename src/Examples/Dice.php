@@ -2,19 +2,26 @@
 
 namespace drupol\Yaroc\Examples;
 
+use drupol\Yaroc\Plugin\Provider;
+
 /**
  * Class Dice.
- *
- * @package drupol\Yaroc\Examples
  */
-class Dice extends BaseExample {
+class Dice extends BaseExample
+{
 
-  /**
-   * @return array
-   */
-  public function roll() {
-    return $this->randomOrgAPI->call('generateIntegers', ['n' => 2, 'min' => 1, 'max' => 6])
-      ->getData();
-  }
+    /**
+     * @throws \Http\Client\Exception
+     *
+     * @return bool|mixed
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function roll()
+    {
+        $generateIntegers = Provider::withResource('generateIntegers')
+            ->withParameters(['n' => 2, 'min' => 1, 'max' => 6]);
 
+        return $this->getRandomOrgAPI()->getData($generateIntegers);
+    }
 }
