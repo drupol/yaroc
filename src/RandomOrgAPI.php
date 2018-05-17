@@ -50,23 +50,23 @@ class RandomOrgAPI implements RandomOrgAPIInterface
     public function __construct(HttpClient $httpClient = null, array $configuration = [])
     {
         if (null === $httpClient) {
-            $defaultPlugins = [
-                new HeaderDefaultsPlugin([
-                    'Content-Type' => 'application/json',
-                    'User-Agent' => 'YAROC (http://github.com/drupol/yaroc)',
-                ]),
-                new RetryPlugin([
-                    'retries' => 5,
-                ]),
-            ];
-
-            $httpClient = new PluginClient(HttpClientDiscovery::find(), $defaultPlugins);
+            $httpClient = new PluginClient(
+                HttpClientDiscovery::find(),
+                [
+                    new HeaderDefaultsPlugin([
+                        'Content-Type' => 'application/json',
+                        'User-Agent' => 'YAROC (http://github.com/drupol/yaroc)',
+                    ]),
+                    new RetryPlugin([
+                        'retries' => 5,
+                    ]),
+                ]
+            );
         }
 
         $this->httpClient = $httpClient;
 
         $dotenv = new Dotenv();
-
         $files = array_filter(
             [
                 __DIR__ . '/../.env.dist',
