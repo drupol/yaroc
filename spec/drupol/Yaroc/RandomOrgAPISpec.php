@@ -8,24 +8,6 @@ use PhpSpec\ObjectBehavior;
 
 class RandomOrgAPISpec extends ObjectBehavior
 {
-    public function let()
-    {
-        $filename = __DIR__ . '/../../../.env';
-
-        if (file_exists($filename)) {
-            rename($filename, $filename . '.bak');
-        }
-    }
-
-    public function letGo()
-    {
-        $filename = __DIR__ . '/../../../.env.bak';
-
-        if (file_exists($filename)) {
-            rename($filename, substr($filename, 0, -4));
-        }
-    }
-
     public function it_is_initializable()
     {
         $this->shouldHaveType(RandomOrgAPI::class);
@@ -45,7 +27,7 @@ class RandomOrgAPISpec extends ObjectBehavior
     public function it_can_set_an_apikey()
     {
         $this->getApiKey()
-            ->shouldBe('00000000-0000-0000-0000-000000000000');
+            ->shouldNotBe('');
 
         $this
             ->withApiKey('http://hello.world/')
