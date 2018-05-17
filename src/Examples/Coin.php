@@ -6,6 +6,8 @@ use drupol\Yaroc\Plugin\Provider;
 
 /**
  * Class Coin.
+ *
+ * @codeCoverageIgnore
  */
 class Coin extends BaseExample
 {

@@ -6,6 +6,8 @@ use drupol\Yaroc\Plugin\Provider;
 
 /**
  * Class Time.
+ *
+ * @codeCoverageIgnore
  */
 class Time extends BaseExample
 {

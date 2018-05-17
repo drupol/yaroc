@@ -6,6 +6,8 @@ use drupol\Yaroc\Plugin\Provider;
 
 /**
  * Class Location.
+ *
+ * @codeCoverageIgnore
  */
 class Location extends BaseExample
 {

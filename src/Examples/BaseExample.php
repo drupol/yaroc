@@ -4,6 +4,9 @@ namespace drupol\Yaroc\Examples;
 
 use drupol\Yaroc\RandomOrgAPI;
 
+/**
+ * @codeCoverageIgnore
+ */
 abstract class BaseExample
 {
     /**

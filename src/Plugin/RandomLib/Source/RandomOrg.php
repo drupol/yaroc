@@ -15,6 +15,7 @@ use SecurityLib\Strength;
  * @subpackage Source
  *
  * @author     Pol Dellaiera <pol.dellaiera@protonmail.com>
+ *
  * @codeCoverageIgnore
  */
 class RandomOrg extends \RandomLib\AbstractSource

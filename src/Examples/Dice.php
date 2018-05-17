@@ -6,6 +6,8 @@ use drupol\Yaroc\Plugin\Provider;
 
 /**
  * Class Dice.
+ *
+ * @codeCoverageIgnore
  */
 class Dice extends BaseExample
 {

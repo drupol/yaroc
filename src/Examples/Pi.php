@@ -6,6 +6,8 @@ use drupol\Yaroc\Plugin\Provider;
 
 /**
  * Class Pi.
+ *
+ * @codeCoverageIgnore
  */
 class Pi extends BaseExample
 {
