@@ -5,6 +5,8 @@
   "keywords": ["random", "client", "random.org", "RNG"],
   "type": "library",
   "license": "GPL-2.0+",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "support": {
     "issues": "https://github.com/drupol/yaroc/issues",
     "source": "https://github.com/drupol/yaroc"
@@ -17,27 +19,33 @@
     }
   ],
   "require": {
+    "php": ">=7",
     "php-http/httplug": "^1.1",
-    "php-http/discovery": "^1.0",
-    "php-http/client-common": "^1.0"
+    "php-http/discovery": "^1.4",
+    "php-http/client-common": "^1.7",
+    "symfony/dotenv": "^4.0"
   },
   "require-dev": {
     "php-http/guzzle6-adapter": "^1.1",
-    "phpunit/phpunit": "^5.6",
-    "mockery/mockery": "^0.9",
     "squizlabs/php_codesniffer": "^2.0",
-    "satooshi/php-coveralls": "^1.0",
-    "phpunit/php-code-coverage": "^4.0",
+    "satooshi/php-coveralls": "^2.0",
     "codacy/coverage": "dev-master",
     "scrutinizer/ocular": "^1.3",
-    "monolog/monolog": "^1.0"
+    "monolog/monolog": "^1.0",
+    "friendsofphp/php-cs-fixer": "*",
+    "sensiolabs/security-checker": "^4.1",
+    "phpspec/phpspec": "^4.3",
+    "drupol/phpspec-annotation": "^1.0",
+    "phpro/grumphp": "^0.14.0",
+    "leanphp/phpspec-code-coverage": "^4.2"
   },
   "scripts": {
+    "phpspec": "./vendor/bin/phpspec run",
+    "grumphp": "./vendor/bin/grumphp run",
     "phpcs": "./vendor/bin/phpcs --ignore=vendor .",
     "phpcbf": "./vendor/bin/phpcbf --ignore=vendor .",
-    "phpunit": "./vendor/bin/phpunit --coverage-clover build/logs/clover.xml -c tests/phpunit.xml tests",
     "codacy": "./vendor/bin/codacycoverage clover build/logs/clover.xml",
-    "coveralls": "./vendor/bin/coveralls",
+    "coveralls": "./vendor/bin/php-coveralls",
     "scrutinizer": "./vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml"
   },
   "autoload": {

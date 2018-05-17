@@ -2,352 +2,234 @@
 
 namespace drupol\Yaroc;
 
-use drupol\Yaroc\Http\Client;
-use drupol\Yaroc\Plugin\MethodPluginInterface;
-use drupol\Yaroc\Plugin\MethodPluginManager;
-use Http\Client\Common\Plugin;
+use drupol\Yaroc\Plugin\ProviderInterface;
 use Http\Client\HttpClient;
-use Http\Message\UriFactory;
+use Http\Discovery\HttpClientDiscovery;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Dotenv\Dotenv;
 
 /**
- * Class RandomOrgAPIClient
- *
- * @package drupol\Yaroc
+ * Class RandomOrgAPI.
  */
-class RandomOrgAPI {
+class RandomOrgAPI implements RandomOrgAPIInterface
+{
+    /**
+     * The default Random.org endpoint.
+     *
+     * @var string;
+     */
+    private $endpoint = 'https://api.random.org/json-rpc/1/invoke';
 
-  /**
-   * The default Random.org endpoint template.
-   *
-   * @var string;
-   */
-  protected $endpoint = 'https://api.random.org/json-rpc/%s/invoke';
+    /**
+     * The configuration.
+     *
+     * @var array
+     */
+    private $configuration;
 
-  /**
-   * The Random.org api key.
-   *
-   * @var string
-   */
-  protected $apiKey = '';
+    /**
+     * The HTTP client.
+     *
+     * @var \Http\Client\HttpClient
+     */
+    private $httpClient;
 
-  /**
-   * The HTTP client.
-   *
-   * @var Client
-   */
-  protected $httpClient;
+    /**
+     * RandomOrgAPI constructor.
+     *
+     * @param \Http\Client\HttpClient $httpClient
+     *   The HTTP client.
+     * @param array $configuration
+     *   The configuration array.
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function __construct(HttpClient $httpClient = null, array $configuration = [])
+    {
+        $this->httpClient = $httpClient ?? HttpClientDiscovery::find();
 
-  /**
-   * The Method plugin manager.
-   *
-   * @var MethodPluginManager
-   */
-  protected $methodPluginManager;
+        $dotenv = new Dotenv();
 
-  /**
-   * The Random.org API version.
-   *
-   * @var int
-   */
-  protected $apiVersion = 1;
+        $files = array_filter(
+            [
+                __DIR__ . '/../.env.dist',
+                __DIR__ . '/../.env'
+            ],
+            'file_exists'
+        );
+        $dotenv->load(...$files);
 
-  /**
-   * The response if any.
-   *
-   * @var bool|ResponseInterface
-   */
-  protected $response = FALSE;
+        if ($apikey = getenv('RANDOM_ORG_APIKEY')) {
+            $configuration += ['apiKey' => $apikey];
+        }
 
-  /**
-   * @var MethodPluginInterface
-   */
-  protected $methodPlugin = FALSE;
-
-  /**
-   * RandomOrgAPI constructor.
-   *
-   * @param null|\Http\Client\HttpClient $httpClient
-   *   The HTTP client.
-   */
-  public function __construct(HttpClient $httpClient = NULL) {
-    $this->setHttpClient($httpClient);
-    $this->setMethodPluginManager(new MethodPluginManager());
-    $this->setApiVersion($this->getApiVersion());
-  }
-
-  /**
-   * Set the Random.org API Key.
-   *
-   * @param string $key
-   *   The API Key.
-   *
-   * @return self
-   */
-  public function setApiKey($key) {
-    $this->apiKey = $key;
-
-    return $this;
-  }
-
-  /**
-   * Get the Random.org API Key.
-   *
-   * @return string
-   *   The API Key.
-   */
-  public function getApiKey() {
-    return $this->apiKey;
-  }
-
-  /**
-   * Set the API version.
-   *
-   * @param int
-   *   The API version.
-   *
-   * @return self
-   */
-  public function setApiVersion($version) {
-    $this->apiVersion = $version;
-    $this->getHttpClient()->setEndpoint($this->getEndpoint());
-
-    return $this;
-  }
-
-  /**
-   * Get the API version.
-   *
-   * @return int
-   */
-  public function getApiVersion() {
-    return $this->apiVersion;
-  }
-
-  /**
-   * Set the Random.org endpoint template.
-   *
-   * @param string $uri
-   *   The URI.
-   *
-   * @return self
-   */
-  public function setEndpoint($uri) {
-    $this->endpoint = $uri;
-    $this->getHttpClient()->setEndpoint($this->getEndpoint());
-
-    return $this;
-  }
-
-  /**
-   * Get the Random.org endpoint.
-   *
-   * @return string
-   */
-  public function getEndpoint() {
-    return sprintf($this->endpoint, $this->getApiVersion());
-  }
-
-  /**
-   * Set the client request.
-   *
-   * @param null|HttpClient $httpClient
-   *   The client request.
-   * @param null|UriFactory $uriFactory
-   *   The URI Factory.
-   * @param Plugin[] $plugins
-   *   The HTTP plugins.
-   *
-   * @return self
-   */
-  public function setHttpClient(HttpClient $httpClient = NULL, UriFactory $uriFactory = NULL, array $plugins = array()) {
-    $defaultPlugins = [
-      new Plugin\HeaderDefaultsPlugin([
-        'Content-Type' => 'application/json',
-        'User-Agent' => 'YAROC (http://github.com/drupol/yaroc)',
-      ]),
-      new Plugin\RetryPlugin([
-        'retries' => 5,
-      ]),
-    ];
-
-    $plugins = array_merge(array_values($defaultPlugins), array_values($plugins));
-    $this->httpClient = new Client($httpClient, $uriFactory, $plugins);
-    $this->httpClient->setEndpoint($this->getEndpoint());
-
-    return $this;
-  }
-
-  /**
-   * Get the Http client.
-   *
-   * @return Client
-   */
-  public function getHttpClient() {
-    return $this->httpClient;
-  }
-
-  /**
-   * Set the method plugin.
-   *
-   * @param \drupol\Yaroc\Plugin\MethodPluginInterface|NULL $methodPlugin
-   *
-   * @return False|self
-   *   Return itself, or FALSE otherwise.
-   */
-  public function setMethodPlugin(MethodPluginInterface $methodPlugin = NULL) {
-    $this->methodPlugin = $methodPlugin;
-
-    return $methodPlugin ? $this : FALSE;
-  }
-
-  /**
-   * Get the method plugin.
-   *
-   * @return \drupol\Yaroc\Plugin\MethodPluginInterface
-   */
-  private function getMethodPlugin() {
-    return $this->methodPlugin;
-  }
-
-  /**
-   * Set the Method plugin manager.
-   *
-   * @param MethodPluginManager $methodPluginManager
-   *   The method plugin manager.
-   *
-   * @return self
-   */
-  public function setMethodPluginManager(MethodPluginManager $methodPluginManager) {
-    $this->methodPluginManager = $methodPluginManager;
-
-    return $this;
-  }
-
-  /**
-   * Return the Method plugin manager.
-   *
-   * @return \drupol\Yaroc\Plugin\MethodPluginManager
-   */
-  public function getMethodPluginManager() {
-    return $this->methodPluginManager;
-  }
-
-  /**
-   * Set the response.
-   *
-   * @param \Psr\Http\Message\ResponseInterface|NULL $response
-   *
-   * @return self
-   */
-  private function setResponse(ResponseInterface $response = NULL) {
-    $this->response = $response;
-
-    return $this;
-  }
-
-  /**
-   * Get the response.
-   *
-   * @return bool|\Psr\Http\Message\ResponseInterface
-   */
-  public function getResponse() {
-    return $this->response;
-  }
-
-  /**
-   * @param \drupol\Yaroc\Plugin\MethodPluginInterface $methodPlugin
-   *
-   * @return ResponseInterface|\Exception
-   */
-  private function request(MethodPluginInterface $methodPlugin) {
-    return $this->httpClient->request($methodPlugin);
-  }
-
-  /**
-   * Call Random.org API.
-   *
-   * @param string $method
-   *   The method to call.
-   * @param array $params
-   *   The associative array of params as defined in the Random.org API.
-   *
-   * @return self
-   *   Returns itself.
-   */
-  public function call($method, array $params = array()) {
-    $this->setResponse(NULL);
-    $this->setMethodPlugin(NULL);
-
-    $params += ['apiKey' => $this->getApiKey()];
-
-    if ($plugin = $this->getMethodPluginManager()->getPlugin($method, $params)) {
-      $this->setMethodPlugin($plugin)->setResponse(
-        $this->request(
-          $this->getMethodPlugin()->setApiVersion($this->getApiVersion()
-          )
-        )
-      );
+        $this->configuration = $configuration;
     }
 
-    return $this;
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public function withApiKey(string $apikey) :RandomOrgAPIInterface
+    {
+        $clone = clone $this;
 
-  /**
-   * Get the result array from the response.
-   *
-   * @param null|string $key
-   *   The key you want to get.
-   *
-   * @return array|bool
-   *   The result array, FALSE otherwise.
-   */
-  public function get($key = NULL) {
-    if ($this->getResponse() && $this->getMethodPlugin()) {
-      if ($result = $this->getMethodPlugin()->get($this->getResponse(), $key)) {
-        return $result;
-      }
+        $configuration = $clone->getConfiguration();
+        $configuration['apiKey'] = $apikey;
+        $clone->configuration = $configuration;
+
+        return $clone;
     }
 
-    return FALSE;
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public function withEndPoint(string $endpoint) :RandomOrgAPIInterface
+    {
+        $clone = clone $this;
+        $clone->endpoint = $endpoint;
 
-  /**
-   * Get the result array from the response.
-   *
-   * @param null|string $key
-   *   The key you want to get.
-   *
-   * @return array|bool
-   *   The result array, FALSE otherwise.
-   */
-  public function getFromResult($key = NULL) {
-    if ($result = $this->get('result')) {
-      if (!is_null($key) && isset($result[$key])) {
-        return $result[$key];
-      }
-      if (is_null($key)) {
-        return $result;
-      }
+        return $clone;
     }
 
-    return FALSE;
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public function withHttpClient(HttpClient $client) :RandomOrgAPIInterface
+    {
+        $clone = clone $this;
+        $clone->httpClient = $client;
 
-  /**
-   * Get the data from the result array.
-   *
-   * @return array|bool
-   *   The data array, FALSE otherwise.
-   */
-  public function getData() {
-    if ($result = $this->get('result')) {
-      if (isset($result['random']) && isset($result['random']['data'])) {
-        return $result['random']['data'];
-      }
+        return $clone;
     }
 
-    return FALSE;
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public function getEndPoint() :string
+    {
+        return $this->endpoint;
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getApiKey() :string
+    {
+        $configuration = $this->getConfiguration();
+
+        return isset($configuration['apiKey']) ? $configuration['apiKey'] : '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function call(ProviderInterface $methodPlugin) :ResponseInterface
+    {
+        $parameters = $methodPlugin->getParameters() +
+            ['apiKey' => $this->getApiKey()];
+
+        return $this->validateResponse(
+            $methodPlugin
+                ->withEndPoint($this->getEndPoint())
+                ->withHttpClient($this->getHttpClient())
+                ->withParameters($parameters)
+                ->request()
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function get(ProviderInterface $methodPlugin) :array
+    {
+        return json_decode(
+            (string) $this
+                ->call($methodPlugin)
+                ->getBody()
+                ->getContents(),
+            true
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getData(ProviderInterface $methodPlugin)
+    {
+        $data = $this->get($methodPlugin);
+
+        if (!isset($data['result'])) {
+            return false;
+        }
+
+        if (isset($data['result']['random']['data'])) {
+            return $data['result']['random']['data'];
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfiguration() :array
+    {
+        return $this->configuration;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHttpClient() :HttpClient
+    {
+        return $this->httpClient;
+    }
+
+    /**
+     * Validate the response.
+     *
+     * @param \Psr\Http\Message\ResponseInterface $response
+     *
+     * @return \Exception|ResponseInterface
+     */
+    private function validateResponse(ResponseInterface $response) :ResponseInterface
+    {
+        if (200 === $response->getStatusCode()) {
+            $body = json_decode((string) $response->getBody()->getContents(), true);
+
+            if (isset($body['error']['code'])) {
+                switch ($body['error']['code']) {
+                    case -32600:
+                        throw new \InvalidArgumentException(
+                            'Invalid Request: ' . $body['error']['message'],
+                            $body['error']['code']
+                        );
+                    case -32601:
+                        throw new \BadFunctionCallException(
+                            'Procedure not found: ' . $body['error']['message'],
+                            $body['error']['code']
+                        );
+                    case -32602:
+                        throw new \InvalidArgumentException(
+                            'Invalid arguments: ' . $body['error']['message'],
+                            $body['error']['code']
+                        );
+                    case -32603:
+                        throw new \RuntimeException(
+                            'Internal Error: ' . $body['error']['message'],
+                            $body['error']['code']
+                        );
+                    default:
+                        throw new \RuntimeException(
+                            'Invalid request/response: ' . $body['error']['message'],
+                            $body['error']['code']
+                        );
+                }
+            }
+        }
+
+        $response->getBody()->rewind();
+
+        return $response;
+    }
 }

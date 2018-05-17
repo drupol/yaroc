@@ -7,9 +7,8 @@ YAROC fully supports [V1](https://api.random.org/json-rpc/1/) and [V2](https://a
 
 ## Requirements
 
-* PHP >= 5.6,
+* PHP >= 7.0,
 * A [PSR-7](http://www.php-fig.org/psr/psr-7/) http client ([Guzzle](https://github.com/guzzle/guzzle) library or any other equivalent),
-* (optional) [PHPUnit](https://phpunit.de/) to run tests.
 
 ## Installation
 
@@ -33,19 +32,11 @@ You may use any other HTTP client library that support [PSR-7](http://www.php-fi
 ## Usage
 First [request an API Key](https://api.random.org/api-keys) or use the temporary key.
 
-__The temporary Api Key used in the examples will be disabled when the beta ends.__
+__The temporary API key used in the examples will be disabled when the beta ends.__
 
 You can call [any API methods described in the documentation](https://api.random.org/json-rpc/1/basic) from [Random.org](https://random.org).
 
-Currently support all the [Random.org](https://random.org) API methods in the Basic and Signed APIs.
-
-To call a method, use the ```RandomOrgAPI::call()``` method. Its arguments are:
-
-- The ```method``` name (_see [the list of supported method](https://api.random.org/json-rpc/1/)_)
-- The ```parameters``` as an associative array (_see examples_)
-
-The ```RandomOrgAPI::call()``` method will check if the ```$method``` can be handled by a plugin.
-If you pass in unsupported or unknown values to the ```parameters``` argument, they will be ignored automatically.
+Currently support all the [Random.org](https://random.org) API methods in the basic and signed APIs.
 
 ## Examples
 
@@ -55,52 +46,25 @@ If you pass in unsupported or unknown values to the ```parameters``` argument, t
 
 require 'vendor/autoload.php';
 
-$randomOrgAPI = new drupol\Yaroc\RandomOrgAPI();
-$randomOrgAPI->setApiKey('00000000-0000-0000-0000-000000000000');
+$generateIntegers = \drupol\Yaroc\Plugin\Provider::withResource('generateIntegers')
+    ->withParameters(['n' => 10, 'min' => 0, 'max' => 100]);
 
-$result = $randomOrgAPI->call('getUsage');
-print_r($result->getFromResult('status'));
+$result = (new drupol\Yaroc\RandomOrgAPI())
+    ->withApiKey('00000000-0000-0000-0000-000000000000')
+    ->getData($generateIntegers);
 
-// Let's switch to API V2
-$randomOrgAPI->setApiVersion(2);
+print_r($result);
 
-$result = $randomOrgAPI->call('generateIntegers', ['n' => 5, 'min' => 0, 'max' => 100]);
-print_r($result->getFromResult('bitsUsed'));
-print_r($result->getData());
+$provider = \drupol\Yaroc\Plugin\Provider::withResource('generateStrings')
+    ->withParameters([
+        'n' => 10,
+        'length' => 15,
+        'characters' => implode(array_merge(range('A', 'Z'), range('a', 'z'), range(0, 9))),
+    ]);
 
-$result = $randomOrgAPI->call('generateDecimalFractions', ['n' => 15, 'decimalPlaces' => 6]);
-print_r($result->getData());
-
-$result = $randomOrgAPI->call('generateStrings', ['n' => 5, 'length' => 20]);
-print_r($result->getData());
-
-// Let's switch back to API V1
-$randomOrgAPI->setApiVersion(1);
-
-$result = $randomOrgAPI->call('generateGaussians', ['n' => 5, 'mean' => 5, 'standardDeviation' => 3, 'significantDigits' => 3]);
-print_r($result->getData());
-
-$result = $randomOrgAPI->call('generateUUIDs', ['n' => 6]);
-print_r($result->getData());
-
-$result = $randomOrgAPI->call('generateBlobs', ['n' => 6, 'size' => 16]);
-print_r($result->getFromResult());
-
-// Enable logging
-$randomOrgAPI->setHttpClient(NULL, NULL, [
-  new \Http\Client\Common\Plugin\LoggerPlugin(
-    new \Monolog\Logger(
-      'yaroc',
-      [new \Monolog\Handler\StreamHandler(
-        'php://stdout', \Monolog\Logger::DEBUG
-      )]
-    ),
-    new Http\Message\Formatter\SimpleFormatter()
-  )
-]);
-
-$result = $randomOrgAPI->call('generateSignedIntegers', ['n' => 5, 'min' => 0, 'max' => 40]);
-print_r($result->get());
+$result = (new drupol\Yaroc\RandomOrgAPI())
+    ->withApiKey('00000000-0000-0000-0000-000000000000')
+    ->getData($provider);
 
 ```
 
@@ -146,7 +110,7 @@ Copy your API key in a file ```apikey``` at the root of the project. If you do n
 To run the tests, run this command:
 
 ```
-composer phpunit
+composer grumphp
 ```
 
 ## History

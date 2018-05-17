@@ -2,39 +2,46 @@
 
 namespace drupol\Yaroc\Examples;
 
+use drupol\Yaroc\Plugin\Provider;
+
 /**
  * Class Coin.
- *
- * @package drupol\Yaroc\Examples
  */
-class Coin extends BaseExample {
+class Coin extends BaseExample
+{
+    /**
+     * @var string
+     */
+    protected $face;
 
-  /**
-   * @var string
-   */
-  protected $face;
+    /**
+     * @throws \Http\Client\Exception
+     *
+     * @return $this
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    public function flip()
+    {
+        $parameters = ['n' => 1, 'min' => 0, 'max' => 1];
 
-  /**
-   * Flip the coin.
-   *
-   * @return self
-   */
-  public function flip() {
-    $result = $this->randomOrgAPI->call('generateIntegers', ['n' => 1, 'min' => 0, 'max' => 1])
-      ->getData();
+        $generateIntegers = Provider::withResource('generateIntegers')
+            ->withParameters($parameters);
 
-    $this->face = (1 == $result[0]) ? 'tails' : 'heads';
+        $result = $this->getRandomOrgAPI()->getData($generateIntegers);
 
-    return $this;
-  }
+        $this->face = (1 === $result[0]) ? 'tails' : 'heads';
 
-  /**
-   * Get the coin face.
-   *
-   * @return string
-   */
-  public function getFace() {
-    return $this->face;
-  }
+        return $this;
+    }
 
+    /**
+     * Get the coin face.
+     *
+     * @return string
+     */
+    public function getFace()
+    {
+        return $this->face;
+    }
 }

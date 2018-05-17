@@ -49,3 +49,5 @@ vendor
 composer.lock
 apikey
 test.php
+/.php_cs.cache
+/.env
