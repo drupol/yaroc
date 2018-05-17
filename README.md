@@ -5,6 +5,8 @@ Yet Another [Random.Org](https://random.org) Client.
 
 YAROC fully supports [V1](https://api.random.org/json-rpc/1/) and [V2](https://api.random.org/json-rpc/2) API.
 
+Most of the classes of this library are stateless and immutable.
+
 ## Requirements
 
 * PHP >= 7.0,
@@ -12,16 +14,16 @@ YAROC fully supports [V1](https://api.random.org/json-rpc/1/) and [V2](https://a
 
 ## Installation
 
-The first step to use `yaroc` is to download [Composer](https://getcomposer.org/):
+The first step to use `yaroc` is to install the dependencies with [Composer](https://getcomposer.org/):
 
 ```bash
-$ curl -s http://getcomposer.org/installer | php
+$ composer install
 ```
 
-Then run the following command to install the dependencies:
+Or if you need it in an existent project, then run the following command to install the dependencies:
 
 ```bash
-$ php composer.phar require drupol/yaroc php-http/guzzle6-adapter
+$ composer require drupol/yaroc php-http/guzzle6-adapter
 ```
 
 Why do we need `php-http/guzzle6-adapter` ?
@@ -66,7 +68,11 @@ $result = (new drupol\Yaroc\RandomOrgAPI())
     ->withApiKey('00000000-0000-0000-0000-000000000000')
     ->getData($provider);
 
+print_r($result);
+
 ```
+
+Providing the API key can be accomplished using a ```.env``` file. Copy the ```.env.dist``` file into ```.env``` and modify the latter accordingly.
 
 ## Third party libraries integration
 
@@ -105,7 +111,8 @@ echo $randomString;
 
 ## Tests coverage
 
-Copy your API key in a file ```apikey``` at the root of the project. If you do not have it, the tests will use the temporary API key.
+Make a copy of the file ```.env.dist``` into ```.env``` and set your API in it.
+If you do not have it, the tests will use the temporary API key.
 
 To run the tests, run this command:
 
