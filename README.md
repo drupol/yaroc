@@ -65,10 +65,18 @@ $provider = \drupol\Yaroc\Plugin\Provider::withResource('generateStrings')
     ]);
 
 $result = (new drupol\Yaroc\RandomOrgAPI())
-    ->withApiKey('00000000-0000-0000-0000-000000000000')
     ->getData($provider);
 
 print_r($result);
+
+// To use the upcoming version 2 of the random.org's API:
+
+$result = (new drupol\Yaroc\RandomOrgAPI())
+    ->withEndPoint('https://api.random.org/json-rpc/2/invoke')
+    ->getData($provider);
+
+print_r($result);
+
 
 ```
 

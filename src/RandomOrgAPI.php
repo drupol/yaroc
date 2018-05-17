@@ -3,6 +3,9 @@
 namespace drupol\Yaroc;
 
 use drupol\Yaroc\Plugin\ProviderInterface;
+use Http\Client\Common\Plugin\HeaderDefaultsPlugin;
+use Http\Client\Common\Plugin\RetryPlugin;
+use Http\Client\Common\PluginClient;
 use Http\Client\HttpClient;
 use Http\Discovery\HttpClientDiscovery;
 use Psr\Http\Message\ResponseInterface;
@@ -46,7 +49,21 @@ class RandomOrgAPI implements RandomOrgAPIInterface
      */
     public function __construct(HttpClient $httpClient = null, array $configuration = [])
     {
-        $this->httpClient = $httpClient ?? HttpClientDiscovery::find();
+        if (null === $httpClient) {
+            $defaultPlugins = [
+                new HeaderDefaultsPlugin([
+                    'Content-Type' => 'application/json',
+                    'User-Agent' => 'YAROC (http://github.com/drupol/yaroc)',
+                ]),
+                new RetryPlugin([
+                    'retries' => 5,
+                ]),
+            ];
+
+            $httpClient = new PluginClient(HttpClientDiscovery::find(), $defaultPlugins);
+        }
+
+        $this->httpClient = $httpClient;
 
         $dotenv = new Dotenv();
 

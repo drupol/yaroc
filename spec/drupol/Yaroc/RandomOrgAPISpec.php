@@ -100,4 +100,13 @@ class RandomOrgAPISpec extends ObjectBehavior
             ->withParameters(['n' => 10, 'min' => 0, 'max' => 100]);
         $this->withApiKey('plop')->shouldThrow(\RuntimeException::class)->during('call', [$provider]);
     }
+
+    public function it_can_query_new_api_version()
+    {
+        $data = $this
+            ->withEndPoint('https://api.random.org/json-rpc/2/invoke')
+            ->getData($this->provider);
+        $data->shouldBeArray();
+        $data->shouldHaveCount(10);
+    }
 }
