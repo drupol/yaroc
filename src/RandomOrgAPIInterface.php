@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace drupol\Yaroc;
 
 use drupol\Yaroc\Plugin\ProviderInterface;
@@ -57,16 +59,12 @@ interface RandomOrgAPIInterface
     /**
      * @param \drupol\Yaroc\Plugin\ProviderInterface $methodPlugin
      *
-     * @throws \Http\Client\Exception
-     *
-     * @return \Exception|\Psr\Http\Message\ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function call(ProviderInterface $methodPlugin) :ResponseInterface;
 
     /**
      * @param \drupol\Yaroc\Plugin\ProviderInterface $methodPlugin
-     *
-     * @throws \Http\Client\Exception
      *
      * @return array
      */
@@ -74,8 +72,6 @@ interface RandomOrgAPIInterface
 
     /**
      * @param \drupol\Yaroc\Plugin\ProviderInterface $methodPlugin
-     *
-     * @throws \Http\Client\Exception
      *
      * @return array|false
      */

@@ -36,22 +36,20 @@ abstract class AbstractProvider extends AbstractClient implements ProviderInterf
      */
     public function request() :ResponseInterface
     {
-        $parameters = [
-            'jsonrpc' => '2.0',
-            'id'      => uniqid($this->getResource() . '_', true),
-            'params'  => $this->getParameters(),
-            'method'  => $this->getResource(),
-        ];
+        $body = (string) \json_encode([
+                'jsonrpc' => '2.0',
+                'id'      => \uniqid($this->getResource() . '_', true),
+                'params'  => $this->getParameters(),
+                'method'  => $this->getResource(),
+        ]);
 
         try {
             $response = $this->getHttpClient()->sendRequest(
                 $this->getMessageFactory()->createRequest(
                     'POST',
-                    $this->getEndpoint(),
+                    $this->getEndPoint(),
                     [],
-                    json_encode(
-                        $parameters
-                    )
+                    $body
                 )
             );
         } catch (HttpException $exception) {

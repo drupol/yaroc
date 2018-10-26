@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace drupol\Yaroc\Plugin\RandomLib\Source;
 
 use drupol\Yaroc\Plugin\Provider;
-use drupol\Yaroc\RandomOrgAPI;
 use drupol\Yaroc\RandomOrgAPIInterface;
 use SecurityLib\Strength;
 
@@ -23,7 +24,7 @@ class RandomOrg extends \RandomLib\AbstractSource
     /**
      * The Random.Org API.
      *
-     * @var RandomOrgAPI
+     * @var RandomOrgAPIInterface
      */
     protected $randomOrgAPI;
 
@@ -40,9 +41,10 @@ class RandomOrg extends \RandomLib\AbstractSource
     /**
      * Return an instance of Strength indicating the strength of the source.
      *
-     * @return \SecurityLib\Strength An instance of one of the strength classes
+     * @return \SecurityLib\Strength
+     *   An instance of one of the strength classes
      */
-    public static function getStrength()
+    public static function getStrength(): Strength
     {
         return new Strength(Strength::HIGH);
     }
@@ -53,7 +55,7 @@ class RandomOrg extends \RandomLib\AbstractSource
      *
      * @return bool
      */
-    public static function isSupported()
+    public static function isSupported(): bool
     {
         return class_exists('RandomOrgAPI');
     }
@@ -61,13 +63,13 @@ class RandomOrg extends \RandomLib\AbstractSource
     /**
      * Generate a random string of the specified size.
      *
-     * @param int $size The size of the requested random string
+     * @param int $size
+     *   The size of the requested random string
      *
-     * @throws \Http\Client\Exception
-     *
-     * @return string A string of the requested size
+     * @return string
+     *   A string of the requested size
      */
-    public function generate($size)
+    public function generate($size): string
     {
         $provider = Provider::withResource('generateStrings')
             ->withParameters([

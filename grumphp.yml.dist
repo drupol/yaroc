@@ -3,12 +3,16 @@ parameters:
   bin_dir: vendor/bin
   tasks:
     phplint: ~
-    yamllint: ~
     composer: ~
-    phpcpd: ~
     phpcpd:
       directory: './src'
-    jsonlint: ~
+    phpstan:
+      autoload_file: ~
+      configuration: ~
+      level: 7
+      force_patterns: []
+      ignore_patterns: ['/spec/', '/benchmarks/', '/examples/']
+      triggered_by: ['php']
     phpcsfixer:
       config_file: ~
       config: ~
@@ -22,17 +26,22 @@ parameters:
         - spec/
       triggered_by:
         - php
-        - module
-        - inc
-        - js
     phpspec:
-        format: pretty
-        stop_on_failure: true
-        verbose: true
+      format: pretty
+      stop_on_failure: true
+      verbose: true
     securitychecker:
-        lockfile: ./composer.lock
-        format: ~
-        end_point: ~
-        timeout: ~
-        run_always: false
-
+      lockfile: ./composer.lock
+      format: ~
+      end_point: ~
+      timeout: ~
+      run_always: false
+    composer_require_checker:
+      composer_file: 'composer.json'
+      config_file: ~
+      ignore_parse_errors: false
+      triggered_by: ['composer.json', 'composer.lock', '*.php']
+    infection:
+      threads: 10
+      min_msi: 30
+      min_covered_msi: 30

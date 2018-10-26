@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace drupol\Yaroc;
 
 use drupol\Yaroc\Plugin\ProviderInterface;
@@ -159,8 +161,8 @@ class RandomOrgAPI implements RandomOrgAPIInterface
      */
     public function get(ProviderInterface $methodPlugin) :array
     {
-        return json_decode(
-            (string) $this
+        return \json_decode(
+            $this
                 ->call($methodPlugin)
                 ->getBody()
                 ->getContents(),
@@ -207,12 +209,12 @@ class RandomOrgAPI implements RandomOrgAPIInterface
      *
      * @param \Psr\Http\Message\ResponseInterface $response
      *
-     * @return \Exception|ResponseInterface
+     * @return ResponseInterface
      */
     private function validateResponse(ResponseInterface $response) :ResponseInterface
     {
         if (200 === $response->getStatusCode()) {
-            $body = json_decode((string) $response->getBody()->getContents(), true);
+            $body = \json_decode($response->getBody()->getContents(), true);
 
             if (isset($body['error']['code'])) {
                 switch ($body['error']['code']) {

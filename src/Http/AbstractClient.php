@@ -24,7 +24,7 @@ abstract class AbstractClient
     /**
      * The HTTP message factory.
      *
-     * @var \Http\Message\MessageFactory|null
+     * @var \Http\Message\MessageFactory
      */
     private $messageFactory;
 

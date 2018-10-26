@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace drupol\Yaroc\Plugin\RychRandom\Generator;
 
 use drupol\Yaroc\Plugin\Provider;
-use drupol\Yaroc\RandomOrgAPI;
 use drupol\Yaroc\RandomOrgAPIInterface;
 use Rych\Random\Generator\GeneratorInterface;
 
@@ -17,14 +18,14 @@ class RandomOrg implements GeneratorInterface
     /**
      * The Random.Org API.
      *
-     * @var RandomOrgAPI
+     * @var RandomOrgAPIInterface
      */
     protected $randomOrgAPI;
 
     /**
      * RandomOrg constructor.
      *
-     * @param \drupol\Yaroc\RandomOrgAPIInterface $randomOrgAPI
+     * @param RandomOrgAPIInterface $randomOrgAPI
      */
     public function __construct(RandomOrgAPIInterface $randomOrgAPI)
     {
@@ -34,7 +35,7 @@ class RandomOrg implements GeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public static function getPriority()
+    public static function getPriority(): int
     {
         return GeneratorInterface::PRIORITY_HIGH;
     }
@@ -42,7 +43,7 @@ class RandomOrg implements GeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public static function isSupported()
+    public static function isSupported(): bool
     {
         return class_exists('RandomOrgAPI');
     }
@@ -50,7 +51,7 @@ class RandomOrg implements GeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate($size)
+    public function generate($size): string
     {
         $provider = Provider::withResource('generateStrings')
             ->withParameters([

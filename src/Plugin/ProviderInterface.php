@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace drupol\Yaroc\Plugin;
 
 use Http\Client\HttpClient;
@@ -10,28 +12,28 @@ interface ProviderInterface
     /**
      * @param string $endpoint
      *
-     * @return $this
+     * @return ProviderInterface
      */
     public function withEndPoint(string $endpoint) :ProviderInterface;
 
     /**
      * @param array $parameters
      *
-     * @return $this
+     * @return ProviderInterface
      */
     public function withParameters(array $parameters) :ProviderInterface;
 
     /**
      * @param \Http\Client\HttpClient $httpClient
      *
-     * @return $this
+     * @return ProviderInterface
      */
     public function withHttpClient(HttpClient $httpClient);
 
     /**
      * @param string $resource
      *
-     * @return \drupol\Yaroc\Plugin\ProviderInterface
+     * @return ProviderInterface
      */
     public static function withResource(string $resource) :ProviderInterface;
 
@@ -58,8 +60,6 @@ interface ProviderInterface
 
     /**
      * Do the request.
-     *
-     * @throws \Exception|\Http\Client\Exception
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

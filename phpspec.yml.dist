@@ -1,9 +1,7 @@
 formatter.name: pretty
+
 extensions:
-  drupol\PhpspecAnnotation\PhpspecAnnotation: ~
   LeanPHP\PhpSpec\CodeCoverage\CodeCoverageExtension:
-    blacklist:
-      - src/test
     format:
       - html
       - clover
@@ -11,5 +9,5 @@ extensions:
       - text
     output:
       html: build/coverage
-      clover: build/logs/clover.xml
+      clover: build/coverage.xml
       php: build/coverage.php

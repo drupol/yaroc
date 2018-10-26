@@ -92,7 +92,7 @@ class RandomOrgAPISpec extends ObjectBehavior
             ->withParameters(['n' => 10, 'min' => 0, 'max' => 100, 'unexistent' => 'test']);
         $this->shouldThrow(\InvalidArgumentException::class)->during('call', [$provider]);
 
-        $provider = Provider::withResource('unexistentResourse')
+        $provider = Provider::withResource('unexistentResource')
             ->withParameters([]);
         $this->shouldThrow(\BadFunctionCallException::class)->during('call', [$provider]);
 
