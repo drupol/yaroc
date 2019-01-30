@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace drupol\Yaroc\Examples;
 
 use drupol\Yaroc\Plugin\Provider;

@@ -35,6 +35,22 @@ class RandomOrg implements GeneratorInterface
     /**
      * {@inheritdoc}
      */
+    public function generate($size): string
+    {
+        $provider = Provider::withResource('generateStrings')
+            ->withParameters([
+                'n' => 1,
+                'length' => $size,
+                'characters' => implode('', array_merge(range('A', 'Z'), range('a', 'z'), range(0, 9))),
+            ]);
+        $result = $this->randomOrgAPI->getData($provider);
+
+        return $result[0];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public static function getPriority(): int
     {
         return GeneratorInterface::PRIORITY_HIGH;
@@ -46,21 +62,5 @@ class RandomOrg implements GeneratorInterface
     public static function isSupported(): bool
     {
         return class_exists('RandomOrgAPI');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function generate($size): string
-    {
-        $provider = Provider::withResource('generateStrings')
-            ->withParameters([
-                'n' => 1,
-                'length' => $size,
-                'characters' => implode(array_merge(range('A', 'Z'), range('a', 'z'), range(0, 9))),
-            ]);
-        $result = $this->randomOrgAPI->getData($provider);
-
-        return $result[0];
     }
 }

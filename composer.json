@@ -29,24 +29,9 @@
   "require-dev": {
     "scrutinizer/ocular": "^1.5",
     "codacy/coverage": "^1.4",
+    "drupol/php-conventions": "^1.0",
     "drupol/phpspec-annotation": "^1.0",
-    "friendsofphp/php-cs-fixer": "^2.10",
-    "jakub-onderka/php-parallel-lint": "^1.0",
-    "leanphp/phpspec-code-coverage": "^4",
-    "maglnet/composer-require-checker": "^1.1",
-    "monolog/monolog": "^1.0",
     "php-http/guzzle6-adapter": "^1.1||^2",
-    "phpmd/phpmd": "^2.6",
-    "phpro/grumphp": "^0.14.0",
-    "phpspec/phpspec": "^4",
-    "phpstan/phpstan": "^0.10.3",
-    "roave/security-advisories": "dev-master",
-    "sebastian/phpcpd": "^4.0",
-    "sensiolabs/security-checker": "^4.1",
-    "squizlabs/php_codesniffer": "^3",
-    "infection/infection": "^0.10.5",
-    "apigen/apigen": "dev-master",
-    "roave/better-reflection": "dev-master",
     "ircmaxell/random-lib": "^1.2",
     "rych/random": "^0.1.0"
   },
@@ -63,7 +48,6 @@
   "autoload": {
     "psr-4": {
       "drupol\\Yaroc\\": "src/",
-      "drupol\\Yaroc\\Tests\\": "tests/src/",
       "drupol\\Yaroc\\Examples\\": "examples/"
     }
   }

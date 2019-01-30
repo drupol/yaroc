@@ -19,18 +19,17 @@ use Symfony\Component\Dotenv\Dotenv;
 class RandomOrgAPI implements RandomOrgAPIInterface
 {
     /**
-     * The default Random.org endpoint.
-     *
-     * @var string;
-     */
-    private $endpoint = 'https://api.random.org/json-rpc/1/invoke';
-
-    /**
      * The configuration.
      *
      * @var array
      */
     private $configuration;
+    /**
+     * The default Random.org endpoint.
+     *
+     * @var string;
+     */
+    private $endpoint = 'https://api.random.org/json-rpc/1/invoke';
 
     /**
      * The HTTP client.
@@ -43,9 +42,9 @@ class RandomOrgAPI implements RandomOrgAPIInterface
      * RandomOrgAPI constructor.
      *
      * @param \Http\Client\HttpClient $httpClient
-     *   The HTTP client.
+     *   The HTTP client
      * @param array $configuration
-     *   The configuration array.
+     *   The configuration array
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
@@ -72,7 +71,7 @@ class RandomOrgAPI implements RandomOrgAPIInterface
         $files = array_filter(
             [
                 __DIR__ . '/../.env.dist',
-                __DIR__ . '/../.env'
+                __DIR__ . '/../.env',
             ],
             'file_exists'
         );
@@ -88,61 +87,7 @@ class RandomOrgAPI implements RandomOrgAPIInterface
     /**
      * {@inheritdoc}
      */
-    public function withApiKey(string $apikey) :RandomOrgAPIInterface
-    {
-        $clone = clone $this;
-
-        $configuration = $clone->getConfiguration();
-        $configuration['apiKey'] = $apikey;
-        $clone->configuration = $configuration;
-
-        return $clone;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withEndPoint(string $endpoint) :RandomOrgAPIInterface
-    {
-        $clone = clone $this;
-        $clone->endpoint = $endpoint;
-
-        return $clone;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withHttpClient(HttpClient $client) :RandomOrgAPIInterface
-    {
-        $clone = clone $this;
-        $clone->httpClient = $client;
-
-        return $clone;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getEndPoint() :string
-    {
-        return $this->endpoint;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getApiKey() :string
-    {
-        $configuration = $this->getConfiguration();
-
-        return isset($configuration['apiKey']) ? $configuration['apiKey'] : '';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function call(ProviderInterface $methodPlugin) :ResponseInterface
+    public function call(ProviderInterface $methodPlugin): ResponseInterface
     {
         $parameters = $methodPlugin->getParameters() +
             ['apiKey' => $this->getApiKey()];
@@ -159,7 +104,7 @@ class RandomOrgAPI implements RandomOrgAPIInterface
     /**
      * {@inheritdoc}
      */
-    public function get(ProviderInterface $methodPlugin) :array
+    public function get(ProviderInterface $methodPlugin): array
     {
         return \json_decode(
             $this
@@ -168,6 +113,24 @@ class RandomOrgAPI implements RandomOrgAPIInterface
                 ->getContents(),
             true
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getApiKey(): string
+    {
+        $configuration = $this->getConfiguration();
+
+        return isset($configuration['apiKey']) ? $configuration['apiKey'] : '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfiguration(): array
+    {
+        return $this->configuration;
     }
 
     /**
@@ -191,17 +154,53 @@ class RandomOrgAPI implements RandomOrgAPIInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfiguration() :array
+    public function getEndPoint(): string
     {
-        return $this->configuration;
+        return $this->endpoint;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getHttpClient() :HttpClient
+    public function getHttpClient(): HttpClient
     {
         return $this->httpClient;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withApiKey(string $apikey): RandomOrgAPIInterface
+    {
+        $clone = clone $this;
+
+        $configuration = $clone->getConfiguration();
+        $configuration['apiKey'] = $apikey;
+        $clone->configuration = $configuration;
+
+        return $clone;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withEndPoint(string $endpoint): RandomOrgAPIInterface
+    {
+        $clone = clone $this;
+        $clone->endpoint = $endpoint;
+
+        return $clone;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withHttpClient(HttpClient $client): RandomOrgAPIInterface
+    {
+        $clone = clone $this;
+        $clone->httpClient = $client;
+
+        return $clone;
     }
 
     /**
@@ -211,7 +210,7 @@ class RandomOrgAPI implements RandomOrgAPIInterface
      *
      * @return ResponseInterface
      */
-    private function validateResponse(ResponseInterface $response) :ResponseInterface
+    private function validateResponse(ResponseInterface $response): ResponseInterface
     {
         if (200 === $response->getStatusCode()) {
             $body = \json_decode($response->getBody()->getContents(), true);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace drupol\Yaroc\Examples;
 
 use drupol\Yaroc\Plugin\Provider;
@@ -15,6 +17,14 @@ class Pi extends BaseExample
      * @var float
      */
     protected $estimation;
+
+    /**
+     * @return float
+     */
+    public function get()
+    {
+        return $this->estimation;
+    }
 
     /**
      * @param int $throws
@@ -33,25 +43,17 @@ class Pi extends BaseExample
         $numbers = $this->getRandomOrgAPI()->getData($provider);
 
         $inside = 0;
-        for ($i = 0; $i < $throws; $i++) {
+        for ($i = 0; $i < $throws; ++$i) {
             $x = $numbers[$i];
-            $y = $numbers[$i+1];
+            $y = $numbers[$i + 1];
 
-            if (sqrt($x*$x + $y*$y) <= 1) {
-                $inside++;
+            if (1 >= sqrt($x * $x + $y * $y)) {
+                ++$inside;
             }
         }
 
-        $this->estimation = 4 * $inside/$throws;
+        $this->estimation = 4 * $inside / $throws;
 
         return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function get()
-    {
-        return $this->estimation;
     }
 }

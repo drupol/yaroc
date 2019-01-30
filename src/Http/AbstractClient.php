@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace drupol\Yaroc\Http;
 
@@ -32,7 +32,7 @@ abstract class AbstractClient
      * AbstractClient constructor.
      *
      * @param \Http\Client\HttpClient $client
-     * @param \Http\Message\MessageFactory|null $messageFactory
+     * @param null|\Http\Message\MessageFactory $messageFactory
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
@@ -40,19 +40,6 @@ abstract class AbstractClient
     {
         $this->httpClient = $client ?? HttpClientDiscovery::find();
         $this->messageFactory = $messageFactory ?? MessageFactoryDiscovery::find();
-    }
-
-    /**
-     * @param \Http\Client\HttpClient $httpClient
-     *
-     * @return \drupol\Yaroc\Http\AbstractClient
-     */
-    public function withHttpClient(HttpClient $httpClient) :AbstractClient
-    {
-        $clone = clone $this;
-        $clone->httpClient = $httpClient;
-
-        return $clone;
     }
 
     /**
@@ -73,5 +60,18 @@ abstract class AbstractClient
     public function getMessageFactory(): MessageFactory
     {
         return $this->messageFactory;
+    }
+
+    /**
+     * @param \Http\Client\HttpClient $httpClient
+     *
+     * @return \drupol\Yaroc\Http\AbstractClient
+     */
+    public function withHttpClient(HttpClient $httpClient): AbstractClient
+    {
+        $clone = clone $this;
+        $clone->httpClient = $httpClient;
+
+        return $clone;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace drupol\Yaroc\Examples;
 
 use drupol\Yaroc\Plugin\Provider;
@@ -12,7 +14,7 @@ use drupol\Yaroc\Plugin\Provider;
 class Time extends BaseExample
 {
     /**
-     * @var integer[]
+     * @var int[]
      */
     protected $time;
 
@@ -50,7 +52,7 @@ class Time extends BaseExample
     /**
      * Get the time.
      *
-     * @return integer[]
+     * @return int[]
      */
     public function get()
     {

@@ -14,61 +14,31 @@ use Psr\Http\Message\ResponseInterface;
 interface RandomOrgAPIInterface
 {
     /**
-     * @param string $apikey
-     *
-     * @return \drupol\Yaroc\RandomOrgAPI
-     */
-    public function withApiKey(string $apikey) :RandomOrgAPIInterface;
-
-    /**
-     * @param \Http\Client\HttpClient $client
-     *
-     * @return \drupol\Yaroc\RandomOrgAPI
-     */
-    public function withHttpClient(HttpClient $client) :RandomOrgAPIInterface;
-
-    /**
-     * @param string $endpoint
-     *
-     * @return \drupol\Yaroc\RandomOrgAPI
-     */
-    public function withEndPoint(string $endpoint) :RandomOrgAPIInterface;
-
-    /**
-     * Get the API endpoint.
-     *
-     * @return string
-     */
-    public function getEndPoint() :string;
-
-    /**
-     * Get the HTTP client.
-     *
-     * @return \Http\Client\HttpClient
-     */
-    public function getHttpClient() :HttpClient;
-
-    /**
-     * Get the Random.org API Key.
-     *
-     * @return string
-     *   The API Key.
-     */
-    public function getApiKey() :string;
-
-    /**
      * @param \drupol\Yaroc\Plugin\ProviderInterface $methodPlugin
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function call(ProviderInterface $methodPlugin) :ResponseInterface;
+    public function call(ProviderInterface $methodPlugin): ResponseInterface;
 
     /**
      * @param \drupol\Yaroc\Plugin\ProviderInterface $methodPlugin
      *
      * @return array
      */
-    public function get(ProviderInterface $methodPlugin) :array;
+    public function get(ProviderInterface $methodPlugin): array;
+
+    /**
+     * Get the Random.org API Key.
+     *
+     * @return string
+     *   The API Key
+     */
+    public function getApiKey(): string;
+
+    /**
+     * @return array
+     */
+    public function getConfiguration(): array;
 
     /**
      * @param \drupol\Yaroc\Plugin\ProviderInterface $methodPlugin
@@ -78,7 +48,37 @@ interface RandomOrgAPIInterface
     public function getData(ProviderInterface $methodPlugin);
 
     /**
-     * @return array
+     * Get the API endpoint.
+     *
+     * @return string
      */
-    public function getConfiguration() :array;
+    public function getEndPoint(): string;
+
+    /**
+     * Get the HTTP client.
+     *
+     * @return \Http\Client\HttpClient
+     */
+    public function getHttpClient(): HttpClient;
+
+    /**
+     * @param string $apikey
+     *
+     * @return \drupol\Yaroc\RandomOrgAPI
+     */
+    public function withApiKey(string $apikey): RandomOrgAPIInterface;
+
+    /**
+     * @param string $endpoint
+     *
+     * @return \drupol\Yaroc\RandomOrgAPI
+     */
+    public function withEndPoint(string $endpoint): RandomOrgAPIInterface;
+
+    /**
+     * @param \Http\Client\HttpClient $client
+     *
+     * @return \drupol\Yaroc\RandomOrgAPI
+     */
+    public function withHttpClient(HttpClient $client): RandomOrgAPIInterface;
 }

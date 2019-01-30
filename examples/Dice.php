@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace drupol\Yaroc\Examples;
 
 use drupol\Yaroc\Plugin\Provider;
@@ -11,7 +13,6 @@ use drupol\Yaroc\Plugin\Provider;
  */
 class Dice extends BaseExample
 {
-
     /**
      * @throws \Http\Client\Exception
      *

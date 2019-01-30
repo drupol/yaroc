@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace drupol\Yaroc\Plugin;
 
@@ -34,13 +34,37 @@ abstract class AbstractProvider extends AbstractClient implements ProviderInterf
     /**
      * {@inheritdoc}
      */
-    public function request() :ResponseInterface
+    public function getEndPoint(): string
+    {
+        return $this->endpoint;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getResource(): string
+    {
+        return $this->resource;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function request(): ResponseInterface
     {
         $body = (string) \json_encode([
-                'jsonrpc' => '2.0',
-                'id'      => \uniqid($this->getResource() . '_', true),
-                'params'  => $this->getParameters(),
-                'method'  => $this->getResource(),
+            'jsonrpc' => '2.0',
+            'id' => \uniqid($this->getResource() . '_', true),
+            'params' => $this->getParameters(),
+            'method' => $this->getResource(),
         ]);
 
         try {
@@ -64,7 +88,7 @@ abstract class AbstractProvider extends AbstractClient implements ProviderInterf
     /**
      * {@inheritdoc}
      */
-    public function withEndPoint(string $endpoint) :ProviderInterface
+    public function withEndPoint(string $endpoint): ProviderInterface
     {
         $clone = clone $this;
         $clone->endpoint = $endpoint;
@@ -75,18 +99,7 @@ abstract class AbstractProvider extends AbstractClient implements ProviderInterf
     /**
      * {@inheritdoc}
      */
-    public static function withResource(string $resource) :ProviderInterface
-    {
-        $clone = new static();
-        $clone->resource = $resource;
-
-        return $clone;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withParameters(array $parameters) :ProviderInterface
+    public function withParameters(array $parameters): ProviderInterface
     {
         $clone = clone $this;
         $clone->parameters = $parameters;
@@ -97,24 +110,11 @@ abstract class AbstractProvider extends AbstractClient implements ProviderInterf
     /**
      * {@inheritdoc}
      */
-    public function getEndPoint() :string
+    public static function withResource(string $resource): ProviderInterface
     {
-        return $this->endpoint;
-    }
+        $clone = new static();
+        $clone->resource = $resource;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParameters() :array
-    {
-        return $this->parameters;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getResource() :string
-    {
-        return $this->resource;
+        return $clone;
     }
 }
