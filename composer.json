@@ -21,9 +21,9 @@
   "require": {
     "php": ">=7",
     "ext-json": "*",
-    "php-http/httplug": "^1.1",
+    "php-http/httplug": "^1.1||^2",
     "php-http/discovery": "^1.4",
-    "php-http/client-common": "^1.7",
+    "php-http/client-common": "^1.7||^2",
     "symfony/dotenv": "^4.0"
   },
   "require-dev": {
@@ -35,7 +35,7 @@
     "leanphp/phpspec-code-coverage": "^4",
     "maglnet/composer-require-checker": "^1.1",
     "monolog/monolog": "^1.0",
-    "php-http/guzzle6-adapter": "^1.1",
+    "php-http/guzzle6-adapter": "^1.1||^2",
     "phpmd/phpmd": "^2.6",
     "phpro/grumphp": "^0.14.0",
     "phpspec/phpspec": "^4",
