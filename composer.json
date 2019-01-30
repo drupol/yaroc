@@ -5,8 +5,6 @@
   "keywords": ["random", "client", "random.org", "RNG"],
   "type": "library",
   "license": "MIT",
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "support": {
     "issues": "https://github.com/drupol/yaroc/issues",
     "source": "https://github.com/drupol/yaroc"
@@ -21,17 +19,16 @@
   "require": {
     "php": ">=7",
     "ext-json": "*",
-    "php-http/httplug": "^1.1||^2",
+    "php-http/httplug": "^2",
     "php-http/discovery": "^1.4",
-    "php-http/client-common": "^1.7||^2",
+    "php-http/client-common": "^2||2.0.0-RC1",
     "symfony/dotenv": "^4.0"
   },
   "require-dev": {
     "scrutinizer/ocular": "^1.5",
     "codacy/coverage": "^1.4",
-    "drupol/php-conventions": "^1.0",
-    "drupol/phpspec-annotation": "^1.0",
-    "php-http/guzzle6-adapter": "^1.1||^2",
+    "drupol/php-conventions": "^1",
+    "php-http/guzzle6-adapter": "^2",
     "ircmaxell/random-lib": "^1.2",
     "rych/random": "^0.1.0"
   },
