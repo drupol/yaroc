@@ -47,5 +47,10 @@
       "drupol\\Yaroc\\": "src/",
       "drupol\\Yaroc\\Examples\\": "examples/"
     }
+  },
+  "extra": {
+    "grumphp": {
+       "config-default-path": "vendor/drupol/php-conventions/config/php7/grumphp.yml"
+    }
   }
 }

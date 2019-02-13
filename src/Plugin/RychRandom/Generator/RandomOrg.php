@@ -41,7 +41,7 @@ class RandomOrg implements GeneratorInterface
             ->withParameters([
                 'n' => 1,
                 'length' => $size,
-                'characters' => implode('', array_merge(range('A', 'Z'), range('a', 'z'), range(0, 9))),
+                'characters' => \implode('', \array_merge(\range('A', 'Z'), \range('a', 'z'), \range(0, 9))),
             ]);
         $result = $this->randomOrgAPI->getData($provider);
 
@@ -61,6 +61,6 @@ class RandomOrg implements GeneratorInterface
      */
     public static function isSupported(): bool
     {
-        return class_exists('RandomOrgAPI');
+        return \class_exists('RandomOrgAPI');
     }
 }

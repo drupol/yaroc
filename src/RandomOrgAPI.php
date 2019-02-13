@@ -68,7 +68,7 @@ class RandomOrgAPI implements RandomOrgAPIInterface
         $this->httpClient = $httpClient;
 
         $dotenv = new Dotenv();
-        $files = array_filter(
+        $files = \array_filter(
             [
                 __DIR__ . '/../.env.dist',
                 __DIR__ . '/../.env',
@@ -77,7 +77,7 @@ class RandomOrgAPI implements RandomOrgAPIInterface
         );
         $dotenv->load(...$files);
 
-        if ($apikey = getenv('RANDOM_ORG_APIKEY')) {
+        if ($apikey = \getenv('RANDOM_ORG_APIKEY')) {
             $configuration += ['apiKey' => $apikey];
         }
 
