@@ -27,7 +27,7 @@ class Time extends BaseExample
      */
     public function find()
     {
-        $provider = Provider::withResource('generateIntegers');
+        $provider = (new Provider())->withResource('generateIntegers');
 
         $hours = $this->getRandomOrgAPI()->getData(
             $provider->withParameters(

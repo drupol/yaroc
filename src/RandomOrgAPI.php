@@ -16,7 +16,7 @@ use Symfony\Component\Dotenv\Dotenv;
 /**
  * Class RandomOrgAPI.
  */
-class RandomOrgAPI implements RandomOrgAPIInterface
+final class RandomOrgAPI implements RandomOrgAPIInterface
 {
     /**
      * The configuration.
@@ -122,7 +122,7 @@ class RandomOrgAPI implements RandomOrgAPIInterface
     {
         $configuration = $this->getConfiguration();
 
-        return isset($configuration['apiKey']) ? $configuration['apiKey'] : '';
+        return $configuration['apiKey'] ?? '';
     }
 
     /**

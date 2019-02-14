@@ -22,7 +22,7 @@ class Dice extends BaseExample
      */
     public function roll()
     {
-        $generateIntegers = Provider::withResource('generateIntegers')
+        $generateIntegers = (new Provider())->withResource('generateIntegers')
             ->withParameters(['n' => 2, 'min' => 1, 'max' => 6]);
 
         return $this->getRandomOrgAPI()->getData($generateIntegers);

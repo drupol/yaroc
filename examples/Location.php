@@ -27,7 +27,7 @@ class Location extends BaseExample
      */
     public function find()
     {
-        $provider = Provider::withResource('generateDecimalFractions')
+        $provider = (new Provider())->withResource('generateDecimalFractions')
             ->withParameters(['n' => 3, 'decimalPlaces' => 10]);
 
         $result = $this->getRandomOrgAPI()->getData($provider);

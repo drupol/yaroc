@@ -60,12 +60,16 @@ abstract class AbstractProvider extends AbstractClient implements ProviderInterf
      */
     public function request(): ResponseInterface
     {
-        $body = (string) \json_encode([
+        $body = \json_encode([
             'jsonrpc' => '2.0',
             'id' => \uniqid($this->getResource() . '_', true),
             'params' => $this->getParameters(),
             'method' => $this->getResource(),
         ]);
+
+        if (false === $body) {
+            throw new \RuntimeException('Unable to encode json-encode the request.');
+        }
 
         try {
             $response = $this->getHttpClient()->sendRequest(
@@ -110,9 +114,9 @@ abstract class AbstractProvider extends AbstractClient implements ProviderInterf
     /**
      * {@inheritdoc}
      */
-    public static function withResource(string $resource): ProviderInterface
+    public function withResource(string $resource): ProviderInterface
     {
-        $clone = new static();
+        $clone = clone $this;
         $clone->resource = $resource;
 
         return $clone;

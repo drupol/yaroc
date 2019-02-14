@@ -55,15 +55,15 @@ class RandomOrgAPISpec extends ObjectBehavior
 
     public function it_can_return_the_right_errorcode()
     {
-        $provider = Provider::withResource('generateIntegers')
+        $provider = (new Provider())->withResource('generateIntegers')
             ->withParameters(['n' => 10, 'min' => 0, 'max' => 100, 'unexistent' => 'test']);
         $this->shouldThrow(\InvalidArgumentException::class)->during('call', [$provider]);
 
-        $provider = Provider::withResource('unexistentResource')
+        $provider = (new Provider())->withResource('unexistentResource')
             ->withParameters([]);
         $this->shouldThrow(\BadFunctionCallException::class)->during('call', [$provider]);
 
-        $provider = Provider::withResource('generateIntegers')
+        $provider = (new Provider())->withResource('generateIntegers')
             ->withParameters(['n' => 10, 'min' => 0, 'max' => 100]);
         $this->withApiKey('plop')->shouldThrow(\RuntimeException::class)->during('call', [$provider]);
     }
@@ -108,7 +108,7 @@ class RandomOrgAPISpec extends ObjectBehavior
 
     public function let()
     {
-        $this->provider = Provider::withResource('generateIntegers')
+        $this->provider = (new Provider())->withResource('generateIntegers')
             ->withParameters(['n' => 10, 'min' => 0, 'max' => 100]);
     }
 }

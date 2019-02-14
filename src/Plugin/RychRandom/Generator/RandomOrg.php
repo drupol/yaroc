@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace drupol\Yaroc\Plugin\RychRandom\Generator;
 
 use drupol\Yaroc\Plugin\Provider;
+use drupol\Yaroc\RandomOrgAPI;
 use drupol\Yaroc\RandomOrgAPIInterface;
 use Rych\Random\Generator\GeneratorInterface;
 
@@ -37,12 +38,20 @@ class RandomOrg implements GeneratorInterface
      */
     public function generate($size): string
     {
-        $provider = Provider::withResource('generateStrings')
+        $provider = (new Provider())->withResource('generateStrings')
             ->withParameters([
                 'n' => 1,
                 'length' => $size,
-                'characters' => \implode('', \array_merge(\range('A', 'Z'), \range('a', 'z'), \range(0, 9))),
+                'characters' => \implode(
+                    '',
+                    \array_merge(
+                        \range('A', 'Z'),
+                        \range('a', 'z'),
+                        \range(0, 9)
+                    )
+                ),
             ]);
+
         $result = $this->randomOrgAPI->getData($provider);
 
         return $result[0];
@@ -61,6 +70,6 @@ class RandomOrg implements GeneratorInterface
      */
     public static function isSupported(): bool
     {
-        return \class_exists('RandomOrgAPI');
+        return \class_exists(RandomOrgAPI::class);
     }
 }

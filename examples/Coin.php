@@ -29,7 +29,7 @@ class Coin extends BaseExample
     {
         $parameters = ['n' => 1, 'min' => 0, 'max' => 1];
 
-        $generateIntegers = Provider::withResource('generateIntegers')
+        $generateIntegers = (new Provider())->withResource('generateIntegers')
             ->withParameters($parameters);
 
         $result = $this->getRandomOrgAPI()->getData($generateIntegers);

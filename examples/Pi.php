@@ -37,7 +37,7 @@ class Pi extends BaseExample
      */
     public function run($throws = 1000)
     {
-        $provider = Provider::withResource('generateDecimalFractions')
+        $provider = (new Provider())->withResource('generateDecimalFractions')
             ->withParameters(['n' => $throws * 2, 'decimalPlaces' => 6]);
 
         $numbers = $this->getRandomOrgAPI()->getData($provider);

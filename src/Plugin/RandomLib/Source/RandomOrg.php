@@ -5,7 +5,9 @@ declare(strict_types = 1);
 namespace drupol\Yaroc\Plugin\RandomLib\Source;
 
 use drupol\Yaroc\Plugin\Provider;
+use drupol\Yaroc\RandomOrgAPI;
 use drupol\Yaroc\RandomOrgAPIInterface;
+use RandomLib\AbstractSource;
 use SecurityLib\Strength;
 
 /**
@@ -17,7 +19,7 @@ use SecurityLib\Strength;
  *
  * @codeCoverageIgnore
  */
-class RandomOrg extends \RandomLib\AbstractSource
+class RandomOrg extends AbstractSource
 {
     /**
      * The Random.Org API.
@@ -47,11 +49,18 @@ class RandomOrg extends \RandomLib\AbstractSource
      */
     public function generate($size): string
     {
-        $provider = Provider::withResource('generateStrings')
+        $provider = (new Provider())->withResource('generateStrings')
             ->withParameters([
                 'n' => 1,
                 'length' => $size,
-                'characters' => \implode('', \array_merge(\range('A', 'Z'), \range('a', 'z'), \range(0, 9))),
+                'characters' => \implode(
+                    '',
+                    \array_merge(
+                        \range('A', 'Z'),
+                        \range('a', 'z'),
+                        \range(0, 9)
+                    )
+                ),
             ]);
 
         $result = $this->randomOrgAPI->getData($provider);
@@ -78,6 +87,6 @@ class RandomOrg extends \RandomLib\AbstractSource
      */
     public static function isSupported(): bool
     {
-        return \class_exists('RandomOrgAPI');
+        return \class_exists(RandomOrgAPI::class);
     }
 }

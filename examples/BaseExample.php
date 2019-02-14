@@ -23,7 +23,7 @@ abstract class BaseExample
      */
     public function __construct()
     {
-        $this->randomOrgAPI = (new RandomOrgAPI());
+        $this->randomOrgAPI = new RandomOrgAPI();
     }
 
     /**

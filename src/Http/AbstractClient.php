@@ -8,11 +8,13 @@ use Http\Client\HttpClient;
 use Http\Discovery\HttpClientDiscovery;
 use Http\Discovery\MessageFactoryDiscovery;
 use Http\Message\MessageFactory;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class AbstractClient.
  */
-abstract class AbstractClient
+abstract class AbstractClient implements HttpClient
 {
     /**
      * The HTTP client.
@@ -60,6 +62,14 @@ abstract class AbstractClient
     public function getMessageFactory(): MessageFactory
     {
         return $this->messageFactory;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sendRequest(RequestInterface $request): ResponseInterface
+    {
+        return $this->httpClient->sendRequest($request);
     }
 
     /**

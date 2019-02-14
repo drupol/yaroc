@@ -63,5 +63,5 @@ interface ProviderInterface
      *
      * @return ProviderInterface
      */
-    public static function withResource(string $resource): ProviderInterface;
+    public function withResource(string $resource): ProviderInterface;
 }
