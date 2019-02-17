@@ -222,16 +222,19 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
                             'Invalid Request: ' . $body['error']['message'],
                             $body['error']['code']
                         );
+
                     case -32601:
                         throw new \BadFunctionCallException(
                             'Procedure not found: ' . $body['error']['message'],
                             $body['error']['code']
                         );
+
                     case -32602:
                         throw new \InvalidArgumentException(
                             'Invalid arguments: ' . $body['error']['message'],
                             $body['error']['code']
                         );
+
                     case -32603:
                         throw new \RuntimeException(
                             'Internal Error: ' . $body['error']['message'],
