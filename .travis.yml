@@ -9,16 +9,14 @@ cache:
     - $HOME/.drush/cache
     - $HOME/.composer/cache
 
-env:
-  global:
-    secure: "NT3ZVqvk/TweRtE1Q7848WOGEEsOcvKydnTRryjmkdeqZkC9LWy9flnPFtRsBKCH7ER8oTkCtRo9W9WZLm6+qc5nTR+ggezusp/8iuJccVlr0h8hD0+G80P26TMGJY1+0GGHSeJQZ1cwXRPpUivXOrqtx1e7uGBOahjro88VUCtftovXHZEdsmr0hx53M2Rd5kr1SrycBOSuec2cnppeMufg8th6GkCsKR7tLUQkJVI8xJe9d4qgrL+7uuPJP1d0WfdV6lJGGUguRER1+PowC6dc+h1jrJKQDwvANyf8718BPd+H0cqNLTExLEtXfZwRrysaQPrwONAm3mp4Fvdg9sXytLqoEIf1G6tH7OVxfQpLXU6O/2YfhfD65T+Dakm3mdSeN3kGOzoNQ/qrOaZxE3c3OF0nojnHhXRSY7xv9rV4+qhITCbhMhWmbrVmzhn1oZzCrLN3tPoWsyS/dUX5S7VQ0OEjUxYL2+C6KRxiLUFN3jT3sl3jHd+0ECVJ5XvCeyNmw9fQVcL7uhoetmiOigbkLU+2kv1i97yri6hxE7SyekGp8rgzQBKkr+s9wWyBSS4rSan6j365O4pbCarsNRqLj1DYVmLU6UgzR0wSkN95AlnnYPEJLiUPJlqQB6UXQ+MKbv7d19Kqa/+F79ME99r0Lz31ASgzKyDZctzwis4="
-
 php:
   - 7.1
   - 7.2
+  - 7.3
 
-before_install:
-  - openssl aes-256-cbc -K $encrypted_a13fb9434454_key -iv $encrypted_a13fb9434454_iv -in apikey.enc -out .enc -d
+matrix:
+  allow_failures:
+    - php: 7.3
 
 install:
   - composer install
