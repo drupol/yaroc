@@ -1,5 +1,13 @@
+[![Latest Stable Version](https://img.shields.io/packagist/v/drupol/yaroc.svg?style=flat-square)](https://packagist.org/packages/drupol/yaroc)
+ [![GitHub stars](https://img.shields.io/github/stars/drupol/yaroc.svg?style=flat-square)](https://packagist.org/packages/drupol/yaroc)
+ [![Total Downloads](https://img.shields.io/packagist/dt/drupol/yaroc.svg?style=flat-square)](https://packagist.org/packages/drupol/yaroc)
+ [![Build Status](https://img.shields.io/travis/drupol/yaroc/master.svg?style=flat-square)](https://travis-ci.org/drupol/yaroc)
+ [![Scrutinizer code quality](https://img.shields.io/scrutinizer/quality/g/drupol/yaroc/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/drupol/yaroc/?branch=master)
+ [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/drupol/yaroc/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/drupol/yaroc/?branch=master)
+ [![Mutation testing badge](https://badge.stryker-mutator.io/github.com/drupol/yaroc/master)](https://stryker-mutator.github.io)
+ [![License](https://img.shields.io/packagist/l/drupol/yaroc.svg?style=flat-square)](https://packagist.org/packages/drupol/yaroc)
+
 ## YAROC
-[![Build Status](https://travis-ci.org/drupol/yaroc.svg?branch=master)](https://travis-ci.org/drupol/yaroc) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7231dd2876b14e90a02cd1df9055309b)](https://www.codacy.com/app/drupol/yaroc) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/7231dd2876b14e90a02cd1df9055309b)](https://www.codacy.com/app/drupol/yaroc) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/drupol/yaroc/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/drupol/yaroc/?branch=master) [![Versioneye Status](https://www.versioneye.com/user/projects/58434f1d1f3a6d01f62cbee1/badge.svg)](https://www.versioneye.com/user/projects/58434f1d1f3a6d01f62cbee1)
 
 Yet Another [Random.Org](https://random.org) Client.
 
