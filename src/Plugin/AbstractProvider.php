@@ -5,9 +5,12 @@ declare(strict_types = 1);
 namespace drupol\Yaroc\Plugin;
 
 use drupol\Yaroc\Http\AbstractClient;
-use Http\Client\Exception\HttpException;
-use Psr\Http\Message\ResponseInterface;
+use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
+/**
+ * Class AbstractProvider.
+ */
 abstract class AbstractProvider extends AbstractClient implements ProviderInterface
 {
     /**
@@ -60,29 +63,20 @@ abstract class AbstractProvider extends AbstractClient implements ProviderInterf
      */
     public function request(): ResponseInterface
     {
-        $body = \json_encode([
+        $body = [
             'jsonrpc' => '2.0',
-            'id' => \uniqid($this->getResource() . '_', true),
+            'id' => uniqid($this->getResource() . '_', true),
             'params' => $this->getParameters(),
             'method' => $this->getResource(),
-        ]);
-
-        if (false === $body) {
-            throw new \RuntimeException('Unable to encode json-encode the request.');
-        }
+        ];
 
         try {
-            $response = $this->getHttpClient()->sendRequest(
-                $this->getMessageFactory()->createRequest(
-                    'POST',
-                    $this->getEndPoint(),
-                    [],
-                    $body
-                )
+            $response = $this->getHttpClient()->request(
+                'POST',
+                $this->getEndPoint(),
+                ['json' => $body]
             );
-        } catch (HttpException $exception) {
-            throw new \Exception($exception->getMessage());
-        } catch (\Exception $exception) {
+        } catch (ExceptionInterface $exception) {
             throw new \Exception($exception->getMessage());
         }
 

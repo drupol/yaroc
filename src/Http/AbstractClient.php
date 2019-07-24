@@ -4,80 +4,47 @@ declare(strict_types = 1);
 
 namespace drupol\Yaroc\Http;
 
-use Http\Client\HttpClient;
-use Http\Discovery\HttpClientDiscovery;
-use Http\Discovery\MessageFactoryDiscovery;
-use Http\Message\MessageFactory;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\HttpClient\NativeHttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * Class AbstractClient.
  */
-abstract class AbstractClient implements HttpClient
+abstract class AbstractClient
 {
     /**
      * The HTTP client.
      *
-     * @var \Http\Client\HttpClient
+     * @var \Symfony\Contracts\HttpClient\HttpClientInterface
      */
     private $httpClient;
 
     /**
-     * The HTTP message factory.
-     *
-     * @var \Http\Message\MessageFactory
-     */
-    private $messageFactory;
-
-    /**
      * AbstractClient constructor.
      *
-     * @param \Http\Client\HttpClient $client
-     * @param null|\Http\Message\MessageFactory $messageFactory
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
+     * @param \Symfony\Contracts\HttpClient\HttpClientInterface $client
      */
-    public function __construct(HttpClient $client = null, MessageFactory $messageFactory = null)
+    public function __construct(HttpClientInterface $client = null)
     {
-        $this->httpClient = $client ?? HttpClientDiscovery::find();
-        $this->messageFactory = $messageFactory ?? MessageFactoryDiscovery::find();
+        $this->httpClient = $client ?? new NativeHttpClient();
     }
 
     /**
      * Returns the HTTP adapter.
      *
-     * @return HttpClient
+     * @return HttpClientInterface
      */
-    public function getHttpClient(): HttpClient
+    public function getHttpClient(): HttpClientInterface
     {
         return $this->httpClient;
     }
 
     /**
-     * Get the message factory.
-     *
-     * @return MessageFactory
-     */
-    public function getMessageFactory(): MessageFactory
-    {
-        return $this->messageFactory;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function sendRequest(RequestInterface $request): ResponseInterface
-    {
-        return $this->httpClient->sendRequest($request);
-    }
-
-    /**
-     * @param \Http\Client\HttpClient $httpClient
+     * @param \Symfony\Contracts\HttpClient\HttpClientInterface $httpClient
      *
      * @return \drupol\Yaroc\Http\AbstractClient
      */
-    public function withHttpClient(HttpClient $httpClient): AbstractClient
+    public function withHttpClient(HttpClientInterface $httpClient): self
     {
         $clone = clone $this;
         $clone->httpClient = $httpClient;

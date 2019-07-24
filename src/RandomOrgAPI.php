@@ -5,13 +5,11 @@ declare(strict_types = 1);
 namespace drupol\Yaroc;
 
 use drupol\Yaroc\Plugin\ProviderInterface;
-use Http\Client\Common\Plugin\HeaderDefaultsPlugin;
-use Http\Client\Common\Plugin\RetryPlugin;
-use Http\Client\Common\PluginClient;
-use Http\Client\HttpClient;
-use Http\Discovery\HttpClientDiscovery;
-use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\HttpClient\NativeHttpClient;
+use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * Class RandomOrgAPI.
@@ -24,6 +22,7 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
      * @var array
      */
     private $configuration;
+
     /**
      * The default Random.org endpoint.
      *
@@ -34,33 +33,26 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
     /**
      * The HTTP client.
      *
-     * @var \Http\Client\HttpClient
+     * @var \Symfony\Contracts\HttpClient\HttpClientInterface
      */
     private $httpClient;
 
     /**
      * RandomOrgAPI constructor.
      *
-     * @param \Http\Client\HttpClient $httpClient
+     * @param \Symfony\Contracts\HttpClient\HttpClientInterface $httpClient
      *   The HTTP client
      * @param array $configuration
      *   The configuration array
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function __construct(HttpClient $httpClient = null, array $configuration = [])
+    public function __construct(HttpClientInterface $httpClient = null, array $configuration = [])
     {
         if (null === $httpClient) {
-            $httpClient = new PluginClient(
-                HttpClientDiscovery::find(),
+            $httpClient = new NativeHttpClient(
                 [
-                    new HeaderDefaultsPlugin([
-                        'Content-Type' => 'application/json',
+                    'headers' => [
                         'User-Agent' => 'YAROC (http://github.com/drupol/yaroc)',
-                    ]),
-                    new RetryPlugin([
-                        'retries' => 5,
-                    ]),
+                    ],
                 ]
             );
         }
@@ -68,7 +60,7 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
         $this->httpClient = $httpClient;
 
         $dotenv = new Dotenv();
-        $files = \array_filter(
+        $files = array_filter(
             [
                 __DIR__ . '/../.env.dist',
                 __DIR__ . '/../.env',
@@ -77,7 +69,7 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
         );
         $dotenv->load(...$files);
 
-        if ($apikey = \getenv('RANDOM_ORG_APIKEY')) {
+        if ($apikey = getenv('RANDOM_ORG_APIKEY')) {
             $configuration += ['apiKey' => $apikey];
         }
 
@@ -92,13 +84,17 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
         $parameters = $methodPlugin->getParameters() +
             ['apiKey' => $this->getApiKey()];
 
-        return $this->validateResponse(
-            $methodPlugin
+        try {
+            $response = $methodPlugin
                 ->withEndPoint($this->getEndPoint())
                 ->withHttpClient($this->getHttpClient())
                 ->withParameters($parameters)
-                ->request()
-        );
+                ->request();
+        } catch (HttpExceptionInterface $exception) {
+            throw $exception;
+        }
+
+        return $this->validateResponse($response);
     }
 
     /**
@@ -106,13 +102,7 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
      */
     public function get(ProviderInterface $methodPlugin): array
     {
-        return \json_decode(
-            $this
-                ->call($methodPlugin)
-                ->getBody()
-                ->getContents(),
-            true
-        );
+        return $this->call($methodPlugin)->toArray();
     }
 
     /**
@@ -162,7 +152,7 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
     /**
      * {@inheritdoc}
      */
-    public function getHttpClient(): HttpClient
+    public function getHttpClient(): HttpClientInterface
     {
         return $this->httpClient;
     }
@@ -195,7 +185,7 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
     /**
      * {@inheritdoc}
      */
-    public function withHttpClient(HttpClient $client): RandomOrgAPIInterface
+    public function withHttpClient(HttpClientInterface $client): RandomOrgAPIInterface
     {
         $clone = clone $this;
         $clone->httpClient = $client;
@@ -206,14 +196,21 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
     /**
      * Validate the response.
      *
-     * @param \Psr\Http\Message\ResponseInterface $response
+     * @param \Symfony\Contracts\HttpClient\ResponseInterface $response
+     *
+     * @throws \Symfony\Contracts\HttpClient\Exception\ExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      *
      * @return ResponseInterface
      */
     private function validateResponse(ResponseInterface $response): ResponseInterface
     {
         if (200 === $response->getStatusCode()) {
-            $body = \json_decode($response->getBody()->getContents(), true);
+            try {
+                $body = $response->toArray();
+            } catch (HttpExceptionInterface $exception) {
+                throw $exception;
+            }
 
             if (isset($body['error']['code'])) {
                 switch ($body['error']['code']) {
@@ -240,6 +237,7 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
                             'Internal Error: ' . $body['error']['message'],
                             $body['error']['code']
                         );
+
                     default:
                         throw new \RuntimeException(
                             'Invalid request/response: ' . $body['error']['message'],
@@ -248,8 +246,6 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
                 }
             }
         }
-
-        $response->getBody()->rewind();
 
         return $response;
     }

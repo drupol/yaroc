@@ -4,17 +4,17 @@ declare(strict_types = 1);
 
 namespace drupol\Yaroc\Plugin;
 
-use Http\Client\HttpClient;
-use Psr\Http\Message\ResponseInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 interface ProviderInterface
 {
     /**
      * Get the HTTP client.
      *
-     * @return \Http\Client\HttpClient
+     * @return \Symfony\Contracts\HttpClient\HttpClientInterface
      */
-    public function getHttpClient(): HttpClient;
+    public function getHttpClient(): HttpClientInterface;
 
     /**
      * Get the parameters.
@@ -33,7 +33,7 @@ interface ProviderInterface
     /**
      * Do the request.
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return \Symfony\Contracts\HttpClient\ResponseInterface
      */
     public function request(): ResponseInterface;
 
@@ -42,26 +42,26 @@ interface ProviderInterface
      *
      * @return ProviderInterface
      */
-    public function withEndPoint(string $endpoint): ProviderInterface;
+    public function withEndPoint(string $endpoint): self;
 
     /**
-     * @param \Http\Client\HttpClient $httpClient
+     * @param \Symfony\Contracts\HttpClient\HttpClientInterface $httpClient
      *
      * @return ProviderInterface
      */
-    public function withHttpClient(HttpClient $httpClient);
+    public function withHttpClient(HttpClientInterface $httpClient);
 
     /**
      * @param array $parameters
      *
      * @return ProviderInterface
      */
-    public function withParameters(array $parameters): ProviderInterface;
+    public function withParameters(array $parameters): self;
 
     /**
      * @param string $resource
      *
      * @return ProviderInterface
      */
-    public function withResource(string $resource): ProviderInterface;
+    public function withResource(string $resource): self;
 }

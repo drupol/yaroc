@@ -42,12 +42,12 @@ class RandomOrg implements GeneratorInterface
             ->withParameters([
                 'n' => 1,
                 'length' => $size,
-                'characters' => \implode(
+                'characters' => implode(
                     '',
-                    \array_merge(
-                        \range('A', 'Z'),
-                        \range('a', 'z'),
-                        \range(0, 9)
+                    array_merge(
+                        range('A', 'Z'),
+                        range('a', 'z'),
+                        range(0, 9)
                     )
                 ),
             ]);
@@ -70,6 +70,6 @@ class RandomOrg implements GeneratorInterface
      */
     public static function isSupported(): bool
     {
-        return \class_exists(RandomOrgAPI::class);
+        return class_exists(RandomOrgAPI::class);
     }
 }

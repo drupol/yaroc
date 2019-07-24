@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace drupol\Yaroc;
 
 use drupol\Yaroc\Plugin\ProviderInterface;
-use Http\Client\HttpClient;
-use Psr\Http\Message\ResponseInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * Class RandomOrgAPIInterface.
@@ -16,7 +16,7 @@ interface RandomOrgAPIInterface
     /**
      * @param \drupol\Yaroc\Plugin\ProviderInterface $methodPlugin
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return \Symfony\Contracts\HttpClient\ResponseInterface
      */
     public function call(ProviderInterface $methodPlugin): ResponseInterface;
 
@@ -57,28 +57,28 @@ interface RandomOrgAPIInterface
     /**
      * Get the HTTP client.
      *
-     * @return \Http\Client\HttpClient
+     * @return \Symfony\Contracts\HttpClient\HttpClientInterface
      */
-    public function getHttpClient(): HttpClient;
+    public function getHttpClient(): HttpClientInterface;
 
     /**
      * @param string $apikey
      *
      * @return \drupol\Yaroc\RandomOrgAPI
      */
-    public function withApiKey(string $apikey): RandomOrgAPIInterface;
+    public function withApiKey(string $apikey): self;
 
     /**
      * @param string $endpoint
      *
      * @return \drupol\Yaroc\RandomOrgAPI
      */
-    public function withEndPoint(string $endpoint): RandomOrgAPIInterface;
+    public function withEndPoint(string $endpoint): self;
 
     /**
-     * @param \Http\Client\HttpClient $client
+     * @param \Symfony\Contracts\HttpClient\HttpClientInterface $client
      *
      * @return \drupol\Yaroc\RandomOrgAPI
      */
-    public function withHttpClient(HttpClient $client): RandomOrgAPIInterface;
+    public function withHttpClient(HttpClientInterface $client): self;
 }
