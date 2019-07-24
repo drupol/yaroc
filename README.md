@@ -6,7 +6,9 @@
  [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/drupol/yaroc/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/drupol/yaroc/?branch=master)
  [![Mutation testing badge](https://badge.stryker-mutator.io/github.com/drupol/yaroc/master)](https://stryker-mutator.github.io)
  [![License](https://img.shields.io/packagist/l/drupol/yaroc.svg?style=flat-square)](https://packagist.org/packages/drupol/yaroc)
-
+ [![Say Thanks!](https://img.shields.io/badge/Say-thanks-brightgreen.svg?style=flat-square)](https://saythanks.io/to/drupol)
+ [![Donate!](https://img.shields.io/badge/Donate-Paypal-brightgreen.svg?style=flat-square)](https://paypal.me/drupol)
+ 
 ## YAROC
 
 Yet Another [Random.Org](https://random.org) Client.
@@ -17,8 +19,7 @@ Most of the classes of this library are stateless and immutable.
 
 ## Requirements
 
-* PHP >= 7.0,
-* A [PSR-7](http://www.php-fig.org/psr/psr-7/) http client ([Guzzle](https://github.com/guzzle/guzzle) library or any other equivalent),
+* PHP >= 7.1.3
 
 ## Installation
 
@@ -31,13 +32,8 @@ $ composer install
 Or if you need it in an existent project, then run the following command to install the dependencies:
 
 ```bash
-$ composer require drupol/yaroc php-http/guzzle6-adapter
+$ composer require drupol/yaroc
 ```
-
-Why do we need `php-http/guzzle6-adapter` ?
-
-We are decoupled form any HTTP messaging client with help by [HTTPlug](http://httplug.io/).
-You may use any other HTTP client library that support [PSR-7](http://www.php-fig.org/psr/psr-7/).
 
 ## Usage
 First [request an API Key](https://api.random.org/api-keys) or use the temporary key.
@@ -51,41 +47,40 @@ Currently support all the [Random.org](https://random.org) API methods in the ba
 ## Examples
 
 ```php
-
 <?php
 
 require 'vendor/autoload.php';
 
-$generateIntegers = \drupol\Yaroc\Plugin\Provider::withResource('generateIntegers')
+use drupol\Yaroc\Plugin\Provider;
+use drupol\Yaroc\RandomOrgAPI;
+
+$generateIntegers = (new Provider())->withResource('generateIntegers')
     ->withParameters(['n' => 10, 'min' => 0, 'max' => 100]);
 
-$result = (new drupol\Yaroc\RandomOrgAPI())
+$result = (new RandomOrgAPI())
     ->withApiKey('00000000-0000-0000-0000-000000000000')
     ->getData($generateIntegers);
 
 print_r($result);
 
-$provider = \drupol\Yaroc\Plugin\Provider::withResource('generateStrings')
+$provider = (new Provider())->withResource('generateStrings')
     ->withParameters([
         'n' => 10,
         'length' => 15,
         'characters' => implode(array_merge(range('A', 'Z'), range('a', 'z'), range(0, 9))),
     ]);
 
-$result = (new drupol\Yaroc\RandomOrgAPI())
-    ->getData($provider);
+$result = (new RandomOrgAPI())->getData($provider);
 
 print_r($result);
 
 // To use the upcoming version 2 of the random.org's API:
 
-$result = (new drupol\Yaroc\RandomOrgAPI())
+$result = (new RandomOrgAPI())
     ->withEndPoint('https://api.random.org/json-rpc/2/invoke')
     ->getData($provider);
 
 print_r($result);
-
-
 ```
 
 Providing the API key can be accomplished using a ```.env``` file. Copy the ```.env.dist``` file into ```.env``` and modify the latter accordingly.
@@ -101,9 +96,14 @@ YAROC provides a Source for [ircmaxell/RandomLib](https://github.com/ircmaxell/R
 
 require 'vendor/autoload.php';
 
+use drupol\Yaroc\RandomOrgAPI;
+use drupol\Yaroc\Plugin\RandomLib\Source\RandomOrg;
+
+$randomOrgApi = new RandomOrgAPI();
+
 $randomLib = new RandomLib\Factory();
 $generator = $randomLib->getGenerator(new SecurityLib\Strength(SecurityLib\Strength::HIGH))
-  ->addSource(new \drupol\Yaroc\Plugin\RandomLib\Source\RandomOrg());
+  ->addSource(new RandomOrg($randomOrgApi));
 $randomString = $generator->generateString(10);
 
 echo $randomString;
@@ -118,7 +118,12 @@ YAROC provides a Generator for [rchouinard/rych-random](https://github.com/rchou
 
 require 'vendor/autoload.php';
 
-$rychRandom = new Rych\Random\Random(new \drupol\Yaroc\Plugin\RychRandom\Generator\RandomOrg());
+use drupol\Yaroc\RandomOrgAPI;
+use drupol\Yaroc\Plugin\RychRandom\Generator\RandomOrg;
+
+$randomOrgApi = new RandomOrgAPI();
+
+$rychRandom = new Rych\Random\Random(new RandomOrg($randomOrgApi));
 $randomString = $rychRandom->getRandomString(8);
 
 echo $randomString;
