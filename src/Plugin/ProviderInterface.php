@@ -7,12 +7,15 @@ namespace drupol\Yaroc\Plugin;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
+/**
+ * Interface ProviderInterface.
+ */
 interface ProviderInterface
 {
     /**
      * Get the HTTP client.
      *
-     * @return \Symfony\Contracts\HttpClient\HttpClientInterface
+     * @return HttpClientInterface
      */
     public function getHttpClient(): HttpClientInterface;
 
@@ -33,7 +36,7 @@ interface ProviderInterface
     /**
      * Do the request.
      *
-     * @return \Symfony\Contracts\HttpClient\ResponseInterface
+     * @return ResponseInterface
      */
     public function request(): ResponseInterface;
 
@@ -45,7 +48,7 @@ interface ProviderInterface
     public function withEndPoint(string $endpoint): self;
 
     /**
-     * @param \Symfony\Contracts\HttpClient\HttpClientInterface $httpClient
+     * @param HttpClientInterface $httpClient
      *
      * @return ProviderInterface
      */
