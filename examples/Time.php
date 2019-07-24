@@ -19,11 +19,7 @@ class Time extends BaseExample
     protected $time;
 
     /**
-     * @throws \Http\Client\Exception
-     *
      * @return $this
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function find()
     {

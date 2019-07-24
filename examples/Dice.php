@@ -14,11 +14,7 @@ use drupol\Yaroc\Plugin\Provider;
 class Dice extends BaseExample
 {
     /**
-     * @throws \Http\Client\Exception
-     *
      * @return bool|mixed
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function roll()
     {

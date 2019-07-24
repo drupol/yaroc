@@ -19,11 +19,7 @@ class Location extends BaseExample
     protected $coordinates;
 
     /**
-     * @throws \Http\Client\Exception
-     *
      * @return $this
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function find()
     {
@@ -33,8 +29,8 @@ class Location extends BaseExample
         $result = $this->getRandomOrgAPI()->getData($provider);
 
         $this->coordinates = [
-            'x' => \rad2deg($result[0] * 2 * M_PI - M_PI),
-            'y' => \rad2deg(M_PI / 2 - \acos($result[1] * 2 - 1)),
+            'x' => rad2deg($result[0] * 2 * M_PI - M_PI),
+            'y' => rad2deg(M_PI / 2 - acos($result[1] * 2 - 1)),
             'z' => $result[2] * 1000,
         ];
 

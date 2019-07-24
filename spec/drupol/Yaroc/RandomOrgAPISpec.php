@@ -6,21 +6,21 @@ namespace spec\drupol\Yaroc;
 
 use drupol\Yaroc\Plugin\Provider;
 use drupol\Yaroc\RandomOrgAPI;
-use Http\Client\HttpClient;
 use PhpSpec\ObjectBehavior;
-use Psr\Http\Message\ResponseInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class RandomOrgAPISpec extends ObjectBehavior
 {
     public $provider;
 
-    public function it_can_call_a_provider()
+    public function it_can_call_a_provider(): void
     {
         $this->call($this->provider)
             ->shouldBeAnInstanceOf(ResponseInterface::class);
     }
 
-    public function it_can_get()
+    public function it_can_get(): void
     {
         $get = $this->get($this->provider);
         $get->shouldBeArray();
@@ -29,14 +29,14 @@ class RandomOrgAPISpec extends ObjectBehavior
         $get->shouldHaveKey('result');
     }
 
-    public function it_can_get_data()
+    public function it_can_get_data(): void
     {
         $get = $this->getData($this->provider);
         $get->shouldBeArray();
         $get->shouldHaveCount(10);
     }
 
-    public function it_can_get_the_configuration()
+    public function it_can_get_the_configuration(): void
     {
         $this
             ->withApiKey('123')
@@ -44,7 +44,7 @@ class RandomOrgAPISpec extends ObjectBehavior
             ->shouldBe(['apiKey' => '123']);
     }
 
-    public function it_can_query_new_api_version()
+    public function it_can_query_new_api_version(): void
     {
         $data = $this
             ->withEndPoint('https://api.random.org/json-rpc/2/invoke')
@@ -53,7 +53,7 @@ class RandomOrgAPISpec extends ObjectBehavior
         $data->shouldHaveCount(10);
     }
 
-    public function it_can_return_the_right_errorcode()
+    public function it_can_return_the_right_errorcode(): void
     {
         $provider = (new Provider())->withResource('generateIntegers')
             ->withParameters(['n' => 10, 'min' => 0, 'max' => 100, 'unexistent' => 'test']);
@@ -68,7 +68,7 @@ class RandomOrgAPISpec extends ObjectBehavior
         $this->withApiKey('plop')->shouldThrow(\RuntimeException::class)->during('call', [$provider]);
     }
 
-    public function it_can_set_an_apikey()
+    public function it_can_set_an_apikey(): void
     {
         $this->getApiKey()
             ->shouldNotBe('');
@@ -79,7 +79,7 @@ class RandomOrgAPISpec extends ObjectBehavior
             ->shouldBe('http://hello.world/');
     }
 
-    public function it_can_set_an_endpoint()
+    public function it_can_set_an_endpoint(): void
     {
         $this->getEndPoint()
             ->shouldBe('https://api.random.org/json-rpc/1/invoke');
@@ -90,7 +90,7 @@ class RandomOrgAPISpec extends ObjectBehavior
             ->shouldBe('http://hello.world/');
     }
 
-    public function it_can_set_an_httpclient(HttpClient $httpClient)
+    public function it_can_set_an_httpclient(HttpClientInterface $httpClient): void
     {
         $this->getHttpClient()
             ->shouldNotBeNull();
@@ -101,12 +101,12 @@ class RandomOrgAPISpec extends ObjectBehavior
             ->shouldBe($httpClient);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(RandomOrgAPI::class);
     }
 
-    public function let()
+    public function let(): void
     {
         $this->provider = (new Provider())->withResource('generateIntegers')
             ->withParameters(['n' => 10, 'min' => 0, 'max' => 100]);

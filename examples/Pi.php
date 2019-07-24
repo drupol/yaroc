@@ -29,11 +29,7 @@ class Pi extends BaseExample
     /**
      * @param int $throws
      *
-     * @throws \Http\Client\Exception
-     *
      * @return $this
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function run($throws = 1000)
     {
@@ -43,11 +39,12 @@ class Pi extends BaseExample
         $numbers = $this->getRandomOrgAPI()->getData($provider);
 
         $inside = 0;
+
         for ($i = 0; $i < $throws; ++$i) {
             $x = $numbers[$i];
             $y = $numbers[$i + 1];
 
-            if (1 >= \sqrt($x * $x + $y * $y)) {
+            if (1 >= sqrt($x * $x + $y * $y)) {
                 ++$inside;
             }
         }

@@ -19,11 +19,7 @@ class Coin extends BaseExample
     protected $face;
 
     /**
-     * @throws \Http\Client\Exception
-     *
      * @return $this
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function flip()
     {
