@@ -20,22 +20,24 @@ Most of the classes of this library are stateless and immutable.
 ## Requirements
 
 * PHP >= 7.1.3
+* An HTTP Client (see [symfony/http-client](https://github.com/symfony/http-client))
 
 ## Installation
 
-The first step to use `yaroc` is to install the dependencies with [Composer](https://getcomposer.org/):
-
 ```bash
-$ composer install
+composer require drupol/yaroc
 ```
 
-Or if you need it in an existent project, then run the following command to install the dependencies:
+YAROC needs an HTTP client in order to work, do
 
 ```bash
-$ composer require drupol/yaroc
+composer require symfony/http-client
 ```
+
+or provide one.
 
 ## Usage
+
 First [request an API Key](https://api.random.org/api-keys) or use the temporary key.
 
 __The temporary API key used in the examples will be disabled when the beta ends.__
