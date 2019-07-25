@@ -82,7 +82,7 @@ class RandomOrgAPISpec extends ObjectBehavior
     public function it_can_set_an_endpoint(): void
     {
         $this->getEndPoint()
-            ->shouldBe('https://api.random.org/json-rpc/1/invoke');
+            ->shouldBe('https://api.random.org/json-rpc/2/invoke');
 
         $this
             ->withEndPoint('http://hello.world/')

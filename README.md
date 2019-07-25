@@ -44,7 +44,7 @@ __The temporary API key used in the examples will be disabled when the beta ends
 
 You can call [any API methods described in the documentation](https://api.random.org/json-rpc/1/basic) from [Random.org](https://random.org).
 
-Currently support all the [Random.org](https://random.org) API methods in the basic and signed APIs.
+Currently support all the [Random.org](https://random.org) API method calls in the [basic](https://api.random.org/json-rpc/2/basic) and [signed](https://api.random.org/json-rpc/2/signed) APIs.
 
 ## Examples
 
@@ -73,14 +73,6 @@ $provider = (new Provider())->withResource('generateStrings')
     ]);
 
 $result = (new RandomOrgAPI())->getData($provider);
-
-print_r($result);
-
-// To use the upcoming version 2 of the random.org's API:
-
-$result = (new RandomOrgAPI())
-    ->withEndPoint('https://api.random.org/json-rpc/2/invoke')
-    ->getData($provider);
 
 print_r($result);
 ```
@@ -132,7 +124,15 @@ echo $randomString;
 
 ```
 
-## Tests coverage
+## History
+
+I discovered the [Random.Org](https://random.org) the 22 November 2016, by chance and I found the idea amazing.
+
+I had the idea to build a library that would be following the best development practice and up to date.
+
+Feel free to contact me at: pol.dellaiera@protonmail.com
+
+## Code quality, tests and benchmarks
 
 Make a copy of the file ```.env.dist``` into ```.env``` and set your API in it.
 If you do not have it, the tests will use the temporary API key.
@@ -143,16 +143,15 @@ To run the tests, run this command:
 composer grumphp
 ```
 
-## History
+Every time changes are introduced into the library, [Travis CI](https://travis-ci.org/drupol/phptree/builds) run the tests and the benchmarks.
 
-I discovered the [Random.Org](https://random.org) the 22 November 2016, by chance and I found the idea amazing.
+The library has tests written with [PHPSpec](http://www.phpspec.net/).
+Feel free to check them out in the `spec` directory. Run `composer phpspec` to trigger the tests.
 
-I had the idea to build a library that would be following the best development practice and up to date.
+Before each commit some inspections are executed with [GrumPHP](https://github.com/phpro/grumphp), run `./vendor/bin/grumphp run` to check manually.
 
-Feel free to contact me at: pol.dellaiera@protonmail.com
+[PHPInfection](https://github.com/infection/infection) is used to ensure that your code is properly tested, run `composer infection` to test your code.
 
-## TODO
+## Contributing
 
-- Documentation
-- Tests coverage
-
+Feel free to contribute to this library by sending Github pull requests. I'm quite reactive :-)

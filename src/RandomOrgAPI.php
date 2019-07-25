@@ -28,7 +28,7 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
      *
      * @var string;
      */
-    private $endpoint = 'https://api.random.org/json-rpc/1/invoke';
+    private $endpoint = 'https://api.random.org/json-rpc/2/invoke';
 
     /**
      * The HTTP client.
