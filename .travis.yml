@@ -21,6 +21,4 @@ script:
   - composer grumphp
 
 after_success:
-  - composer coveralls
-  - composer codacy
   - composer scrutinizer
