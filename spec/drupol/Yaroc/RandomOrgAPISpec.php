@@ -124,6 +124,8 @@ class RandomOrgAPISpec extends ObjectBehavior
         $dotenv = new Dotenv();
         $files = \array_filter(
             [
+                getcwd() . '/.env.dist',
+                getcwd() . '/.env',
                 __DIR__ . '/../../../.env.dist',
                 __DIR__ . '/../../../.env',
             ],
