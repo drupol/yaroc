@@ -1,12 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace drupol\Yaroc;
 
+use drupol\Yaroc\Http\Client;
 use drupol\Yaroc\Plugin\ProviderInterface;
-use Symfony\Component\Dotenv\Dotenv;
-use Symfony\Component\HttpClient\NativeHttpClient;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -47,32 +46,7 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
      */
     public function __construct(HttpClientInterface $httpClient = null, array $configuration = [])
     {
-        if (null === $httpClient) {
-            $httpClient = new NativeHttpClient(
-                [
-                    'headers' => [
-                        'User-Agent' => 'YAROC (http://github.com/drupol/yaroc)',
-                    ],
-                ]
-            );
-        }
-
-        $this->httpClient = $httpClient;
-
-        $dotenv = new Dotenv();
-        $files = array_filter(
-            [
-                __DIR__ . '/../.env.dist',
-                __DIR__ . '/../.env',
-            ],
-            'file_exists'
-        );
-        $dotenv->load(...$files);
-
-        if ($apikey = getenv('RANDOM_ORG_APIKEY')) {
-            $configuration += ['apiKey' => $apikey];
-        }
-
+        $this->httpClient = new Client($httpClient);
         $this->configuration = $configuration;
     }
 
