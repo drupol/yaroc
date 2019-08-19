@@ -134,13 +134,10 @@ Feel free to contact me at: pol.dellaiera@protonmail.com
 
 ## Code quality, tests and benchmarks
 
-Make a copy of the file ```.env.dist``` into ```.env``` and set your API in it.
-If you do not have it, the tests will use the temporary API key.
-
 To run the tests, run this command:
 
 ```
-composer grumphp
+RANDOM_ORG_APIKEY=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx composer grumphp
 ```
 
 Every time changes are introduced into the library, [Travis CI](https://travis-ci.org/drupol/phptree/builds) run the tests and the benchmarks.

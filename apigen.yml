@@ -1,5 +1,0 @@
-parameters:
-    visibility_levels: [public, protected, private]
-    title: "drupol/yaroc API documentation"
-    base_url: "https://not-a-number.io/yaroc"
-    overwrite: false
