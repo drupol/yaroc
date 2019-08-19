@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace drupol\Yaroc\Plugin\RandomLib\Source;
 
@@ -53,12 +53,12 @@ class RandomOrg extends AbstractSource
             ->withParameters([
                 'n' => 1,
                 'length' => $size,
-                'characters' => implode(
+                'characters' => \implode(
                     '',
-                    array_merge(
-                        range('A', 'Z'),
-                        range('a', 'z'),
-                        range(0, 9)
+                    \array_merge(
+                        \range('A', 'Z'),
+                        \range('a', 'z'),
+                        \range(0, 9)
                     )
                 ),
             ]);
@@ -87,6 +87,6 @@ class RandomOrg extends AbstractSource
      */
     public static function isSupported(): bool
     {
-        return class_exists(RandomOrgAPI::class);
+        return \class_exists(RandomOrgAPI::class);
     }
 }

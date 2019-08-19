@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace drupol\Yaroc\Examples;
 
@@ -44,7 +44,7 @@ class Pi extends BaseExample
             $x = $numbers[$i];
             $y = $numbers[$i + 1];
 
-            if (1 >= sqrt($x * $x + $y * $y)) {
+            if (1 >= \sqrt($x * $x + $y * $y)) {
                 ++$inside;
             }
         }

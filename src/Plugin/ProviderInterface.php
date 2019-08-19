@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace drupol\Yaroc\Plugin;
 
@@ -12,6 +12,11 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 interface ProviderInterface
 {
+    /**
+     * @return null|string
+     */
+    public function getEndpoint(): ?string;
+
     /**
      * Get the HTTP client.
      *
@@ -31,7 +36,7 @@ interface ProviderInterface
      *
      * @return string
      */
-    public function getResource(): string;
+    public function getResource(): ?string;
 
     /**
      * Do the request.

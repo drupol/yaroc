@@ -1,17 +1,24 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace spec\drupol\Yaroc;
 
+use drupol\Yaroc\Http\Client;
 use drupol\Yaroc\Plugin\Provider;
 use drupol\Yaroc\RandomOrgAPI;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
+/**
+ * Class RandomOrgAPISpec.
+ */
 class RandomOrgAPISpec extends ObjectBehavior
 {
+    public $configuration;
+
     public $provider;
 
     public function it_can_call_a_provider(): void
@@ -55,23 +62,26 @@ class RandomOrgAPISpec extends ObjectBehavior
 
     public function it_can_return_the_right_errorcode(): void
     {
-        $provider = (new Provider())->withResource('generateIntegers')
+        $client = new Client();
+
+        $provider = (new Provider($client))->withResource('generateIntegers')
             ->withParameters(['n' => 10, 'min' => 0, 'max' => 100, 'unexistent' => 'test']);
         $this->shouldThrow(\InvalidArgumentException::class)->during('call', [$provider]);
 
-        $provider = (new Provider())->withResource('unexistentResource')
+        $provider = (new Provider($client))->withResource('unexistentResource')
             ->withParameters([]);
         $this->shouldThrow(\BadFunctionCallException::class)->during('call', [$provider]);
 
-        $provider = (new Provider())->withResource('generateIntegers')
+        $provider = (new Provider($client))->withResource('generateIntegers')
             ->withParameters(['n' => 10, 'min' => 0, 'max' => 100]);
         $this->withApiKey('plop')->shouldThrow(\RuntimeException::class)->during('call', [$provider]);
     }
 
     public function it_can_set_an_apikey(): void
     {
-        $this->getApiKey()
-            ->shouldNotBe('');
+        $this
+            ->getApiKey()
+            ->shouldNotBeNull();
 
         $this
             ->withApiKey('http://hello.world/')
@@ -92,7 +102,8 @@ class RandomOrgAPISpec extends ObjectBehavior
 
     public function it_can_set_an_httpclient(HttpClientInterface $httpClient): void
     {
-        $this->getHttpClient()
+        $this
+            ->getHttpClient()
             ->shouldNotBeNull();
 
         $this
@@ -108,7 +119,26 @@ class RandomOrgAPISpec extends ObjectBehavior
 
     public function let(): void
     {
-        $this->provider = (new Provider())->withResource('generateIntegers')
-            ->withParameters(['n' => 10, 'min' => 0, 'max' => 100]);
+        $client = new Client();
+
+        $dotenv = new Dotenv();
+        $files = \array_filter(
+            [
+                __DIR__ . '/../../../.env.dist',
+                __DIR__ . '/../../../.env',
+            ],
+            'file_exists'
+        );
+        $dotenv->load(...$files);
+
+        $this->configuration = [];
+
+        if ($apikey = \getenv('RANDOM_ORG_APIKEY')) {
+            $this->configuration['apiKey'] = $apikey;
+        }
+
+        $this->provider = (new Provider($client))
+            ->withResource('generateIntegers')
+            ->withParameters(['n' => 10, 'min' => 0, 'max' => 100, 'apiKey' => $this->configuration['apiKey']]);
     }
 }

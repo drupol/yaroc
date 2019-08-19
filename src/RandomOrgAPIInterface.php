@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace drupol\Yaroc;
 
@@ -34,11 +34,6 @@ interface RandomOrgAPIInterface
      *   The API Key
      */
     public function getApiKey(): string;
-
-    /**
-     * @return array
-     */
-    public function getConfiguration(): array;
 
     /**
      * @param \drupol\Yaroc\Plugin\ProviderInterface $methodPlugin

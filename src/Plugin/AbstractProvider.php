@@ -1,45 +1,79 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace drupol\Yaroc\Plugin;
 
-use drupol\Yaroc\Http\AbstractClient;
-use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
+use drupol\Yaroc\Http\Client;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * Class AbstractProvider.
  */
-abstract class AbstractProvider extends AbstractClient implements ProviderInterface
+abstract class AbstractProvider implements ProviderInterface
 {
     /**
      * The endpoint.
      *
-     * @var string
+     * @var null|string
      */
-    private $endpoint = '';
+    private $endpoint;
+
+    /**
+     * @var HttpClientInterface
+     */
+    private $httpClient;
 
     /**
      * The parameters.
      *
      * @var array
      */
-    private $parameters = [];
+    private $parameters;
 
     /**
      * The random.org resource.
      *
-     * @var string
+     * @var null|string
      */
     private $resource;
 
     /**
+     * Provider constructor.
+     *
+     * @param \Symfony\Contracts\HttpClient\HttpClientInterface $client
+     * @param string $endpoint
+     * @param string $resource
+     * @param array $parameters
+     */
+    public function __construct(
+        HttpClientInterface $client = null,
+        string $endpoint = null,
+        string $resource = null,
+        array $parameters = []
+    ) {
+        $this->httpClient = $client ?? new Client();
+        $this->endpoint = $endpoint;
+        $this->resource = $resource;
+        $this->parameters = $parameters;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function getEndPoint(): string
+    public function getEndPoint(): ?string
     {
         return $this->endpoint;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHttpClient(): HttpClientInterface
+    {
+        return $this->httpClient;
     }
 
     /**
@@ -53,7 +87,7 @@ abstract class AbstractProvider extends AbstractClient implements ProviderInterf
     /**
      * {@inheritdoc}
      */
-    public function getResource(): string
+    public function getResource(): ?string
     {
         return $this->resource;
     }
@@ -66,16 +100,20 @@ abstract class AbstractProvider extends AbstractClient implements ProviderInterf
         $options = [
             'json' => [
                 'jsonrpc' => '2.0',
-                'id' => uniqid($this->getResource() . '_', true),
+                'id' => \uniqid($this->getResource() . '_', true),
                 'params' => $this->getParameters(),
                 'method' => $this->getResource(),
             ],
         ];
 
+        if (null === $this->getEndPoint()) {
+            throw new \Exception('You must set an endpoint.');
+        }
+
         try {
             $response = $this->getHttpClient()->request('POST', $this->getEndPoint(), $options);
-        } catch (ExceptionInterface $exception) {
-            throw new \Exception($exception->getMessage());
+        } catch (TransportExceptionInterface $exception) {
+            throw $exception;
         }
 
         return $response;
@@ -88,6 +126,17 @@ abstract class AbstractProvider extends AbstractClient implements ProviderInterf
     {
         $clone = clone $this;
         $clone->endpoint = $endpoint;
+
+        return $clone;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withHttpClient(HttpClientInterface $httpClient)
+    {
+        $clone = clone $this;
+        $clone->httpClient = $httpClient;
 
         return $clone;
     }
