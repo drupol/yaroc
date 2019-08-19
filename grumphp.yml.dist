@@ -8,7 +8,7 @@ parameters:
         priority: 3000
     infection:
       threads: 10
-      min_msi: 30
+      min_msi: 25
       min_covered_msi: 30
       metadata:
         priority: 2500
