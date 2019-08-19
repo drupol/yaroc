@@ -8,7 +8,6 @@ use drupol\Yaroc\Http\Client;
 use drupol\Yaroc\Plugin\Provider;
 use drupol\Yaroc\RandomOrgAPI;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -120,18 +119,6 @@ class RandomOrgAPISpec extends ObjectBehavior
     public function let(): void
     {
         $client = new Client();
-
-        $dotenv = new Dotenv();
-        $files = \array_filter(
-            [
-                getcwd() . '/.env.dist',
-                getcwd() . '/.env',
-                __DIR__ . '/../../../.env.dist',
-                __DIR__ . '/../../../.env',
-            ],
-            'file_exists'
-        );
-        $dotenv->load(...$files);
 
         $this->configuration = [];
 

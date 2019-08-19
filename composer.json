@@ -32,7 +32,6 @@
         "phpspec/phpspec": "^5",
         "rych/random": "^0.1.0",
         "scrutinizer/ocular": "^1.5",
-        "symfony/dotenv": "^4.3",
         "symfony/http-client": "^4.3"
     },
     "autoload": {
