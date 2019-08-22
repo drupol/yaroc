@@ -26,7 +26,7 @@ class Client implements HttpClientInterface
      *
      * @param null|\Symfony\Contracts\HttpClient\HttpClientInterface $httpClient
      */
-    public function __construct(HttpClientInterface $httpClient = null)
+    public function __construct(?HttpClientInterface $httpClient = null)
     {
         $this->httpClient = $httpClient ?? new NativeHttpClient();
     }

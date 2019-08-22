@@ -72,12 +72,13 @@ $provider = (new Provider())->withResource('generateStrings')
         'characters' => implode(array_merge(range('A', 'Z'), range('a', 'z'), range(0, 9))),
     ]);
 
-$result = (new RandomOrgAPI())->getData($provider);
+$result = (new RandomOrgAPI(null, ['apiKey' => '00000000-0000-0000-0000-000000000000']))->getData($provider);
 
 print_r($result);
 ```
 
-Providing the API key can be accomplished using a ```.env``` file. Copy the ```.env.dist``` file into ```.env``` and modify the latter accordingly.
+Providing the API key can be accomplished using an environment variable `RANDOM_ORG_APIKEY` or by using the method proper
+parameters in the `RandomOrgAPI` constructor, or by using `(new RandomOrgAPI())->withApiKey(string $apiKey)`. 
 
 ## Third party libraries integration
 
