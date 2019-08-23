@@ -141,7 +141,7 @@ To run the tests, run this command:
 RANDOM_ORG_APIKEY=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx composer grumphp
 ```
 
-Every time changes are introduced into the library, [Travis CI](https://travis-ci.org/drupol/phptree/builds) run the tests and the benchmarks.
+Every time changes are introduced into the library, [Travis CI](https://travis-ci.org/drupol/yaroc/builds) run the tests and the benchmarks.
 
 The library has tests written with [PHPSpec](http://www.phpspec.net/).
 Feel free to check them out in the `spec` directory. Run `composer phpspec` to trigger the tests.
