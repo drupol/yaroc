@@ -6,7 +6,6 @@
  [![Type Coverage][type coverage]][sheperd type coverage]
  [![Code Coverage][code coverage]][scrutinizer code quality]
  [![License][license]][packagist]
- [![Read the Docs][read the docs badge]][read the docs link]
  [![Donate!][donate github]][github sponsor]
  [![Donate!][donate paypal]][paypal sponsor]
 
@@ -20,7 +19,7 @@ Most of the classes of this library are stateless and immutable.
 
 ## Requirements
 
-* PHP >= 7.1.3
+* PHP >= 7.4
 * An HTTP Client (see [symfony/http-client](https://github.com/symfony/http-client))
 
 ## Installation
@@ -172,8 +171,6 @@ See [CHANGELOG.md][changelog-md] for a changelog based on [git commits][git-comm
 [sheperd type coverage]: https://shepherd.dev/github/drupol/yaroc
 [code coverage]: https://img.shields.io/scrutinizer/coverage/g/drupol/yaroc/master.svg?style=flat-square
 [license]: https://img.shields.io/packagist/l/drupol/yaroc.svg?style=flat-square
-[read the docs badge]: https://img.shields.io/readthedocs/loophp-fpt?style=flat-square
-[read the docs link]: https://loophp-fpt.readthedocs.io/
 [donate github]: https://img.shields.io/badge/Sponsor-Github-brightgreen.svg?style=flat-square
 [donate paypal]: https://img.shields.io/badge/Sponsor-Paypal-brightgreen.svg?style=flat-square
 [github actions]: https://github.com/drupol/yaroc/actions
