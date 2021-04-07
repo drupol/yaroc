@@ -24,14 +24,14 @@
     },
     "require-dev": {
         "drupol/php-conventions": "^3",
+        "friends-of-phpspec/phpspec-code-coverage": "^6.1",
         "infection/infection": "^0.21",
+        "infection/phpspec-adapter": "^0.1.2",
         "ircmaxell/random-lib": "^1.2",
         "phpspec/phpspec": "^7",
         "rych/random": "^0.1.0",
         "symfony/http-client": "^4.4 || ^5.2",
-        "friends-of-phpspec/phpspec-code-coverage": "^6.1",
-        "vimeo/psalm": "^4.7",
-        "infection/phpspec-adapter": "^0.1.2"
+        "vimeo/psalm": "^4.7"
     },
     "autoload": {
         "psr-4": {
