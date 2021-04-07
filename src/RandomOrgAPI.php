@@ -4,55 +4,38 @@ declare(strict_types=1);
 
 namespace drupol\Yaroc;
 
+use BadFunctionCallException;
 use drupol\Yaroc\Http\Client;
 use drupol\Yaroc\Plugin\ProviderInterface;
+use InvalidArgumentException;
+use RuntimeException;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
-/**
- * Class RandomOrgAPI.
- */
 final class RandomOrgAPI implements RandomOrgAPIInterface
 {
     /**
      * The configuration.
-     *
-     * @var array
      */
-    private $configuration;
+    private array $configuration;
 
     /**
      * The default Random.org endpoint.
-     *
-     * @var string;
      */
-    private $endpoint = 'https://api.random.org/json-rpc/2/invoke';
+    private string $endpoint = 'https://api.random.org/json-rpc/2/invoke';
 
     /**
      * The HTTP client.
-     *
-     * @var \Symfony\Contracts\HttpClient\HttpClientInterface
      */
-    private $httpClient;
+    private HttpClientInterface $httpClient;
 
-    /**
-     * RandomOrgAPI constructor.
-     *
-     * @param \Symfony\Contracts\HttpClient\HttpClientInterface $httpClient
-     *   The HTTP client
-     * @param array $configuration
-     *   The configuration array
-     */
-    public function __construct(HttpClientInterface $httpClient = null, array $configuration = [])
+    public function __construct(?HttpClientInterface $httpClient = null, array $configuration = [])
     {
         $this->httpClient = new Client($httpClient);
         $this->configuration = $configuration;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function call(ProviderInterface $methodPlugin): ResponseInterface
     {
         $parameters = $methodPlugin->getParameters() +
@@ -71,17 +54,11 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
         return $this->validateResponse($response);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(ProviderInterface $methodPlugin): array
     {
         return $this->call($methodPlugin)->toArray();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getApiKey(): string
     {
         $configuration = $this->getConfiguration();
@@ -89,51 +66,26 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
         return $configuration['apiKey'] ?? '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfiguration(): array
     {
         return $this->configuration;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getData(ProviderInterface $methodPlugin)
+    public function getData(ProviderInterface $methodPlugin): ?array
     {
-        $data = $this->get($methodPlugin);
-
-        if (!isset($data['result'])) {
-            return false;
-        }
-
-        if (isset($data['result']['random']['data'])) {
-            return $data['result']['random']['data'];
-        }
-
-        return false;
+        return $this->get($methodPlugin)['result']['random']['data'] ?? null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEndPoint(): string
     {
         return $this->endpoint;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHttpClient(): HttpClientInterface
     {
         return $this->httpClient;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withApiKey(string $apikey): RandomOrgAPIInterface
     {
         $clone = clone $this;
@@ -145,9 +97,6 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
         return $clone;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withEndPoint(string $endpoint): RandomOrgAPIInterface
     {
         $clone = clone $this;
@@ -156,9 +105,6 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
         return $clone;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withHttpClient(HttpClientInterface $client): RandomOrgAPIInterface
     {
         $clone = clone $this;
@@ -170,12 +116,8 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
     /**
      * Validate the response.
      *
-     * @param \Symfony\Contracts\HttpClient\ResponseInterface $response
-     *
      * @throws \Symfony\Contracts\HttpClient\Exception\ExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
-     *
-     * @return ResponseInterface
      */
     private function validateResponse(ResponseInterface $response): ResponseInterface
     {
@@ -189,31 +131,31 @@ final class RandomOrgAPI implements RandomOrgAPIInterface
             if (isset($body['error']['code'])) {
                 switch ($body['error']['code']) {
                     case -32600:
-                        throw new \InvalidArgumentException(
+                        throw new InvalidArgumentException(
                             'Invalid Request: ' . $body['error']['message'],
                             $body['error']['code']
                         );
 
                     case -32601:
-                        throw new \BadFunctionCallException(
+                        throw new BadFunctionCallException(
                             'Procedure not found: ' . $body['error']['message'],
                             $body['error']['code']
                         );
 
                     case -32602:
-                        throw new \InvalidArgumentException(
+                        throw new InvalidArgumentException(
                             'Invalid arguments: ' . $body['error']['message'],
                             $body['error']['code']
                         );
 
                     case -32603:
-                        throw new \RuntimeException(
+                        throw new RuntimeException(
                             'Internal Error: ' . $body['error']['message'],
                             $body['error']['code']
                         );
 
                     default:
-                        throw new \RuntimeException(
+                        throw new RuntimeException(
                             'Invalid request/response: ' . $body['error']['message'],
                             $body['error']['code']
                         );

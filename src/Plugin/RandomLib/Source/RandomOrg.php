@@ -19,20 +19,13 @@ use SecurityLib\Strength;
  *
  * @codeCoverageIgnore
  */
-class RandomOrg extends AbstractSource
+final class RandomOrg extends AbstractSource
 {
     /**
      * The Random.Org API.
-     *
-     * @var RandomOrgAPIInterface
      */
-    protected $randomOrgAPI;
+    protected RandomOrgAPIInterface $randomOrgAPI;
 
-    /**
-     * RandomOrg constructor.
-     *
-     * @param \drupol\Yaroc\RandomOrgAPIInterface $randomOrgAPI
-     */
     public function __construct(RandomOrgAPIInterface $randomOrgAPI)
     {
         $this->randomOrgAPI = $randomOrgAPI;
@@ -53,12 +46,12 @@ class RandomOrg extends AbstractSource
             ->withParameters([
                 'n' => 1,
                 'length' => $size,
-                'characters' => \implode(
+                'characters' => implode(
                     '',
-                    \array_merge(
-                        \range('A', 'Z'),
-                        \range('a', 'z'),
-                        \range(0, 9)
+                    array_merge(
+                        range('A', 'Z'),
+                        range('a', 'z'),
+                        range(0, 9)
                     )
                 ),
             ]);
@@ -82,11 +75,9 @@ class RandomOrg extends AbstractSource
     /**
      * If the source is currently available.
      * Reasons might be because the library is not installed.
-     *
-     * @return bool
      */
     public static function isSupported(): bool
     {
-        return \class_exists(RandomOrgAPI::class);
+        return class_exists(RandomOrgAPI::class);
     }
 }

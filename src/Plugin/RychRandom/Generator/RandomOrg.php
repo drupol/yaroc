@@ -14,20 +14,13 @@ use Rych\Random\Generator\GeneratorInterface;
  *
  * @codeCoverageIgnore
  */
-class RandomOrg implements GeneratorInterface
+final class RandomOrg implements GeneratorInterface
 {
     /**
      * The Random.Org API.
-     *
-     * @var RandomOrgAPIInterface
      */
-    protected $randomOrgAPI;
+    protected RandomOrgAPIInterface $randomOrgAPI;
 
-    /**
-     * RandomOrg constructor.
-     *
-     * @param RandomOrgAPIInterface $randomOrgAPI
-     */
     public function __construct(RandomOrgAPIInterface $randomOrgAPI)
     {
         $this->randomOrgAPI = $randomOrgAPI;
@@ -42,12 +35,12 @@ class RandomOrg implements GeneratorInterface
             ->withParameters([
                 'n' => 1,
                 'length' => $size,
-                'characters' => \implode(
+                'characters' => implode(
                     '',
-                    \array_merge(
-                        \range('A', 'Z'),
-                        \range('a', 'z'),
-                        \range(0, 9)
+                    array_merge(
+                        range('A', 'Z'),
+                        range('a', 'z'),
+                        range(0, 9)
                     )
                 ),
             ]);
@@ -57,19 +50,13 @@ class RandomOrg implements GeneratorInterface
         return $result[0];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getPriority(): int
     {
         return GeneratorInterface::PRIORITY_HIGH;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function isSupported(): bool
     {
-        return \class_exists(RandomOrgAPI::class);
+        return class_exists(RandomOrgAPI::class);
     }
 }

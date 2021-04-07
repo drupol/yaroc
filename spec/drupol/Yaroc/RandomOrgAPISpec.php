@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace spec\drupol\Yaroc;
 
+use BadFunctionCallException;
 use drupol\Yaroc\Http\Client;
 use drupol\Yaroc\Plugin\Provider;
 use drupol\Yaroc\RandomOrgAPI;
+use InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
+use RuntimeException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
-/**
- * Class RandomOrgAPISpec.
- */
 class RandomOrgAPISpec extends ObjectBehavior
 {
     public $configuration;
@@ -65,15 +65,15 @@ class RandomOrgAPISpec extends ObjectBehavior
 
         $provider = (new Provider($client))->withResource('generateIntegers')
             ->withParameters(['n' => 10, 'min' => 0, 'max' => 100, 'unexistent' => 'test']);
-        $this->shouldThrow(\InvalidArgumentException::class)->during('call', [$provider]);
+        $this->shouldThrow(InvalidArgumentException::class)->during('call', [$provider]);
 
         $provider = (new Provider($client))->withResource('unexistentResource')
             ->withParameters([]);
-        $this->shouldThrow(\BadFunctionCallException::class)->during('call', [$provider]);
+        $this->shouldThrow(BadFunctionCallException::class)->during('call', [$provider]);
 
         $provider = (new Provider($client))->withResource('generateIntegers')
             ->withParameters(['n' => 10, 'min' => 0, 'max' => 100]);
-        $this->withApiKey('plop')->shouldThrow(\RuntimeException::class)->during('call', [$provider]);
+        $this->withApiKey('plop')->shouldThrow(RuntimeException::class)->during('call', [$provider]);
     }
 
     public function it_can_set_an_apikey(): void
@@ -122,7 +122,7 @@ class RandomOrgAPISpec extends ObjectBehavior
 
         $this->configuration = [];
 
-        if ($apikey = \getenv('RANDOM_ORG_APIKEY')) {
+        if ($apikey = getenv('RANDOM_ORG_APIKEY')) {
             $this->configuration['apiKey'] = $apikey;
         }
 
