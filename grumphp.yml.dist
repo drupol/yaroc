@@ -1,14 +1,9 @@
 imports:
-  - { resource: vendor/drupol/php-conventions/config/php71/grumphp.yml }
+  - { resource: vendor/drupol/php-conventions/config/php73/grumphp.yml }
 
 parameters:
   extra_tasks:
-    phpspec:
-      metadata:
-        priority: 3000
+    phpspec: ~
     infection:
-      threads: 10
       min_msi: 25
       min_covered_msi: 30
-      metadata:
-        priority: 2500

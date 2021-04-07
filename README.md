@@ -1,14 +1,15 @@
-[![Latest Stable Version](https://img.shields.io/packagist/v/drupol/yaroc.svg?style=flat-square)](https://packagist.org/packages/drupol/yaroc)
- [![GitHub stars](https://img.shields.io/github/stars/drupol/yaroc.svg?style=flat-square)](https://packagist.org/packages/drupol/yaroc)
- [![Total Downloads](https://img.shields.io/packagist/dt/drupol/yaroc.svg?style=flat-square)](https://packagist.org/packages/drupol/yaroc)
- [![Build Status](https://img.shields.io/travis/drupol/yaroc/master.svg?style=flat-square)](https://travis-ci.org/drupol/yaroc)
- [![Scrutinizer code quality](https://img.shields.io/scrutinizer/quality/g/drupol/yaroc/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/drupol/yaroc/?branch=master)
- [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/drupol/yaroc/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/drupol/yaroc/?branch=master)
- [![Mutation testing badge](https://badge.stryker-mutator.io/github.com/drupol/yaroc/master)](https://stryker-mutator.github.io)
- [![License](https://img.shields.io/packagist/l/drupol/yaroc.svg?style=flat-square)](https://packagist.org/packages/drupol/yaroc)
- [![Say Thanks!](https://img.shields.io/badge/Say-thanks-brightgreen.svg?style=flat-square)](https://saythanks.io/to/drupol)
- [![Donate!](https://img.shields.io/badge/Donate-Paypal-brightgreen.svg?style=flat-square)](https://paypal.me/drupol)
- 
+[![Latest Stable Version][latest stable version]][packagist]
+ [![GitHub stars][github stars]][packagist]
+ [![Total Downloads][total downloads]][packagist]
+ [![GitHub Workflow Status][github workflow status]][github actions]
+ [![Scrutinizer code quality][code quality]][scrutinizer code quality]
+ [![Type Coverage][type coverage]][sheperd type coverage]
+ [![Code Coverage][code coverage]][scrutinizer code quality]
+ [![License][license]][packagist]
+ [![Read the Docs][read the docs badge]][read the docs link]
+ [![Donate!][donate github]][github sponsor]
+ [![Donate!][donate paypal]][paypal sponsor]
+
 ## YAROC
 
 Yet Another [Random.Org](https://random.org) Client.
@@ -78,7 +79,7 @@ print_r($result);
 ```
 
 Providing the API key can be accomplished using an environment variable `RANDOM_ORG_APIKEY` or by using the method proper
-parameters in the `RandomOrgAPI` constructor, or by using `(new RandomOrgAPI())->withApiKey(string $apiKey)`. 
+parameters in the `RandomOrgAPI` constructor, or by using `(new RandomOrgAPI())->withApiKey(string $apiKey)`.
 
 ## Third party libraries integration
 
@@ -152,4 +153,32 @@ Before each commit some inspections are executed with [GrumPHP](https://github.c
 
 ## Contributing
 
-Feel free to contribute to this library by sending Github pull requests. I'm quite reactive :-)
+Feel free to contribute by sending Github pull requests. I'm quite reactive :-)
+
+If you can't contribute to the code, you can also sponsor me on [Github][github sponsor] or [Paypal][paypal sponsor].
+
+## Changelog
+
+See [CHANGELOG.md][changelog-md] for a changelog based on [git commits][git-commits].
+
+[packagist]: https://packagist.org/packages/drupol/yaroc
+[latest stable version]: https://img.shields.io/packagist/v/drupol/yaroc.svg?style=flat-square
+[github stars]: https://img.shields.io/github/stars/drupol/yaroc.svg?style=flat-square
+[total downloads]: https://img.shields.io/packagist/dt/drupol/yaroc.svg?style=flat-square
+[github workflow status]: https://img.shields.io/github/workflow/status/drupol/yaroc/Unit%20tests?style=flat-square
+[code quality]: https://img.shields.io/scrutinizer/quality/g/drupol/yaroc/master.svg?style=flat-square
+[scrutinizer code quality]: https://scrutinizer-ci.com/g/drupol/yaroc/?branch=master
+[type coverage]: https://img.shields.io/badge/dynamic/json?style=flat-square&color=color&label=Type%20coverage&query=message&url=https%3A%2F%2Fshepherd.dev%2Fgithub%2Fdrupol%2Fyaroc%2Fcoverage
+[sheperd type coverage]: https://shepherd.dev/github/drupol/yaroc
+[code coverage]: https://img.shields.io/scrutinizer/coverage/g/drupol/yaroc/master.svg?style=flat-square
+[license]: https://img.shields.io/packagist/l/drupol/yaroc.svg?style=flat-square
+[read the docs badge]: https://img.shields.io/readthedocs/loophp-fpt?style=flat-square
+[read the docs link]: https://loophp-fpt.readthedocs.io/
+[donate github]: https://img.shields.io/badge/Sponsor-Github-brightgreen.svg?style=flat-square
+[donate paypal]: https://img.shields.io/badge/Sponsor-Paypal-brightgreen.svg?style=flat-square
+[github actions]: https://github.com/drupol/yaroc/actions
+[github sponsor]: https://github.com/sponsors/drupol
+[paypal sponsor]: https://www.paypal.me/drupol
+[changelog-md]: https://github.com/drupol/yaroc/blob/master/CHANGELOG.md
+[git-commits]: https://github.com/drupol/yaroc/commits/master
+[changelog-releases]: https://github.com/drupol/yaroc/releases
