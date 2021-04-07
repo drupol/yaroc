@@ -5,11 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/drupol/yaroc/compare/2.1.1...HEAD)
+## [2.2.0](https://github.com/drupol/yaroc/compare/2.1.1...2.2.0)
 
 ### Commits
 
-- docs: Add changelog. [`2745207`](https://github.com/drupol/yaroc/commit/274520717c698194c7ebcbb5a5778830fead3c0b)
+- docs: Add changelog. [`26bfb67`](https://github.com/drupol/yaroc/commit/26bfb67853f3ffcee62b15ddf20fb462567edcfd)
 - chore: Update composer.json. [`ed20d66`](https://github.com/drupol/yaroc/commit/ed20d66e2bb80570fc771f85a0e2b6bb3225ad5f)
 - ci: Add forgotten file. [`fbb47e2`](https://github.com/drupol/yaroc/commit/fbb47e2f7242dd8be3118c895eaaf88034a9c6c6)
 - ci: Update Github action configuration. [`9d557f0`](https://github.com/drupol/yaroc/commit/9d557f0f0a59bbafc7ece5a00e20b30dd6ee0597)
