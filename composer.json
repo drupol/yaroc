@@ -23,7 +23,7 @@
         "symfony/http-client-contracts": "^2"
     },
     "require-dev": {
-        "drupol/php-conventions": "^3",
+        "drupol/php-conventions": "^3 || ^4",
         "friends-of-phpspec/phpspec-code-coverage": "^6.1",
         "infection/infection": "^0.21",
         "infection/phpspec-adapter": "^0.1.2",
