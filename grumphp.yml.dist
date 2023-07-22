@@ -1,9 +1,8 @@
 imports:
-  - { resource: vendor/drupol/php-conventions/config/php73/grumphp.yml }
+  - { resource: vendor/drupol/php-conventions/config/php82/grumphp.yml }
 
 parameters:
   extra_tasks:
-    phpspec: ~
     infection:
       min_msi: 25
       min_covered_msi: 30
