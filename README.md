@@ -25,11 +25,11 @@ composer require drupol/yaroc
 
 First [request an API Key](https://api.random.org/api-keys).
 
-You can call
+Then, you can call
 [any API methods described in the documentation](https://api.random.org/json-rpc/4/basic)
 from [Random.org](https://random.org).
 
-Currently support all the [Random.org](https://random.org) API method calls in
+This library supports all the [Random.org](https://random.org) method calls in
 the [basic](https://api.random.org/json-rpc/4/basic) and
 [signed](https://api.random.org/json-rpc/4/signed) APIs.
 
@@ -40,34 +40,35 @@ the [basic](https://api.random.org/json-rpc/4/basic) and
 
 require 'vendor/autoload.php';
 
-use drupol\Yaroc\Plugin\Provider;
-use drupol\Yaroc\RandomOrgAPI;
+use drupol\Yaroc\Client;
+use drupol\Yaroc\ApiMethods;
+use GuzzleHttp\Client as HttpClient;
+use loophp\psr17\Psr17;
+use Nyholm\Psr7\Factory\Psr17Factory;
 
-$generateIntegers = (new Provider())->withResource('generateIntegers')
-    ->withParameters(['n' => 10, 'min' => 0, 'max' => 100]);
+$psr17 = new Psr17(
+    new Psr17Factory(),
+    new Psr17Factory(),
+    new Psr17Factory(),
+    new Psr17Factory(),
+    new Psr17Factory(),
+    new Psr17Factory(),
+);
 
-$result = (new RandomOrgAPI())
-    ->withApiKey('00000000-0000-0000-0000-000000000000')
-    ->getData($generateIntegers);
+$client = new Client(
+    new HttpClient,
+    $psr17,
+    '00000000-0000-0000-0000-000000000000'
+);
 
-print_r($result);
-
-$provider = (new Provider())->withResource('generateStrings')
-    ->withParameters([
-        'n' => 10,
-        'length' => 15,
-        'characters' => implode(array_merge(range('A', 'Z'), range('a', 'z'), range(0, 9))),
-    ]);
-
-$result = (new RandomOrgAPI(null, ['apiKey' => '00000000-0000-0000-0000-000000000000']))->getData($provider);
-
-print_r($result);
+$result = $client
+    ->getData(
+      ApiMethods::GenerateIntegers,
+      ['n' => 10, 'min' => 0, 'max' => 100]
+    );
 ```
 
-Providing the API key can be accomplished using an environment variable
-`RANDOM_ORG_APIKEY` or by using the method proper parameters in the
-`RandomOrgAPI` constructor, or by using
-`(new RandomOrgAPI())->withApiKey(string $apiKey)`.
+The API key can be passed in the constructor of the `drupol\Yaroc\Client` class.
 
 ## History
 
@@ -89,8 +90,8 @@ Before each commit some inspections are executed with
 [GrumPHP](https://github.com/phpro/grumphp), run `./vendor/bin/grumphp run` to
 check manually.
 
-[PHPInfection](https://github.com/infection/infection) is used to ensure that
-your code is properly tested, run `composer infection` to test your code.
+[Infection](https://github.com/infection/infection) is used to ensure that your
+code is properly tested, run `composer infection` to test your code.
 
 ## Contributing
 

@@ -4,30 +4,25 @@ declare(strict_types=1);
 
 namespace drupol\Yaroc\Examples;
 
-use drupol\Yaroc\Plugin\Provider;
+use drupol\Yaroc\ApiMethods;
+
 use const M_PI;
 
 /**
- * Class Location.
- *
  * @codeCoverageIgnore
  */
 class Location extends BaseExample
 {
-    /**
-     * @var float[]
-     */
-    protected $coordinates;
+    private array $coordinates;
 
-    /**
-     * @return $this
-     */
-    public function find()
+    public function find(): Location
     {
-        $provider = (new Provider())->withResource('generateDecimalFractions')
-            ->withParameters(['n' => 3, 'decimalPlaces' => 10]);
-
-        $result = $this->getRandomOrgAPI()->getData($provider);
+        $result = $this
+            ->getRandomOrgAPI()
+            ->getData(
+                ApiMethods::GenerateDecimalFractions,
+                ['n' => 3, 'decimalPlaces' => 10]
+            );
 
         $this->coordinates = [
             'x' => rad2deg($result[0] * 2 * M_PI - M_PI),
@@ -38,12 +33,7 @@ class Location extends BaseExample
         return $this;
     }
 
-    /**
-     * Get the coordinates.
-     *
-     * @return float[]
-     */
-    public function getCoordinates()
+    public function getCoordinates(): array
     {
         return $this->coordinates;
     }

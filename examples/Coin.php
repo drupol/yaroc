@@ -4,43 +4,27 @@ declare(strict_types=1);
 
 namespace drupol\Yaroc\Examples;
 
-use drupol\Yaroc\Plugin\Provider;
+use drupol\Yaroc\ApiMethods;
 
 /**
- * Class Coin.
- *
  * @codeCoverageIgnore
  */
 class Coin extends BaseExample
 {
-    /**
-     * @var string
-     */
-    protected $face;
+    protected string $face;
 
-    /**
-     * @return $this
-     */
-    public function flip()
+    public function flip(): Coin
     {
         $parameters = ['n' => 1, 'min' => 0, 'max' => 1];
 
-        $generateIntegers = (new Provider())->withResource('generateIntegers')
-            ->withParameters($parameters);
-
-        $result = $this->getRandomOrgAPI()->getData($generateIntegers);
+        $result = $this->getRandomOrgAPI()->getData(ApiMethods::GenerateIntegers, $parameters);
 
         $this->face = (1 === $result[0]) ? 'tails' : 'heads';
 
         return $this;
     }
 
-    /**
-     * Get the coin face.
-     *
-     * @return string
-     */
-    public function getFace()
+    public function getFace(): string
     {
         return $this->face;
     }

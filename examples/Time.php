@@ -4,37 +4,30 @@ declare(strict_types=1);
 
 namespace drupol\Yaroc\Examples;
 
-use drupol\Yaroc\Plugin\Provider;
+use drupol\Yaroc\ApiMethods;
 
 /**
- * Class Time.
- *
  * @codeCoverageIgnore
  */
 class Time extends BaseExample
 {
-    /**
-     * @var int[]
-     */
-    protected $time;
+    private array $time;
 
-    /**
-     * @return $this
-     */
-    public function find()
+    public function find(): Time
     {
-        $provider = (new Provider())->withResource('generateIntegers');
-
-        $hours = $this->getRandomOrgAPI()->getData(
-            $provider->withParameters(
+        $hours = $this
+            ->getRandomOrgAPI()
+            ->getData(
+                ApiMethods::GenerateIntegers,
                 ['n' => 1, 'min' => 0, 'max' => 23]
-            )
-        );
-        $minutesSeconds = $this->getRandomOrgAPI()->getData(
-            $provider->withParameters(
+            );
+
+        $minutesSeconds = $this
+            ->getRandomOrgAPI()
+            ->getData(
+                ApiMethods::GenerateIntegers,
                 ['n' => 2, 'min' => 0, 'max' => 59]
-            )
-        );
+            );
 
         $this->time = [
             'h' => $hours[0],
@@ -45,12 +38,7 @@ class Time extends BaseExample
         return $this;
     }
 
-    /**
-     * Get the time.
-     *
-     * @return int[]
-     */
-    public function get()
+    public function get(): array
     {
         return $this->time;
     }
