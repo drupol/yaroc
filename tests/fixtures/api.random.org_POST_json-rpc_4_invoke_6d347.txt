@@ -1,0 +1,15 @@
+HTTP/1.1 200 OK
+Date: Sat, 22 Jul 2023 15:13:38 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 256
+Connection: keep-alive
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept
+CF-Cache-Status: DYNAMIC
+Set-Cookie: __cflb=02DiuEMAZFhhWAbaKrF1fuSZexDk78ueys6EMpwdmLwwR; SameSite=Lax; path=/; expires=Sat, 29-Jul-23 15:13:38 GMT; HttpOnly
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+Server: cloudflare
+CF-RAY: 7eaca0f83d5783d3-BRU
+
+{"jsonrpc":"2.0",

@@ -1,0 +1,15 @@
+HTTP/1.1 200 OK
+Date: Sat, 22 Jul 2023 15:18:27 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 323
+Connection: keep-alive
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept
+CF-Cache-Status: DYNAMIC
+Set-Cookie: __cflb=02DiuEMAZFhhWAbaKrF1fuSZexDk78uezHTbwkYf3F4e7; SameSite=Lax; path=/; expires=Sat, 29-Jul-23 15:18:27 GMT; HttpOnly
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+Server: cloudflare
+CF-RAY: 7eaca805ed6a2e26-BRU
+
+{"jsonrpc":"2.0","foo":{"bar":{"baz":["eb989dd4-237b-426a-bd67-51a40adfba05","49ddce59-dca5-4f4e-a838-490de6fc5db0","e559b7b9-d31e-40b5-872b-6a30fc9973d9"],"completionTime":"2023-07-22 15:18:27Z"},"bitsUsed":366,"bitsLeft":247269,"requestsLeft":971,"advisoryDelay":1930},"id":"generateUUIDs_64bbf343697b27.85107801"}
