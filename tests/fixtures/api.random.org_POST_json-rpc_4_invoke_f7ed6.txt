@@ -1,0 +1,15 @@
+HTTP/1.1 200 OK
+Date: Sat, 22 Jul 2023 11:23:14 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 128
+Connection: keep-alive
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept
+CF-Cache-Status: DYNAMIC
+Set-Cookie: __cflb=02DiuEMAZFhhWAbaKrF1fuSZexDk78ueys9aM5jufPC8s; SameSite=Lax; path=/; expires=Sat, 29-Jul-23 11:23:14 GMT; HttpOnly
+Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+Server: cloudflare
+CF-RAY: 7eab4f79dee62e62-BRU
+
+{"jsonrpc":"2.0","error":{"code":-32602,"message":"Invalid params","data":null},"id":"generateIntegers_64bbbc22c00763.50827644"}

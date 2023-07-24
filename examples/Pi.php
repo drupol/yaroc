@@ -4,39 +4,28 @@ declare(strict_types=1);
 
 namespace drupol\Yaroc\Examples;
 
-use drupol\Yaroc\Plugin\Provider;
+use drupol\Yaroc\ApiMethods;
 
 /**
- * Class Pi.
- *
  * @codeCoverageIgnore
  */
 class Pi extends BaseExample
 {
-    /**
-     * @var float
-     */
-    protected $estimation;
+    private $estimation;
 
-    /**
-     * @return float
-     */
     public function get()
     {
         return $this->estimation;
     }
 
-    /**
-     * @param int $throws
-     *
-     * @return $this
-     */
-    public function run($throws = 1000)
+    public function run(int $throws = 1000): Pi
     {
-        $provider = (new Provider())->withResource('generateDecimalFractions')
-            ->withParameters(['n' => $throws * 2, 'decimalPlaces' => 6]);
-
-        $numbers = $this->getRandomOrgAPI()->getData($provider);
+        $numbers = $this
+            ->getRandomOrgAPI()
+            ->getData(
+                ApiMethods::GenerateDecimalFractions,
+                ['n' => $throws * 2, 'decimalPlaces' => 6]
+            );
 
         $inside = 0;
 

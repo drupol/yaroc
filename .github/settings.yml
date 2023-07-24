@@ -10,7 +10,7 @@ branches:
               required_approving_review_count: 1
           required_status_checks:
               contexts:
-                  -  "Grumphp"
+                  - "Grumphp"
               strict: false
           restrictions: null
 

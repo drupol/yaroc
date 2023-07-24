@@ -1,15 +1,14 @@
 {
     "name": "drupol/yaroc",
-    "type": "library",
     "description": "YAROC: Yet Another Random.Org Client.",
+    "license": "MIT",
+    "type": "library",
     "keywords": [
         "random",
         "client",
         "random.org",
         "RNG"
     ],
-    "homepage": "https://github.com/drupol/yaroc",
-    "license": "MIT",
     "authors": [
         {
             "name": "Pol Dellaiera",
@@ -17,30 +16,45 @@
             "role": "Author"
         }
     ],
+    "homepage": "https://github.com/drupol/yaroc",
+    "support": {
+        "issues": "https://github.com/drupol/yaroc/issues",
+        "source": "https://github.com/drupol/yaroc"
+    },
     "require": {
-        "php": ">= 7.4",
-        "ext-json": "*",
-        "symfony/http-client-contracts": "^2"
+        "php": ">= 8.1",
+        "ergebnis/http-method": "^2.3",
+        "loophp/psr17": "^1.0",
+        "psr/http-client": "^1.0",
+        "psr/http-client-implementation": "^1",
+        "psr/http-factory": "^1.0.1",
+        "psr/http-factory-implementation": "^1",
+        "psr/http-message": "^1.1",
+        "psr/http-message-implementation": "^1"
     },
     "require-dev": {
-        "drupol/php-conventions": "^3",
-        "friends-of-phpspec/phpspec-code-coverage": "^6.1",
-        "infection/infection": "^0.21",
-        "infection/phpspec-adapter": "^0.1.2",
-        "ircmaxell/random-lib": "^1.2",
-        "phpspec/phpspec": "^7",
-        "rych/random": "^0.1.0",
-        "symfony/http-client": "^4.4 || ^5.2",
-        "vimeo/psalm": "^4.7"
+        "ext-pcov": "*",
+        "drupol/php-conventions": "^5",
+        "guzzlehttp/guzzle": "^7.7",
+        "infection/infection": "^0.27",
+        "nyholm/psr7": "^1.8",
+        "php-http/vcr-plugin": "^1.2",
+        "phpstan/phpstan-strict-rules": "^1.5",
+        "phpunit/php-code-coverage": "^10.1",
+        "phpunit/phpunit": "^10.2"
     },
     "autoload": {
         "psr-4": {
             "drupol\\Yaroc\\": "src/",
-            "drupol\\Yaroc\\Examples\\": "examples/"
+            "drupol\\Yaroc\\Tests\\": "tests/"
         }
     },
-    "support": {
-        "issues": "https://github.com/drupol/yaroc/issues",
-        "source": "https://github.com/drupol/yaroc"
+    "config": {
+        "allow-plugins": {
+            "infection/extension-installer": true,
+            "phpstan/extension-installer": true,
+            "phpro/grumphp": true,
+            "ergebnis/composer-normalize": true
+        }
     }
 }

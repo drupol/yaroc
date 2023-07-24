@@ -4,35 +4,39 @@ declare(strict_types=1);
 
 namespace drupol\Yaroc\Examples;
 
-use drupol\Yaroc\RandomOrgAPI;
+use drupol\Yaroc\Client;
+use drupol\Yaroc\ClientInterface;
+use GuzzleHttp\Client as HttpClient;
+use loophp\psr17\Psr17;
+use Nyholm\Psr7\Factory\Psr17Factory;
 
 /**
  * @codeCoverageIgnore
  */
 abstract class BaseExample
 {
-    /**
-     * The Random.org API bridge.
-     *
-     * @var \drupol\Yaroc\RandomOrgAPI
-     */
-    private $randomOrgAPI;
+    private ClientInterface $client;
 
-    /**
-     * BaseExample constructor.
-     */
     public function __construct()
     {
-        $this->randomOrgAPI = new RandomOrgAPI();
+        $psr17 = new Psr17(
+            new Psr17Factory(),
+            new Psr17Factory(),
+            new Psr17Factory(),
+            new Psr17Factory(),
+            new Psr17Factory(),
+            new Psr17Factory(),
+        );
+
+        $this->client = new Client(
+            new HttpClient(),
+            $psr17,
+            getenv('RANDOM_ORG_APIKEY')
+        );
     }
 
-    /**
-     * Get the Random.org API bridge.
-     *
-     * @return \drupol\Yaroc\RandomOrgAPI
-     */
-    public function getRandomOrgAPI()
+    public function getRandomOrgAPI(): ClientInterface
     {
-        return $this->randomOrgAPI;
+        return $this->client;
     }
 }

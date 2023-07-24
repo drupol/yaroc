@@ -1,21 +1,39 @@
 # https://help.github.com/en/categories/automating-your-workflow-with-github-actions
 
 on:
-    - pull_request
-    - push
+    push:
+        paths:
+            - "**.php"
+            - ".github/workflows/*.yml"
+        branches:
+            - master
+    pull_request:
+        paths:
+            - "**.php"
+            - ".github/workflows/*.yml"
 
 name: "Unit tests"
 
 jobs:
-    run:
-        name: "CI"
+    supported-versions-matrix:
+        name: Supported Versions Matrix
+        runs-on: ubuntu-latest
+        outputs:
+            version: ${{ steps.supported-versions-matrix.outputs.version }}
+        steps:
+            - uses: actions/checkout@v3
+            - id: supported-versions-matrix
+              uses: WyriHaximus/github-action-composer-php-versions-in-range@v1
+    tests:
+        name: "Unit Tests"
         runs-on: ${{ matrix.operating-system }}
+        needs:
+            - supported-versions-matrix
         strategy:
             fail-fast: false
             matrix:
                 operating-system: [ubuntu-latest, windows-latest, macOS-latest]
-                php-versions: ['7.4']
-
+                php: ${{ fromJson(needs.supported-versions-matrix.outputs.version) }}
         steps:
             - name: Set git to use LF
               run: |
@@ -24,36 +42,17 @@ jobs:
 
             - name: Checkout
               uses: actions/checkout@v3
-              with:
-                  fetch-depth: 1
 
             - name: Install PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: ${{ matrix.php-versions }}
-                  extensions: gd,mbstring,pcov,xdebug
-
-            - name: Get Composer Cache Directory
-              id: composer-cache
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-            - name: Cache dependencies
-              uses: actions/cache@v3.0.11
-              with:
-                  path: ${{ steps.composer-cache.outputs.dir }}
-                  key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-                  restore-keys: ${{ runner.os }}-composer-
+                  php-version: ${{ matrix.php }}
+                  coverage: pcov
 
             - name: Install dependencies
-              run: composer install --no-progress --prefer-dist --optimize-autoloader
+              uses: ramsey/composer-install@v2
 
             - name: Run Grumphp
               env:
-                RANDOM_ORG_APIKEY: ${{ secrets.RANDOM_ORG_APIKEY }}
-              run: vendor/bin/grumphp run --tasks=phpspec
-
-            - name: Send Scrutinizer data
-              run: |
-                  wget https://scrutinizer-ci.com/ocular.phar
-                  php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
-              continue-on-error: true
+                  RANDOM_ORG_APIKEY: ${{ secrets.RANDOM_ORG_APIKEY }}
+              run: vendor/bin/grumphp run --tasks=phpunit,clover_coverage
